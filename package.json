@@ -5,7 +5,7 @@
   "scripts": {
     "lint": "eslint . --ext .ts",
     "lint:fix": "eslint . --ext .ts --fix",
-    "format": "prettier --write .",
+    "format": "prettier --write . --ignore-path .prettierignore",
     "lint:format": "npm run lint:fix && npm run format",
     "build": "tsc",
     "release": "standard-version",
