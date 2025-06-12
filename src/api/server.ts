@@ -21,7 +21,7 @@ const testDbConnection = async () => {
     console.error("❌ Database connection failed:", err);
     process.exit(1);
   }
-}
+};
 
 async function startServer() {
   await testDbConnection();
