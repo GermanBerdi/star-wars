@@ -1,6 +1,6 @@
 import { Router } from "express";
 import healthRouter from "./health";
-import starshipsRouter from "./starships";
+import starshipsRouter from "./starships-route";
 
 const router = Router();
 
