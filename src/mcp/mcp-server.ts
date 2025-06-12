@@ -1,6 +1,7 @@
 import { McpServer } from '@modelcontextprotocol/sdk/server/mcp.js';
 import { StdioServerTransport } from '@modelcontextprotocol/sdk/server/stdio.js';
 import { z } from "zod";
+import { starshipTool } from './tools/starships-tool';
 
 const mcpServer = new McpServer(
   {
@@ -19,21 +20,15 @@ mcpServer.tool(
 );
 
 mcpServer.tool(
-  "listStarShips",
-  "Lista de las naves de star wars",
-  async ({ }) => ({
-    content: [{ type: "text", text: JSON.stringify([
-      { id: 1, name: "Millennium Falcon", weapons:"laser", shieldLevel:3, passengers:5 },
-      { id: 2, name: "X-Wing", weapons:"torpedo", shieldLevel:10, passengers:2 },
-      { id: 3, name: "TIE Fighter", weapons:"misils", shieldLevel:5, passengers:1 },
-    ]) }]
-  })
+  starshipTool.name,
+  starshipTool.description,
+  starshipTool.cb
 );
 
 async function main() {
   const transport = new StdioServerTransport();
   await mcpServer.connect(transport);
-  console.error('Servidor MCP iniciado en modo stdio');
+  console.error("MCP server started in stdio mode");
 }
 
 main();
