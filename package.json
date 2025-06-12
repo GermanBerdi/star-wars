@@ -9,7 +9,8 @@
     "lint:format": "npm run lint:fix && npm run format",
     "build": "tsc",
     "release": "standard-version",
-    "start": "ts-node src/api/server.ts",
+    "start:api": "ts-node src/api/server.ts",
+    "start:mcp": "ts-node src/mcp/mcp-server.ts",
     "test": "echo \"Error: no test specified\" && exit 1"
   },
   "keywords": [],
@@ -17,7 +18,9 @@
   "license": "ISC",
   "description": "",
   "dependencies": {
-    "express": "^5.1.0"
+    "@modelcontextprotocol/sdk": "^1.12.1",
+    "express": "^5.1.0",
+    "zod": "^3.25.63"
   },
   "devDependencies": {
     "@types/express": "^5.0.3",
