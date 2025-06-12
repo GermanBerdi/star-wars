@@ -30,18 +30,6 @@ mcpServer.tool(
   })
 );
 
-mcpServer.tool(
-  "listStarShips",
-  "Lista de las naves de star wars",
-  async ({ }) => ({
-    content: [{ type: "text", text: JSON.stringify([
-      { id: 1, name: "Millennium Falcon", weapons:"laser", shieldLevel:3, passengers:5 },
-      { id: 2, name: "X-Wing", weapons:"torpedo", shieldLevel:10, passengers:2 },
-      { id: 3, name: "TIE Fighter", weapons:"misils", shieldLevel:5, passengers:1 },
-    ]) }]
-  })
-);
-
 async function main() {
   const transport = new StdioServerTransport();
   await mcpServer.connect(transport);
