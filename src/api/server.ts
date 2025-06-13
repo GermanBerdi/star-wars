@@ -1,5 +1,5 @@
 import express from "express";
-import apiRouter from "./routes";
+import apiRouter from "./router";
 import pool from "../db/connection";
 import { RowDataPacket } from "mysql2";
 
