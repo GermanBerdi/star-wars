@@ -6,7 +6,13 @@ const router = Router();
 router.get("/", async (req: Request, res: Response): Promise<void> => {
   try {
     const starships = await getAllStarships();
-    res.json(starships);
+    const response = {
+      message: "Starships list",
+      data: {
+        starships,
+      },
+    };
+    res.json(response);
   } catch (error) {
     const errorMessage = `Error fetching starships: ${error}`;
     console.error(errorMessage);
