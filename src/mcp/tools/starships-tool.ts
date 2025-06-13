@@ -1,6 +1,7 @@
 import { ToolCallback } from "@modelcontextprotocol/sdk/server/mcp.js";
 import { CallToolResult } from "@modelcontextprotocol/sdk/types.js";
-import { IStarshipRow, getAllStarships } from "../../db/startships/starships-repo";
+import { IStarshipRow } from "../../db/starships/starships-interfaces";
+import { getAllStarships } from "../../db/starships/starships-repo";
 
 const cb: ToolCallback = async ({}) => {
   const response: CallToolResult = {
