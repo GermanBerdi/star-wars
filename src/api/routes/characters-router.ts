@@ -1,6 +1,6 @@
 import { Router, Request, Response } from "express";
 import { INewCharacter, IUpdateCharacter } from "../../db/characters/characters-interfaces";
-import { createCharacter, updateCharacter, getAllCharacters } from "../../db/characters/characters-repo";
+import { createCharacter, updateCharacter, getAllCharacters, getCharacterById } from "../../db/characters/characters-repo";
 
 const router = Router();
 
@@ -72,6 +72,28 @@ router.get("/", async (req: Request, res: Response): Promise<void> => {
     res.json(response);
   } catch (error) {
     const errorMessage = `Error fetching characters: ${error}`;
+    console.error(errorMessage);
+    res.status(500).json({ errorMessage });
+  }
+});
+
+router.get("/:id", async (req: Request, res: Response): Promise<void> => {
+  try {
+    const id = Number(req.params.id);
+    const character = await getCharacterById(id);
+    if (!character) {
+      res.status(404).json({ error: 'Character not found' });
+      return;
+    }
+    const response = {
+      message: "Character info",
+      data: {
+        character,
+      },
+    };
+    res.status(200).json(response);
+  } catch (error) {
+    const errorMessage = `Error updating character: ${error}`;
     console.error(errorMessage);
     res.status(500).json({ errorMessage });
   }

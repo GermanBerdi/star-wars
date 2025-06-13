@@ -30,3 +30,8 @@ export const getAllCharacters = async (): Promise<ICharacterRow[]> => {
   const [rows] = await pool.query<ICharacterRow[]>("SELECT * FROM characters");
   return rows;
 };
+
+export const getCharacterById = async (id: number): Promise<ICharacterRow | null> => {
+  const [rows] = await pool.query<ICharacterRow[]>(`SELECT * FROM characters WHERE id = ?`, [id]);
+  return rows.length > 0 ? rows[0] : null;
+};
