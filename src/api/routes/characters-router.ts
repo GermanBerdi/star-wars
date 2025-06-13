@@ -1,6 +1,11 @@
 import { Router, Request, Response } from "express";
 import { INewCharacter, IUpdateCharacter } from "../../db/characters/characters-interfaces";
-import { createCharacter, updateCharacter, getAllCharacters, getCharacterById } from "../../db/characters/characters-repo";
+import {
+  createCharacter,
+  updateCharacter,
+  getAllCharacters,
+  getCharacterById,
+} from "../../db/characters/characters-repo";
 
 const router = Router();
 
@@ -82,7 +87,7 @@ router.get("/:id", async (req: Request, res: Response): Promise<void> => {
     const id = Number(req.params.id);
     const character = await getCharacterById(id);
     if (!character) {
-      res.status(404).json({ error: 'Character not found' });
+      res.status(404).json({ error: "Character not found" });
       return;
     }
     const response = {
