@@ -1,5 +1,5 @@
 import { Router, Request, Response } from "express";
-import { getAllStarships } from "../../db/startships/starships-repo";
+import { getAllStarships } from "../../db/starships/starships-repo";
 
 const router = Router();
 

@@ -1,4 +1,3 @@
-import pool from "../connection";
 import { RowDataPacket } from "mysql2";
 
 export interface IStarshipRow extends RowDataPacket {
@@ -10,9 +9,4 @@ export interface IStarshipRow extends RowDataPacket {
   passengers: number | null;
   max_speed: number | null;
   created_at: Date;
-}
-
-export const getAllStarships = async (): Promise<IStarshipRow[]> => {
-  const [rows] = await pool.query<IStarshipRow[]>("SELECT * FROM starships");
-  return rows;
 }
