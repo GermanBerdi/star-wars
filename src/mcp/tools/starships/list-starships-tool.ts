@@ -1,15 +1,20 @@
 import { ToolCallback } from "@modelcontextprotocol/sdk/server/mcp.js";
 import { CallToolResult } from "@modelcontextprotocol/sdk/types.js";
-import { IStarshipRow } from "../../db/starships/starships-interfaces";
-import { getAllStarships } from "../../db/starships/starships-repo";
+import { IStarshipRow } from "../../../db/starships/starships-interfaces";
+import { getAllStarships } from "../../../db/starships/starships-repo";
 
-const cb: ToolCallback = async ({}) => {
+const toolName = "listStarships";
+
+const description = "List Star Wars starships";
+
+const cb: ToolCallback<undefined> = async () => {
   const response: CallToolResult = {
     content: [{ type: "text", text: "" }],
   };
   try {
     const starships: IStarshipRow[] = await getAllStarships();
-    response.content[0].text = JSON.stringify(starships);
+    const contentData = starships;
+    response.content[0].text = JSON.stringify(contentData);
   } catch (error) {
     const errorMessage = `Error fetching starships: ${error}`;
     console.error(errorMessage);
@@ -18,8 +23,8 @@ const cb: ToolCallback = async ({}) => {
   return response;
 };
 
-export const starshipTool = {
-  name: "listStarShips",
-  description: "List Star Wars starships",
+export const listStarshipsTool = {
+  toolName, 
+  description,
   cb,
 };
