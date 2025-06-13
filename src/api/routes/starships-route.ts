@@ -3,13 +3,14 @@ import { getAllStarships } from "../../db/startships/starships-repo";
 
 const router = Router();
 
-router.get("/", async (req: Request, res: Response) => {
+router.get("/", async (req: Request, res: Response): Promise<void> => {
   try {
     const starships = await getAllStarships();
     res.json(starships);
   } catch (error) {
-    console.error("Error fetching starships:", error);
-    res.status(500).json({ error: "Internal Server Error" });
+    const errorMessage = `Error fetching starships: ${error}`;
+    console.error(errorMessage);
+    res.status(500).json({ errorMessage });
   }
 });
 
