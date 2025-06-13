@@ -3,8 +3,6 @@ import { INewFight } from "../../db/fights/fights-interfaces";
 import { getCharacterById } from "../../db/characters/characters-repo";
 import { createFight, getAllFights } from "../../db/fights/fights-repo";
 
-
-
 const router = Router();
 
 router.post("/", async (req: Request, res: Response): Promise<void> => {
@@ -28,9 +26,9 @@ router.post("/", async (req: Request, res: Response): Promise<void> => {
       character1_id: character1.id,
       character2_id: character2.id,
       character1_current_hp: character1.hp,
-      character2_current_hp: character2.hp
+      character2_current_hp: character2.hp,
     };
-    const fight = await createFight(newFight)
+    const fight = await createFight(newFight);
     const response = {
       message: "Fight created",
       data: {
