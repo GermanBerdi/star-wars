@@ -2,6 +2,23 @@
 
 All notable changes to this project will be documented in this file. See [standard-version](https://github.com/conventional-changelog/standard-version) for commit guidelines.
 
+## [1.5.0](https://github.com/GermanBerdi/star-wars/compare/v1.4.0...v1.5.0) (2025-06-13)
+
+
+### Features
+
+* [main] add createCharacterTool, updateCharacterTool, move "hello" example tool outside mcp-server ([0ceb8c5](https://github.com/GermanBerdi/star-wars/commit/0ceb8c5b757195d4b628d96ac86b67f1ad87fae0))
+* [main] add update charactaer endpoint ([9a49a0d](https://github.com/GermanBerdi/star-wars/commit/9a49a0d7159f83dca77157bd66fcffbf60b2a339))
+* [main] implement updateCharacter Repo ([450f178](https://github.com/GermanBerdi/star-wars/commit/450f17853edc143bd1566bc0a6b667b3c674b4a9))
+
+
+### Bug Fixes
+
+* [main] normalize api response ([d001b63](https://github.com/GermanBerdi/star-wars/commit/d001b63bc21af9616e11f74de14e36cf821a064f))
+* [main] normalize api response ([13f2710](https://github.com/GermanBerdi/star-wars/commit/13f271031a8315611601508b66913cd39c95020d))
+* [main] renaming starships tool ([e782813](https://github.com/GermanBerdi/star-wars/commit/e782813fc581727fd6b39d4fba3ceb19d06a04dc))
+* [main] update interface and repo imports ([ed17e21](https://github.com/GermanBerdi/star-wars/commit/ed17e2160e23d6bd0241286e711b9c108dd20e33))
+
 ## [1.4.0](https://github.com/GermanBerdi/star-wars/compare/v1.3.0...v1.4.0) (2025-06-13)
 
 
