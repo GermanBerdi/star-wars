@@ -24,7 +24,7 @@ const cb: ToolCallback<undefined> = async () => {
 };
 
 export const listStarshipsTool = {
-  toolName, 
+  toolName,
   description,
   cb,
 };

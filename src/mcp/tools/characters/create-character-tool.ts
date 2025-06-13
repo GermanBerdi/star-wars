@@ -40,7 +40,7 @@ const cb: ToolCallback<typeof paramsSchema> = async ({ name, hp, strength, defen
     const contentData = {
       message: "Character created",
       data: {
-        characterCreated
+        characterCreated,
       },
     };
     response.content[0].text = JSON.stringify(contentData);

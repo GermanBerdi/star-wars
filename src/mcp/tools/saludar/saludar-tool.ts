@@ -12,9 +12,9 @@ interface cbParams {
   edad?: number;
 }
 
-const cb:ToolCallback<typeof paramsSchema> = async ({ nombre, edad }: cbParams) => ({
-    content: [{ type: "text", text: `Hola ${nombre}, encantando de conocerte. Felices ${edad}, años` }],
-  });
+const cb: ToolCallback<typeof paramsSchema> = async ({ nombre, edad }: cbParams) => ({
+  content: [{ type: "text", text: `Hola ${nombre}, encantando de conocerte. Felices ${edad}, años` }],
+});
 
 export const saludarTool = {
   toolName,
