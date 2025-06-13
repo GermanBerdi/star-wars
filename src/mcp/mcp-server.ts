@@ -1,7 +1,10 @@
 import { McpServer } from "@modelcontextprotocol/sdk/server/mcp.js";
 import { StdioServerTransport } from "@modelcontextprotocol/sdk/server/stdio.js";
-import { z } from "zod";
-import { starshipTool } from "./tools/starships-tool";
+import { createCharacterTool } from "./tools/characters/create-character-tool";
+import { updateCharacterTool } from "./tools/characters/update-character-tool";
+import { listCharactersTool } from "./tools/characters/list-characters-tool";
+import { saludarTool } from "./tools/saludar/saludar-tool";
+import { listStarshipsTool } from "./tools/starships/list-starships-tool";
 
 const mcpServer = new McpServer({
   name: "star-wars",
@@ -9,15 +12,20 @@ const mcpServer = new McpServer({
 });
 
 mcpServer.tool(
-  "saludar",
-  "cada vez que un usuario te salude utiliza esta herramienta para devolver el saludo",
-  { nombre: z.string(), edad: z.number().optional() },
-  async ({ nombre, edad }) => ({
-    content: [{ type: "text", text: `Hola ${nombre}, encantando de conocerte. Felices ${edad}, años` }],
-  }),
+  createCharacterTool.toolName,
+  createCharacterTool.description,
+  createCharacterTool.paramsSchema,
+  createCharacterTool.cb,
 );
-
-mcpServer.tool(starshipTool.name, starshipTool.description, starshipTool.cb);
+mcpServer.tool(
+  updateCharacterTool.toolName,
+  updateCharacterTool.description,
+  updateCharacterTool.paramsSchema,
+  updateCharacterTool.cb,
+);
+mcpServer.tool(listCharactersTool.toolName, listCharactersTool.description, listCharactersTool.cb);
+mcpServer.tool(saludarTool.toolName, saludarTool.description, saludarTool.paramsSchema, saludarTool.cb);
+mcpServer.tool(listStarshipsTool.toolName, listStarshipsTool.description, listStarshipsTool.cb);
 
 async function main() {
   const transport = new StdioServerTransport();
