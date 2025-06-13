@@ -10,7 +10,7 @@ const cb: ToolCallback = async ({}) => {
     const starships: IStarshipRow[] = await getAllStarships();
     response.content[0].text = JSON.stringify(starships);
   } catch (error) {
-    const errorMessage = `Error fetching starships:", ${error}`;
+    const errorMessage = `Error fetching starships: ${error}`;
     console.error(errorMessage);
     response.content[0].text = JSON.stringify(errorMessage);
   }
