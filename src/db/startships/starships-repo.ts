@@ -12,7 +12,7 @@ export interface IStarshipRow extends RowDataPacket {
   created_at: Date;
 }
 
-export async function getAllStarships(): Promise<IStarshipRow[]> {
+export const getAllStarships = async (): Promise<IStarshipRow[]> => {
   const [rows] = await pool.query<IStarshipRow[]>("SELECT * FROM starships");
   return rows;
 }
