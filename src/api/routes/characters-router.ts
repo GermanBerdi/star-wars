@@ -1,5 +1,5 @@
 import { Router, Request, Response } from "express";
-import { INewCharacter, ICharacterRow } from "../../db/characters/characters-interfaces";
+import { INewCharacter } from "../../db/characters/characters-interfaces";
 import { createCharacter, getAllCharacters } from "../../db/characters/characters-repo";
 
 const router = Router();
