@@ -18,3 +18,12 @@ export interface INewCharacter {
   defense: number;
   speed: number;
 }
+
+export interface IUpdateCharacter {
+  id: number;
+  name?: string;
+  hp?: number;
+  strength?: number;
+  defense?: number;
+  speed?: number;
+}
