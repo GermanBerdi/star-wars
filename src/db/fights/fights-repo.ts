@@ -2,7 +2,6 @@ import { ResultSetHeader } from "mysql2";
 import pool from "../connection";
 import { INewFightReq, IFightRow, IUpdateFightReq } from "../../services/fights/fights-interfaces";
 
-
 const create = async (newFight: INewFightReq) => {
   const { combatant1Id, combatant2Id, combatant1Hp, combatant2Hp } = newFight;
   const [result] = await pool.execute<ResultSetHeader>(
