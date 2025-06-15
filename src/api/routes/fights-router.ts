@@ -1,7 +1,5 @@
 import { Router, Request, Response } from "express";
-import { INewFight } from "../../db/fights/fights-interfaces";
-import { getCharacterById } from "../../db/characters/characters-repo";
-import { createFight, getAllFights } from "../../db/fights/fights-repo";
+import fightService from "../../services/fights/fights-service";
 
 const router = Router();
 
@@ -12,23 +10,7 @@ router.post("/", async (req: Request, res: Response): Promise<void> => {
       res.status(400).json({ message: "id1 and id2 are required." });
       return;
     }
-    const character1 = await getCharacterById(id1);
-    const character2 = await getCharacterById(id2);
-    if (!character1) {
-      res.status(400).json({ message: `Character with id ${id1} not found.` });
-      return;
-    }
-    if (!character2) {
-      res.status(400).json({ message: `Character with id ${id2} not found.` });
-      return;
-    }
-    const newFight: INewFight = {
-      character1_id: character1.id,
-      character2_id: character2.id,
-      character1_current_hp: character1.hp,
-      character2_current_hp: character2.hp,
-    };
-    const fight = await createFight(newFight);
+    const fight = await fightService.create(id1, id2);
     const response = {
       message: "Fight created",
       data: {
@@ -45,7 +27,7 @@ router.post("/", async (req: Request, res: Response): Promise<void> => {
 
 router.get("/", async (req: Request, res: Response): Promise<void> => {
   try {
-    const fights = await getAllFights();
+    const fights = await fightService.listAll();
     const response = {
       message: "Fights list",
       data: {
