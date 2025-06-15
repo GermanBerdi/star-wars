@@ -1,5 +1,6 @@
 import { Router, Request, Response } from "express";
 import fightService from "../../services/fights/fights-service";
+import fightsActionsRouter from "./fights-actions-router";
 
 const router = Router();
 
@@ -41,5 +42,7 @@ router.get("/", async (req: Request, res: Response): Promise<void> => {
     res.status(500).json({ errorMessage });
   }
 });
+
+router.use("/:fightId/actions", fightsActionsRouter);
 
 export default router;
