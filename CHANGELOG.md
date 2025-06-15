@@ -2,6 +2,32 @@
 
 All notable changes to this project will be documented in this file. See [standard-version](https://github.com/conventional-changelog/standard-version) for commit guidelines.
 
+## [1.6.0](https://github.com/GermanBerdi/star-wars/compare/v1.5.0...v1.6.0) (2025-06-15)
+
+
+### Features
+
+* [main] add actions route ([ef50020](https://github.com/GermanBerdi/star-wars/commit/ef50020d3898c8f8196db51c0e6652f0187ebc8f))
+* [main] add getCharacterById endpoint ([ca6b965](https://github.com/GermanBerdi/star-wars/commit/ca6b96521f2219d3d60368439b4cfa1091ac7c07))
+* [main] add update ([45388ae](https://github.com/GermanBerdi/star-wars/commit/45388ae2314ec2ff07736ac6a85c56bb9170f72a))
+* [main] implement actions services ([76a24f6](https://github.com/GermanBerdi/star-wars/commit/76a24f69ab5214f1576b58b942032fcde2aa6793))
+* [main] implement character service ([aa596dd](https://github.com/GermanBerdi/star-wars/commit/aa596dd97832fe000ff954d178748fa3a5a05f67))
+* [main] implement fight service ([f95d1be](https://github.com/GermanBerdi/star-wars/commit/f95d1be88a1b599ef60d546805a179601d97fbcb))
+* [main] implement fights repo and endpoint ([2a0cb38](https://github.com/GermanBerdi/star-wars/commit/2a0cb381044af3a7eafcbb6337e2602457c8ffee))
+* [main] implement getById, getByIdPopulated, updateCombatantHp ([9f8f4f0](https://github.com/GermanBerdi/star-wars/commit/9f8f4f08339941421e7c16f2ebb2c1e5b938d354))
+
+
+### Bug Fixes
+
+* [main] add actions router ([3ca54fe](https://github.com/GermanBerdi/star-wars/commit/3ca54feb9bcdcd3d54fb9b2e7850c05e2a56f349))
+* [main] fixed message text and corrected name ([f036ac1](https://github.com/GermanBerdi/star-wars/commit/f036ac168dc3f11fc9bdfe79e8075d046180a78b))
+* [main] improve error messages for clarity ([d0863ea](https://github.com/GermanBerdi/star-wars/commit/d0863ea2a1882a2627c0384488e8566f9ccfef00))
+* [main] properly terminate each SQL statement ([de8153c](https://github.com/GermanBerdi/star-wars/commit/de8153c1ecc2a4c1665f8b9392dfeffe9f35780e))
+* [main] router now use service instead of repo ([328b6e9](https://github.com/GermanBerdi/star-wars/commit/328b6e90d5f856fdb47113a886985d354af71529))
+* [main] service uses new repo export format, fixes some function names ([79f400a](https://github.com/GermanBerdi/star-wars/commit/79f400a6877b39aaa8b688ae0aed54ea72f52c77))
+* [main] use export default instead of exporting each function ([ea3d70f](https://github.com/GermanBerdi/star-wars/commit/ea3d70f4e6528ccd9bc56605c11137d11a7ce3c1))
+* [main] use export default instead of exporting each function ([da515ad](https://github.com/GermanBerdi/star-wars/commit/da515ad546758f1b6bb690292a1a03c643e9f849))
+
 ## [1.5.0](https://github.com/GermanBerdi/star-wars/compare/v1.4.0...v1.5.0) (2025-06-13)
 
 
