@@ -21,7 +21,7 @@ const calculateActionDamage = (): number => {
   return Math.floor(Math.random() * 6) + 1;
 };
 
-const calculatRemainingHP = (currentHp: number, damage: number): number => {
+const calculatHPAfterDamage = (currentHp: number, damage: number): number => {
   return currentHp - damage;
 };
 
@@ -32,8 +32,9 @@ const performAction = async (action: IPerformActionReq): Promise<IPerformActionR
     const actor = actorAndTarget.actor;
     const target = actorAndTarget.target;
     const damage = calculateActionDamage();
-    const remainingHp = calculatRemainingHP(target.hp, damage);
-    await fightService.updateCombatantHp(fightPopulated.id, target.id, remainingHp);
+    const targetUpdatedHp = calculatHPAfterDamage(target.hp, damage);
+    const fightAfterDamage = await fightService.updateCombatantHp(fightPopulated.id, target.id, targetUpdatedHp);
+    const finalFightState  = await fightService.updateIfFinished(fightAfterDamage);    
     const actionPerformed: IPerformActionRes = {
       fightId: action.fightId,
       type: action.type,
@@ -41,8 +42,11 @@ const performAction = async (action: IPerformActionReq): Promise<IPerformActionR
       target: target,
       effects: {
         damage,
-        remainingHp,
+        targetUpdatedHp,
       },
+      state: {
+        winnerId: finalFightState.winner_id,
+      }
     };
     return actionPerformed;
   } catch (error) {

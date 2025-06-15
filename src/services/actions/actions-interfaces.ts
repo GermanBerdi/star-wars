@@ -18,6 +18,9 @@ export interface IPerformActionRes {
   target: ICombatant;
   effects: {
     damage: number;
-    remainingHp: number;
+    targetUpdatedHp: number;
   };
+  state: {
+    winnerId: number;
+  }
 }

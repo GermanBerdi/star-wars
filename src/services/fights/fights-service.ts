@@ -1,6 +1,7 @@
 import characterService from "../characters/characters-service";
 import { IFightRow, INewFightReq, IGetByIddPopulatedRes, IUpdateFightReq } from "./fights-interfaces";
 import fightRepo from "../../db/fights/fights-repo";
+import { WinnerId } from "./fights-enum";
 
 const create = async (id1: number, id2: number): Promise<IFightRow> => {
   try {
@@ -113,17 +114,44 @@ const updateCombatantHp = async (fightId: number, targetCombatant: number, updat
       id: fightId,
     };
     const fightToUpdate = setCombatantHp(fight, targetCombatant, updatedHp);
-
-    // TODO: Check if the fight has ended after applying damage
-
     const fightUpdated = await fightRepo.update(fightToUpdate);
     return fightUpdated;
   } catch (error) {
-    const errorMessage = `Error in dealDamageById at fight service: ${error}`;
+    const errorMessage = `Error in updateCombatantHp at fight service: ${error}`;
     console.error(errorMessage);
     throw new Error(errorMessage);
   }
 };
+
+const calculateWinnerId = (fight: IFightRow): WinnerId => {
+  if (fight.combatant1_hp > 0 && fight.combatant2_hp <= 0) return WinnerId.Combatant1;
+  if (fight.combatant2_hp > 0 && fight.combatant1_hp <= 0) return WinnerId.Combatant2;
+  if (fight.combatant1_hp <= 0 && fight.combatant1_hp <= 0) return WinnerId.Draw;
+  return WinnerId.Unknown;
+}
+
+const ifFinished = (fight: IFightRow): boolean => {
+  return fight.winner_id !== WinnerId.Unknown;
+}
+
+const updateIfFinished = async (fight: IFightRow): Promise<IFightRow> => {
+  try {
+    const newWinnerId = calculateWinnerId(fight);
+    if (fight.winner_id !== newWinnerId) {
+      const fightToUpdate:IUpdateFightReq = {
+        id: fight.id,
+        winner_id: newWinnerId,
+      }
+      const fightUpdated = await fightRepo.update(fightToUpdate);
+      return fightUpdated;
+    }
+    return fight;
+  } catch (error) {
+    const errorMessage = `Error in updateIfFinished at fight service: ${error}`;
+    console.error(errorMessage);
+    throw new Error(errorMessage);
+  }
+}
 
 const service = {
   create,
@@ -131,6 +159,8 @@ const service = {
   getById,
   getByIdPopulated,
   updateCombatantHp,
+  ifFinished,
+  updateIfFinished,
 };
 
 export default service;
