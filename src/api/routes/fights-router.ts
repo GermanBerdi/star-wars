@@ -27,7 +27,7 @@ router.post("/", async (req: Request, res: Response): Promise<void> => {
 
 router.get("/", async (req: Request, res: Response): Promise<void> => {
   try {
-    const fights = await fightService.listAll();
+    const fights = await fightService.getAll();
     const response = {
       message: "Fights list",
       data: {
@@ -36,7 +36,7 @@ router.get("/", async (req: Request, res: Response): Promise<void> => {
     };
     res.json(response);
   } catch (error) {
-    const errorMessage = `Error fetching fights: ${error}`;
+    const errorMessage = `Error getting fights: ${error}`;
     console.error(errorMessage);
     res.status(500).json({ errorMessage });
   }
