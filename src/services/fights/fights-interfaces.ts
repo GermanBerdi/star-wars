@@ -1,10 +1,11 @@
 import { RowDataPacket } from "mysql2";
 
 export interface IFightRow extends RowDataPacket {
-  character1_id: number;
-  character2_id: number;
-  character1_hp: number;
-  character2_hp: number;
+  id: number;
+  combatant1_id: number;
+  combatant2_id: number;
+  combatant1_hp: number;
+  combatant2_hp: number;
   turn: number;
   winner_id: number;
   updated_at: Date;
@@ -12,19 +13,39 @@ export interface IFightRow extends RowDataPacket {
 }
 
 export interface INewFightReq {
-  character1_id: number;
-  character2_id: number;
-  character1_current_hp: number;
-  character2_current_hp: number;
+  combatant1Id: number;
+  combatant2Id: number;
+  combatant1Hp: number;
+  combatant2Hp: number;
 }
 
-/*
-export interface IUpdateCharacterReq {
+export interface IUpdateFightReq {
   id: number;
-  name?: string;
-  hp?: number;
-  strength?: number;
-  defense?: number;
-  speed?: number;
+  combatant1_id?: number;
+  combatant2_id?: number;
+  combatant1_hp?: number;
+  combatant2_hp?: number;
+  turn?: number;
+  winner_id?: number;
 }
-*/
+
+export interface ICombatant {
+  id: number;
+  characterId: number;
+  name: string;
+  hp: number;
+  maxHp: number;
+  strength: number;
+  defense: number;
+  speed: number;
+}
+
+export interface IGetByIddPopulatedRes {
+  id: number;
+  combatant1: ICombatant;
+  combatant2: ICombatant;
+  turn: number;
+  winner_id: number;
+  updated_at: Date;
+  created_at: Date;
+}
