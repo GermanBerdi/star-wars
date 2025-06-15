@@ -1,9 +1,9 @@
 import { ResultSetHeader } from "mysql2";
 import pool from "../connection";
-import { INewFight, /* IUpdateCharacter,*/ IFightRow } from "./fights-interfaces";
+import { INewFightReq, /* IUpdateCharacter,*/ IFightRow } from "../../services/fights/fights-interfaces";
 
-export const createFight = async (fight: INewFight) => {
-  const { character1_id, character2_id, character1_current_hp, character2_current_hp } = fight;
+const create = async (newFight: INewFightReq) => {
+  const { character1_id, character2_id, character1_current_hp, character2_current_hp } = newFight;
   const [result] = await pool.execute<ResultSetHeader>(
     `INSERT INTO fights (character1_id, character2_id, character1_current_hp, character2_current_hp, turn) VALUES (?, ?, ?, ?, ?)`,
     [character1_id, character2_id, character1_current_hp, character2_current_hp, 0],
@@ -13,12 +13,22 @@ export const createFight = async (fight: INewFight) => {
   return row[0];
 };
 
-export const getAllFights = async (): Promise<IFightRow[]> => {
+const update = () => {};
+
+const getAll = async (): Promise<IFightRow[]> => {
   const [rows] = await pool.query<IFightRow[]>("SELECT * FROM fights");
   return rows;
 };
 
-export const getFightById = async (id: number): Promise<IFightRow | null> => {
+export const getById = async (id: number): Promise<IFightRow | null> => {
   const [rows] = await pool.query<IFightRow[]>(`SELECT * FROM fights WHERE id = ?`, [id]);
   return rows.length > 0 ? rows[0] : null;
 };
+
+const repo = {
+  create,
+  update,
+  getAll,
+  getById,
+};
+export default repo;
