@@ -1,9 +1,9 @@
 import { ResultSetHeader } from "mysql2";
 import pool from "../connection";
-import { INewCharacter, IUpdateCharacter, ICharacterRow } from "./characters-interfaces";
+import { INewCharacterReq, IUpdateCharacterReq, ICharacterRow } from "../../services/characters/characters-interfaces";
 
-export const createCharacter = async (character: INewCharacter) => {
-  const { name, hp, strength, defense, speed } = character;
+const create = async (newCharacter: INewCharacterReq): Promise<ICharacterRow> => {
+  const { name, hp, strength, defense, speed } = newCharacter;
   const [result] = await pool.execute<ResultSetHeader>(
     `INSERT INTO characters (name, hp, strength, defense, speed) VALUES (?, ?, ?, ?, ?)`,
     [name, hp, strength, defense, speed],
@@ -13,8 +13,8 @@ export const createCharacter = async (character: INewCharacter) => {
   return row[0];
 };
 
-export const updateCharacter = async (character: IUpdateCharacter) => {
-  const { id, ...fields } = character;
+const update = async (characterToUpdate: IUpdateCharacterReq): Promise<ICharacterRow> => {
+  const { id, ...fields } = characterToUpdate;
   const keys = Object.keys(fields).filter((key) => fields[key as keyof typeof fields] !== undefined);
   if (keys.length === 0) throw new Error("No fields to update");
   const setClause = keys.map((key) => `${key} = ?`).join(", ");
@@ -26,12 +26,20 @@ export const updateCharacter = async (character: IUpdateCharacter) => {
   return row[0];
 };
 
-export const getAllCharacters = async (): Promise<ICharacterRow[]> => {
+const getAll = async (): Promise<ICharacterRow[]> => {
   const [rows] = await pool.query<ICharacterRow[]>("SELECT * FROM characters");
   return rows;
 };
 
-export const getCharacterById = async (id: number): Promise<ICharacterRow | null> => {
+const getById = async (id: number): Promise<ICharacterRow | null> => {
   const [rows] = await pool.query<ICharacterRow[]>(`SELECT * FROM characters WHERE id = ?`, [id]);
   return rows.length > 0 ? rows[0] : null;
 };
+
+const repo = {
+  create,
+  update,
+  getAll,
+  getById,
+};
+export default repo;
