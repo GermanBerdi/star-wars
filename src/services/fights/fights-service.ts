@@ -128,20 +128,20 @@ const calculateWinnerId = (fight: IFightRow): WinnerId => {
   if (fight.combatant2_hp > 0 && fight.combatant1_hp <= 0) return WinnerId.Combatant2;
   if (fight.combatant1_hp <= 0 && fight.combatant1_hp <= 0) return WinnerId.Draw;
   return WinnerId.Unknown;
-}
+};
 
 const ifFinished = (fight: IFightRow): boolean => {
   return fight.winner_id !== WinnerId.Unknown;
-}
+};
 
 const updateIfFinished = async (fight: IFightRow): Promise<IFightRow> => {
   try {
     const newWinnerId = calculateWinnerId(fight);
     if (fight.winner_id !== newWinnerId) {
-      const fightToUpdate:IUpdateFightReq = {
+      const fightToUpdate: IUpdateFightReq = {
         id: fight.id,
         winner_id: newWinnerId,
-      }
+      };
       const fightUpdated = await fightRepo.update(fightToUpdate);
       return fightUpdated;
     }
@@ -151,7 +151,7 @@ const updateIfFinished = async (fight: IFightRow): Promise<IFightRow> => {
     console.error(errorMessage);
     throw new Error(errorMessage);
   }
-}
+};
 
 const service = {
   create,

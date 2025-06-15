@@ -22,5 +22,5 @@ export interface IPerformActionRes {
   };
   state: {
     winnerId: number;
-  }
+  };
 }
