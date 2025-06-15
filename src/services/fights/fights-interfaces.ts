@@ -11,7 +11,7 @@ export interface IFightRow extends RowDataPacket {
   created_at: Date;
 }
 
-export interface INewFight {
+export interface INewFightReq {
   character1_id: number;
   character2_id: number;
   character1_current_hp: number;
@@ -19,7 +19,7 @@ export interface INewFight {
 }
 
 /*
-export interface IUpdateCharacter {
+export interface IUpdateCharacterReq {
   id: number;
   name?: string;
   hp?: number;

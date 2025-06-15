@@ -11,7 +11,7 @@ export interface ICharacterRow extends RowDataPacket {
   created_at: Date;
 }
 
-export interface INewCharacter {
+export interface INewCharacterReq {
   name: string;
   hp: number;
   strength: number;
@@ -19,7 +19,7 @@ export interface INewCharacter {
   speed: number;
 }
 
-export interface IUpdateCharacter {
+export interface IUpdateCharacterReq {
   id: number;
   name?: string;
   hp?: number;
