@@ -1,7 +1,7 @@
 import characterService from "../characters/characters-service";
 import { IFightRow, INewFightReq, IGetByIddPopulatedRes, IUpdateFightReq } from "./fights-interfaces";
 import fightRepo from "../../db/fights/fights-repo";
-import { WinnerId } from "./fights-enum";
+import { WinnerId } from "./fights-enums";
 
 const create = async (id1: number, id2: number): Promise<IFightRow> => {
   try {
@@ -88,8 +88,8 @@ const getByIdPopulated = async (id: number): Promise<IGetByIddPopulatedRes> => {
         defense: character2.defense,
         speed: character2.speed,
       },
-      turn: 0,
-      winner_id: 0,
+      turn: fight.turn,
+      winner_id: fight.winner_id,
       updated_at: fight.updated_at,
       created_at: fight.created_at,
     };
@@ -127,11 +127,11 @@ const calculateWinnerId = (fight: IFightRow): WinnerId => {
   if (fight.combatant1_hp > 0 && fight.combatant2_hp <= 0) return WinnerId.Combatant1;
   if (fight.combatant2_hp > 0 && fight.combatant1_hp <= 0) return WinnerId.Combatant2;
   if (fight.combatant1_hp <= 0 && fight.combatant1_hp <= 0) return WinnerId.Draw;
-  return WinnerId.Unknown;
+  return WinnerId.NoWinner;
 };
 
-const ifFinished = (fight: IFightRow): boolean => {
-  return fight.winner_id !== WinnerId.Unknown;
+const isFinished = (winnerId: WinnerId): boolean => {
+  return winnerId !== WinnerId.NoWinner;
 };
 
 const updateIfFinished = async (fight: IFightRow): Promise<IFightRow> => {
@@ -159,7 +159,7 @@ const service = {
   getById,
   getByIdPopulated,
   updateCombatantHp,
-  ifFinished,
+  isFinished,
   updateIfFinished,
 };
 
