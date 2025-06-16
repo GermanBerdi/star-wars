@@ -36,7 +36,7 @@ const cb: ToolCallback<typeof paramsSchema> = async ({ id }: cbParams) => {
   return response;
 };
 
-export const updateCharacterTool = {
+export const getCharacterByIdTool = {
   toolName,
   description,
   paramsSchema,
