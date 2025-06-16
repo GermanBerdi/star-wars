@@ -5,7 +5,7 @@ import { IPerformActionReq } from "../../../services/actions/actions-interfaces"
 import actionService from "../../../services/actions/actions-service";
 
 
-const toolName = "perfom Action";
+const toolName = "perfomAction";
 
 const description = "Allows a character to execute an action during combat, including offensive moves (like attacks), defensive maneuvers (like blocking or dodging), or special abilities (like casting spells).";
 
@@ -32,12 +32,12 @@ const cb: ToolCallback<typeof paramsSchema> = async ({ fightId, combatantId, typ
     content: [{ type: "text", text: "" }],
   };
   try {
-    const iPerformActionReq: IPerformActionReq = {
+    const performActionReq: IPerformActionReq = {
       fightId,
       combatantId,
       type,
     }
-    const actionPerformed = await actionService.performAction(iPerformActionReq)
+    const actionPerformed = await actionService.performAction(performActionReq)
     const contentData = {
       message: "Action Performed",
       data: {

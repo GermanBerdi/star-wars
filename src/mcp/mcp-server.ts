@@ -40,15 +40,15 @@ mcpServer.tool(
   createFightTool.cb,
 );
 mcpServer.tool(
-  listFightsTool.toolName,
-  listFightsTool.description,
-  listFightsTool.cb,
+   listFightsTool.toolName,
+   listFightsTool.description,
+   listFightsTool.cb,
 );
 mcpServer.tool(
-  performActionTool.toolName,
-  performActionTool.description,
-  performActionTool.paramsSchema,
-  performActionTool.cb,
+   performActionTool.toolName,
+   performActionTool.description,
+   performActionTool.paramsSchema,
+   performActionTool.cb,
 );
 mcpServer.tool(saludarTool.toolName, saludarTool.description, saludarTool.paramsSchema, saludarTool.cb);
 mcpServer.tool(listStarshipsTool.toolName, listStarshipsTool.description, listStarshipsTool.cb);
