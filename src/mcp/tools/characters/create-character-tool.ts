@@ -1,8 +1,8 @@
 import { ToolCallback } from "@modelcontextprotocol/sdk/server/mcp.js";
 import { CallToolResult } from "@modelcontextprotocol/sdk/types.js";
 import { z } from "zod";
-import { INewCharacter } from "../../../db/characters/characters-interfaces";
-import { createCharacter } from "../../../db/characters/characters-repo";
+import { INewCharacterReq } from "../../../services/characters/characters-interfaces";
+import characterService from "../../../services/characters/characters-service";
 
 const toolName = "createCharacter";
 
@@ -29,14 +29,14 @@ const cb: ToolCallback<typeof paramsSchema> = async ({ name, hp, strength, defen
     content: [{ type: "text", text: "" }],
   };
   try {
-    const newCharacter: INewCharacter = {
+    const newCharacter: INewCharacterReq = {
       name,
       hp,
       strength,
       defense,
       speed,
     };
-    const characterCreated = await createCharacter(newCharacter);
+    const characterCreated = await characterService.create(newCharacter);
     const contentData = {
       message: "Character created",
       data: {

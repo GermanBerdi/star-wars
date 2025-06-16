@@ -1,8 +1,8 @@
 import { ToolCallback } from "@modelcontextprotocol/sdk/server/mcp.js";
 import { CallToolResult } from "@modelcontextprotocol/sdk/types.js";
 import { z } from "zod";
-import { IUpdateCharacter } from "../../../db/characters/characters-interfaces";
-import { updateCharacter } from "../../../db/characters/characters-repo";
+import { IUpdateCharacterReq } from "../../../services/characters/characters-interfaces";
+import characterService from "../../../services/characters/characters-service";
 
 const toolName = "updateCharacter";
 
@@ -31,7 +31,7 @@ const cb: ToolCallback<typeof paramsSchema> = async ({ id, name, hp, strength, d
     content: [{ type: "text", text: "" }],
   };
   try {
-    const characterToUpdate: IUpdateCharacter = {
+    const characterToUpdate: IUpdateCharacterReq = {
       id,
       name,
       hp,
@@ -39,7 +39,7 @@ const cb: ToolCallback<typeof paramsSchema> = async ({ id, name, hp, strength, d
       defense,
       speed,
     };
-    const characterUpdated = await updateCharacter(characterToUpdate);
+    const characterUpdated = await characterService.update(characterToUpdate);
     const contentData = {
       message: "Character updated",
       data: {

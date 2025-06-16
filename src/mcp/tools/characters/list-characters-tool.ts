@@ -1,7 +1,7 @@
 import { ToolCallback } from "@modelcontextprotocol/sdk/server/mcp.js";
 import { CallToolResult } from "@modelcontextprotocol/sdk/types.js";
-import { ICharacterRow } from "../../../db/characters/characters-interfaces";
-import { getAllCharacters } from "../../../db/characters/characters-repo";
+import { ICharacterRow } from "../../../services/characters/characters-interfaces";
+import characterService from "../../../services/characters/characters-service";
 
 const toolName = "listCharacters";
 
@@ -12,7 +12,7 @@ const cb: ToolCallback<undefined> = async () => {
     content: [{ type: "text", text: "" }],
   };
   try {
-    const characters: ICharacterRow[] = await getAllCharacters();
+    const characters: ICharacterRow[] = await characterService.getAll();
     const contentData = characters;
     response.content[0].text = JSON.stringify(contentData);
   } catch (error) {
