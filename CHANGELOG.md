@@ -2,6 +2,24 @@
 
 All notable changes to this project will be documented in this file. See [standard-version](https://github.com/conventional-changelog/standard-version) for commit guidelines.
 
+## [1.7.0](https://github.com/GermanBerdi/star-wars/compare/v1.6.0...v1.7.0) (2025-06-16)
+
+
+### Features
+
+* [main] add getCharacterById tool ([a0ccd16](https://github.com/GermanBerdi/star-wars/commit/a0ccd169efcff59d991bc7773217c93489551f68))
+* [main] add getCharacterByIdTool and createFightTool ([2732ea8](https://github.com/GermanBerdi/star-wars/commit/2732ea8d260c91af09b183b6390446d64cd7be8f))
+* [main] Add state section, implement updateIfFinished, ([ecd3cfc](https://github.com/GermanBerdi/star-wars/commit/ecd3cfcb4d370973eff1e477a3685de7984d36c8))
+* [main] add winnerLabel info and check if a fight is finished or not before perform actions ([d584c44](https://github.com/GermanBerdi/star-wars/commit/d584c4446a69f0f89140a78f0ad2c8ae4655d53f))
+
+
+### Bug Fixes
+
+* [main] aligned response format with other character tools ([a94dd4d](https://github.com/GermanBerdi/star-wars/commit/a94dd4d68cb1c868c70ede892c56fcb81c28f949))
+* [main] correct turn and winnerId initialization; rename isFinished for clarity ([99ec0b5](https://github.com/GermanBerdi/star-wars/commit/99ec0b5f98ef52838f977f2aa61f94456e33c5d2))
+* [main] expose StateMessages to MCP for better interpretation ([b708802](https://github.com/GermanBerdi/star-wars/commit/b70880243e4b08cb5c3f252ec170e2027b8a5eee))
+* [main] using characterService instead of characterRepo ([884893a](https://github.com/GermanBerdi/star-wars/commit/884893a0134a0ad7d315df28f1204523ba003058))
+
 ## [1.6.0](https://github.com/GermanBerdi/star-wars/compare/v1.5.0...v1.6.0) (2025-06-15)
 
 
