@@ -5,6 +5,8 @@ import { updateCharacterTool } from "./tools/characters/update-character-tool";
 import { listCharactersTool } from "./tools/characters/list-characters-tool";
 import { getCharacterByIdTool } from "./tools/characters/get-character-by-id-tool";
 import { createFightTool } from "./tools/fights/create-fight-tool";
+import { listFightsTool } from "./tools/fights/list-fights-tool";
+import { performActionTool } from "./tools/actions/perfom-action";
 import { saludarTool } from "./tools/saludar/saludar-tool";
 import { listStarshipsTool } from "./tools/starships/list-starships-tool";
 
@@ -12,7 +14,6 @@ const mcpServer = new McpServer({
   name: "star-wars",
   version: "1.0.0",
 });
-
 mcpServer.tool(
   createCharacterTool.toolName,
   createCharacterTool.description,
@@ -38,11 +39,21 @@ mcpServer.tool(
   createFightTool.paramsSchema,
   createFightTool.cb,
 );
-
+mcpServer.tool(
+  listFightsTool.toolName,
+  listFightsTool.description,
+  listFightsTool.cb,
+);
+mcpServer.tool(
+  performActionTool.toolName,
+  performActionTool.description,
+  performActionTool.paramsSchema,
+  performActionTool.cb,
+);
 mcpServer.tool(saludarTool.toolName, saludarTool.description, saludarTool.paramsSchema, saludarTool.cb);
 mcpServer.tool(listStarshipsTool.toolName, listStarshipsTool.description, listStarshipsTool.cb);
 
-async function main() {
+const main = async () => {
   const transport = new StdioServerTransport();
   await mcpServer.connect(transport);
   console.error("MCP server started in stdio mode");
