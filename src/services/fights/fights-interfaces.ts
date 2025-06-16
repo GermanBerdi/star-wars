@@ -1,4 +1,5 @@
 import { RowDataPacket } from "mysql2";
+import { WinnerId } from "./fights-enums";
 
 export interface IFightRow extends RowDataPacket {
   id: number;
@@ -7,7 +8,7 @@ export interface IFightRow extends RowDataPacket {
   combatant1_hp: number;
   combatant2_hp: number;
   turn: number;
-  winner_id: number;
+  winner_id: WinnerId;
   updated_at: Date;
   created_at: Date;
 }
@@ -26,7 +27,7 @@ export interface IUpdateFightReq {
   combatant1_hp?: number;
   combatant2_hp?: number;
   turn?: number;
-  winner_id?: number;
+  winner_id?: WinnerId;
 }
 
 export interface ICombatant {
@@ -45,7 +46,7 @@ export interface IGetByIddPopulatedRes {
   combatant1: ICombatant;
   combatant2: ICombatant;
   turn: number;
-  winner_id: number;
+  winner_id: WinnerId;
   updated_at: Date;
   created_at: Date;
 }
