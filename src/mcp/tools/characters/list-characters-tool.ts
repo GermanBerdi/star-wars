@@ -13,7 +13,12 @@ const cb: ToolCallback<undefined> = async () => {
   };
   try {
     const characters: ICharacterRow[] = await characterService.getAll();
-    const contentData = characters;
+    const contentData = {
+      message: "Characters list",
+      data: {
+        characters,
+      },
+    };
     response.content[0].text = JSON.stringify(contentData);
   } catch (error) {
     const errorMessage = `Error fetching characters: ${error}`;
