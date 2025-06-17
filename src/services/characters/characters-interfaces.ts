@@ -1,6 +1,4 @@
-import { RowDataPacket } from "mysql2";
-
-export interface ICharacterRow extends RowDataPacket {
+export interface ICharacterRow {
   id: number;
   name: string;
   hp: number;
