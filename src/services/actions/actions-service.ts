@@ -1,29 +1,41 @@
-import { ICombatant } from "../fights/fights-interfaces";
-import { IActorAndTarget, IPerformActionReq, IPerformActionRes } from "./actions-interfaces";
 import fightService from "../fights/fights-service";
-import { StateMessages } from "./actions-enums";
+import { ICharacterRow } from "../characters/characters-interfaces";
+import { ICombatant, IActorAndTarget, IPerformActionReq, IPerformActionRes } from "./actions-interfaces";
+import { IFightPopulatedRow } from "../fights/fights-interfaces";
 import { WinnerId } from "../fights/fights-enums";
+import { StateMessages } from "./actions-enums";
 
-const getActorAndTarget = (combatantId: number, combatant1: ICombatant, combatant2: ICombatant): IActorAndTarget => {
-  if (combatantId === 1) {
-    const actorAndTarget: IActorAndTarget = {
-      actor: combatant1,
-      target: combatant2,
-    };
-    return actorAndTarget;
-  }
-  const actorAndTarget: IActorAndTarget = {
-    actor: combatant2,
-    target: combatant1,
+const characterToCombatant = (combatantId: number, character: ICharacterRow, combatantHp: number): ICombatant => {
+  const combatant: ICombatant = {
+    combatantId,
+    characterId: character.id,
+    name: character.name,
+    hp: combatantHp,
+    maxHp: character.hp,
+    strength: character.strength,
+    defense: character.defense,
+    speed: character.speed,
   };
-  return actorAndTarget;
+  return combatant;
+};
+
+const getActorAndTarget = (combatantId: number, fightPopulated: IFightPopulatedRow): IActorAndTarget => {
+  if (combatantId === 1)
+    return {
+      actor: characterToCombatant(1, fightPopulated.character1, fightPopulated.fight.combatant1_hp),
+      target: characterToCombatant(2, fightPopulated.character2, fightPopulated.fight.combatant2_hp),
+    };
+  return {
+    actor: characterToCombatant(2, fightPopulated.character2, fightPopulated.fight.combatant2_hp),
+    target: characterToCombatant(1, fightPopulated.character1, fightPopulated.fight.combatant1_hp),
+  };
 };
 
 const calculateActionDamage = (): number => {
   return Math.floor(Math.random() * 6) + 1;
 };
 
-const calculatHPAfterDamage = (currentHp: number, damage: number): number => {
+const calculateHPAfterDamage = (currentHp: number, damage: number): number => {
   return currentHp - damage;
 };
 
@@ -39,11 +51,12 @@ const getStateMessages = (winnerId: WinnerId): string => {
   }
 };
 
-const composeWinnerLabel = (winnerId: WinnerId, winnerName: string): string => {
+const composeWinnerLabel = (winnerId: WinnerId, character1Name: string, character2Name: string): string => {
   switch (winnerId) {
     case WinnerId.Combatant1:
+      return `There can be only one — and that one is ${character1Name}.`;
     case WinnerId.Combatant2:
-      return `There can be only one — and that one is ${winnerName}.`;
+      return `There can be only one — and that one is ${character2Name}.`;
     case WinnerId.Draw:
       return "Blades clashed, wills broke — yet none prevailed. It's a draw.";
     case WinnerId.NoWinner:
@@ -55,14 +68,12 @@ const composeWinnerLabel = (winnerId: WinnerId, winnerName: string): string => {
 const performAction = async (action: IPerformActionReq): Promise<IPerformActionRes> => {
   try {
     const fightPopulated = await fightService.getByIdPopulated(action.fightId);
-    const actorAndTarget = getActorAndTarget(action.combatantId, fightPopulated.combatant1, fightPopulated.combatant2);
-    const actor = actorAndTarget.actor;
-    const target = actorAndTarget.target;
+    const { actor, target } = getActorAndTarget(action.combatantId, fightPopulated);
     const actionPerformed: IPerformActionRes = {
       fightId: action.fightId,
       type: action.type,
       message: "",
-      winnerId: fightPopulated.winner_id,
+      winnerId: fightPopulated.fight.winner_id,
       winnerLabel: "",
       actor: actor,
       target: target,
@@ -70,17 +81,24 @@ const performAction = async (action: IPerformActionReq): Promise<IPerformActionR
         damage: 0,
       },
     };
-    if (!fightService.isFinished(fightPopulated.winner_id)) {
+    if (!fightService.isFinished(fightPopulated.fight.winner_id)) {
       const damage = calculateActionDamage();
-      const targetUpdatedHp = calculatHPAfterDamage(target.hp, damage);
-      const fightAfterDamage = await fightService.updateCombatantHp(fightPopulated.id, target.id, targetUpdatedHp);
-      const finalFightState = await fightService.updateIfFinished(fightAfterDamage);
+      const targetUpdatedHp = calculateHPAfterDamage(target.hp, damage);
+      const finalFightState = await fightService.applyActionEffects(
+        fightPopulated.fight,
+        target.combatantId,
+        targetUpdatedHp,
+      );
       actionPerformed.effects.damage = damage;
       actionPerformed.effects.targetUpdatedHp = targetUpdatedHp;
       actionPerformed.winnerId = finalFightState.winner_id;
     }
     actionPerformed.message = getStateMessages(actionPerformed.winnerId);
-    actionPerformed.winnerLabel = composeWinnerLabel(actionPerformed.winnerId, actor.name);
+    actionPerformed.winnerLabel = composeWinnerLabel(
+      actionPerformed.winnerId,
+      fightPopulated.character1.name,
+      fightPopulated.character2.name,
+    );
     return actionPerformed;
   } catch (error) {
     const errorMessage = `Error in performAction at action service: ${error}`;
