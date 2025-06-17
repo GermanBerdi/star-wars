@@ -4,3 +4,8 @@ export enum WinnerId {
   Combatant1 = 1,
   Combatant2 = 2,
 }
+
+export enum Turn {
+  Combatant1 = 1,
+  Combatant2 = 2,
+}
