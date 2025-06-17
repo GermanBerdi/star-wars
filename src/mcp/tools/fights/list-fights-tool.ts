@@ -1,6 +1,7 @@
 import { ToolCallback } from "@modelcontextprotocol/sdk/server/mcp.js";
 import { CallToolResult } from "@modelcontextprotocol/sdk/types.js";
 import { IFightRow } from "../../../services/fights/fights-interfaces";
+
 import fightService from "../../../services/fights/fights-service";
 
 const toolName = "listFights";
@@ -21,7 +22,7 @@ const cb: ToolCallback<undefined> = async () => {
     };
     response.content[0].text = JSON.stringify(contentData);
   } catch (error) {
-    const errorMessage = `Error fetching fights: ${error}`;
+    const errorMessage = `Error getting fights: ${error}`;
     console.error(errorMessage);
     response.content[0].text = JSON.stringify(errorMessage);
   }

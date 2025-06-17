@@ -1,6 +1,7 @@
 import { ToolCallback } from "@modelcontextprotocol/sdk/server/mcp.js";
 import { CallToolResult } from "@modelcontextprotocol/sdk/types.js";
 import { ICharacterRow } from "../../../services/characters/characters-interfaces";
+
 import characterService from "../../../services/characters/characters-service";
 
 const toolName = "listCharacters";

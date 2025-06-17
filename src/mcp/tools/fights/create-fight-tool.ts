@@ -1,6 +1,7 @@
 import { ToolCallback } from "@modelcontextprotocol/sdk/server/mcp.js";
 import { CallToolResult } from "@modelcontextprotocol/sdk/types.js";
 import { z } from "zod";
+
 import fightService from "../../../services/fights/fights-service";
 
 const toolName = "createFight";
