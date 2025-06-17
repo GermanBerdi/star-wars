@@ -1,6 +1,7 @@
 import { ToolCallback } from "@modelcontextprotocol/sdk/server/mcp.js";
 import { CallToolResult } from "@modelcontextprotocol/sdk/types.js";
 import { z } from "zod";
+
 import characterService from "../../../services/characters/characters-service";
 
 const toolName = "getCharacterById";
@@ -29,7 +30,7 @@ const cb: ToolCallback<typeof paramsSchema> = async ({ id }: cbParams) => {
     };
     response.content[0].text = JSON.stringify(contentData);
   } catch (error) {
-    const errorMessage = `Error fetching character: ${error}`;
+    const errorMessage = `Error getting character: ${error}`;
     console.error(errorMessage);
     response.content[0].text = JSON.stringify(errorMessage);
   }
