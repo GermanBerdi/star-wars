@@ -1,5 +1,6 @@
-import { INewCharacterReq, IUpdateCharacterReq, ICharacterRow } from "./characters-interfaces";
 import characterRepo from "../../db/characters/characters-repo";
+
+import { INewCharacterReq, IUpdateCharacterReq, ICharacterRow } from "./characters-interfaces";
 
 const create = async (newCharacter: INewCharacterReq): Promise<ICharacterRow> => {
   try {
@@ -34,9 +35,10 @@ const getAll = async (): Promise<ICharacterRow[]> => {
   }
 };
 
-const getById = async (id: number): Promise<ICharacterRow | null> => {
+const getById = async (id: number): Promise<ICharacterRow> => {
   try {
     const character = await characterRepo.getById(id);
+    if (!character) throw new Error(`Character with id ${id} not found.`);
     return character;
   } catch (error) {
     const errorMessage = `Error in getById at character service: ${error}`;
