@@ -1,6 +1,8 @@
-import { ResultSetHeader } from "mysql2";
 import pool from "../connection";
+import { ResultSetHeader } from "mysql2";
+
 import { INewCharacterReq, ICharacterRow, IUpdateCharacterReq } from "../../services/characters/characters-interfaces";
+import { ICharacterRowDataPacket } from "./characters-repo-interfaces";
 
 const create = async (newCharacter: INewCharacterReq): Promise<ICharacterRow> => {
   const { name, hp, strength, defense, speed } = newCharacter;
@@ -9,7 +11,9 @@ const create = async (newCharacter: INewCharacterReq): Promise<ICharacterRow> =>
     [name, hp, strength, defense, speed],
   );
   if (result.affectedRows !== 1) throw new Error(JSON.stringify(result));
-  const [row] = await pool.execute<ICharacterRow[]>(`SELECT * FROM characters WHERE id = ?`, [result.insertId]);
+  const [row] = await pool.execute<ICharacterRowDataPacket[]>(`SELECT * FROM characters WHERE id = ?`, [
+    result.insertId,
+  ]);
   return row[0];
 };
 
@@ -22,17 +26,17 @@ const update = async (characterToUpdate: IUpdateCharacterReq): Promise<ICharacte
   values.push(id);
   const [result] = await pool.execute<ResultSetHeader>(`UPDATE characters SET ${setClause} WHERE id = ?;`, values);
   if (result.affectedRows !== 1) throw new Error(JSON.stringify(result));
-  const [row] = await pool.execute<ICharacterRow[]>(`SELECT * FROM characters WHERE id = ?;`, [id]);
+  const [row] = await pool.execute<ICharacterRowDataPacket[]>(`SELECT * FROM characters WHERE id = ?;`, [id]);
   return row[0];
 };
 
 const getAll = async (): Promise<ICharacterRow[]> => {
-  const [rows] = await pool.query<ICharacterRow[]>("SELECT * FROM characters;");
+  const [rows] = await pool.query<ICharacterRowDataPacket[]>("SELECT * FROM characters;");
   return rows;
 };
 
 const getById = async (id: number): Promise<ICharacterRow | null> => {
-  const [rows] = await pool.query<ICharacterRow[]>(`SELECT * FROM characters WHERE id = ?;`, [id]);
+  const [rows] = await pool.query<ICharacterRowDataPacket[]>(`SELECT * FROM characters WHERE id = ?;`, [id]);
   return rows.length > 0 ? rows[0] : null;
 };
 
