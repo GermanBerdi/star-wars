@@ -1,10 +1,20 @@
-import { ICombatant } from "../fights/fights-interfaces";
 import { WinnerId } from "../fights/fights-enums";
 
 export interface IPerformActionReq {
   fightId: number;
   combatantId: number;
   type: string;
+}
+
+export interface ICombatant {
+  combatantId: number;
+  characterId: number;
+  name: string;
+  hp: number;
+  maxHp: number;
+  strength: number;
+  defense: number;
+  speed: number;
 }
 
 export interface IActorAndTarget {
