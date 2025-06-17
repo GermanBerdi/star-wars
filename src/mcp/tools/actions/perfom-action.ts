@@ -1,24 +1,28 @@
 import { ToolCallback } from "@modelcontextprotocol/sdk/server/mcp.js";
 import { CallToolResult } from "@modelcontextprotocol/sdk/types.js";
 import { z } from "zod";
-import { IPerformActionReq } from "../../../services/actions/actions-interfaces"
+import { IPerformActionReq } from "../../../services/actions/actions-interfaces";
 import actionService from "../../../services/actions/actions-service";
-
 
 const toolName = "perfomAction";
 
-const description = "Allows a character to execute an action during combat, including offensive moves (like attacks), defensive maneuvers (like blocking or dodging), or special abilities (like casting spells).";
+const description =
+  "Allows a character to execute an action during combat, including offensive moves (like attacks), defensive maneuvers (like blocking or dodging), or special abilities (like casting spells).";
 
 const paramsSchema = {
-  fightId: z.number().describe(
-    "The unique identifier (ID) of the fight in which the action will be performed. Used to locate and update the corresponding combat state."
-  ),
-  combatantId: z.number().describe(
-    "The unique identifier (ID) of the combatant (character) performing the action. Used to retrieve and process the combatant's data."
-  ),
-  type: z.string().describe(
-    "The type of action to perform during the fight, such as 'attack', 'defend', 'dodge', or 'castSpell'."
-  ),
+  fightId: z
+    .number()
+    .describe(
+      "The unique identifier (ID) of the fight in which the action will be performed. Used to locate and update the corresponding combat state.",
+    ),
+  combatantId: z
+    .number()
+    .describe(
+      "The unique identifier (ID) of the combatant (character) performing the action. Used to retrieve and process the combatant's data.",
+    ),
+  type: z
+    .string()
+    .describe("The type of action to perform during the fight, such as 'attack', 'defend', 'dodge', or 'castSpell'."),
 };
 
 interface cbParams {
@@ -36,8 +40,8 @@ const cb: ToolCallback<typeof paramsSchema> = async ({ fightId, combatantId, typ
       fightId,
       combatantId,
       type,
-    }
-    const actionPerformed = await actionService.performAction(performActionReq)
+    };
+    const actionPerformed = await actionService.performAction(performActionReq);
     const contentData = {
       message: "Action Performed",
       data: {
