@@ -43,6 +43,50 @@ router.get("/", async (req: Request, res: Response): Promise<void> => {
   }
 });
 
+router.get("/:id", async (req: Request, res: Response): Promise<void> => {
+  try {
+    const id = Number(req.params.id);
+    const fight = await fightService.getById(id);
+    if (!fight) {
+      res.status(404).json({ error: "Fight not found" });
+      return;
+    }
+    const response = {
+      message: "Fight info",
+      data: {
+        fight,
+      },
+    };
+    res.status(200).json(response);
+  } catch (error) {
+    const errorMessage = `Error getting fight: ${error}`;
+    console.error(errorMessage);
+    res.status(500).json({ errorMessage });
+  }
+});
+
+router.get("/:id/populated", async (req: Request, res: Response): Promise<void> => {
+  try {
+    const id = Number(req.params.id);
+    const fightPopulated = await fightService.getByIdPopulated(id);
+    if (!fightPopulated) {
+      res.status(404).json({ error: "Fight not found" });
+      return;
+    }
+    const response = {
+      message: "Fight populated info",
+      data: {
+        fight: fightPopulated,
+      },
+    };
+    res.status(200).json(response);
+  } catch (error) {
+    const errorMessage = `Error getting fight: ${error}`;
+    console.error(errorMessage);
+    res.status(500).json({ errorMessage });
+  }
+});
+
 router.use("/:fightId/actions", fightsActionsRouter);
 
 export default router;
