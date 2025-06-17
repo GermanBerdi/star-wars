@@ -45,11 +45,11 @@ router.patch("/:id", async (req: Request, res: Response): Promise<void> => {
       defense,
       speed,
     };
-    const charaterUpdated = await characterService.update(characterToUpdate);
+    const characterUpdated = await characterService.update(characterToUpdate);
     const response = {
       message: "Character updated",
       data: {
-        charaterUpdated,
+        charaterUpdated: characterUpdated,
       },
     };
     res.status(200).json(response);
