@@ -21,7 +21,7 @@ const cb: ToolCallback<undefined> = async () => {
     };
     response.content[0].text = JSON.stringify(contentData);
   } catch (error) {
-    const errorMessage = `Error fetching characters: ${error}`;
+    const errorMessage = `Error getting characters: ${error}`;
     console.error(errorMessage);
     response.content[0].text = JSON.stringify(errorMessage);
   }
