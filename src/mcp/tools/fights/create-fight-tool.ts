@@ -8,12 +8,16 @@ const toolName = "createFight";
 const description = "Create a new fight";
 
 const paramsSchema = {
-  id1: z.number().describe(
-    "The unique identifier (ID) of the character who will be assigned as the first combatant in the upcoming fight. Used to fetch and initialize their combat data."
-  ),
-  id2: z.number().describe(
-    "The unique identifier (ID) of the character who will be assigned as the second combatant in the upcoming fight. Used to fetch and initialize their combat data."
-  ),
+  id1: z
+    .number()
+    .describe(
+      "The unique identifier (ID) of the character who will be assigned as the first combatant in the upcoming fight. Used to fetch and initialize their combat data.",
+    ),
+  id2: z
+    .number()
+    .describe(
+      "The unique identifier (ID) of the character who will be assigned as the second combatant in the upcoming fight. Used to fetch and initialize their combat data.",
+    ),
 };
 
 interface cbParams {
