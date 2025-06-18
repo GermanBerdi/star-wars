@@ -2,7 +2,7 @@ import fightRepo from "../../db/fights/fights-repo";
 
 import characterService from "../characters/characters-service";
 import { IFightRow, INewFightReq, IFightPopulatedRow, IUpdateFightReq } from "./fights-interfaces";
-import { WinnerId } from "./fights-enums";
+import { WinnerId, Turn } from "./fights-enums";
 
 const create = async (id1: number, id2: number): Promise<IFightRow> => {
   try {
@@ -73,6 +73,16 @@ const calculateWinnerId = (fight: IFightRow): WinnerId => {
   return WinnerId.NoWinner;
 };
 
+const rotateTurn = (currentTurn: number): Turn => {
+  switch (currentTurn) {
+    case Turn.Combatant1:
+      return Turn.Combatant2;
+    case Turn.Combatant2:
+    default:
+      return Turn.Combatant1;
+  }
+};
+
 const applyActionEffects = async (
   fight: IFightRow,
   targetCombatantId: number,
@@ -91,10 +101,8 @@ const applyActionEffects = async (
       fightToUpdate.combatant2_hp = targetUpdatedHp;
     }
     const newWinnerId = calculateWinnerId(newFightState);
-    if (newFightState.winner_id !== newWinnerId) {
-      newFightState.winner_id = newWinnerId;
-      fightToUpdate.winner_id = newWinnerId;
-    }
+    if (newFightState.winner_id !== newWinnerId) fightToUpdate.winner_id = newWinnerId;
+    fightToUpdate.turn = rotateTurn(fight.turn);
     const fightUpdated = await fightRepo.update(fightToUpdate);
     return fightUpdated;
   } catch (error) {
