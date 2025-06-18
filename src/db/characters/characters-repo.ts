@@ -5,10 +5,10 @@ import { INewCharacterReq, ICharacterRow, IUpdateCharacterReq } from "../../serv
 import { ICharacterRowDataPacket } from "./characters-repo-interfaces";
 
 const create = async (newCharacter: INewCharacterReq): Promise<ICharacterRow> => {
-  const { name, hp, strength, defense, speed } = newCharacter;
+  const { character_name, hp, strength, defense, speed } = newCharacter;
   const [result] = await pool.execute<ResultSetHeader>(
-    `INSERT INTO characters (name, hp, strength, defense, speed) VALUES (?, ?, ?, ?, ?);`,
-    [name, hp, strength, defense, speed],
+    `INSERT INTO characters (character_name, hp, strength, defense, speed) VALUES (?, ?, ?, ?, ?);`,
+    [character_name, hp, strength, defense, speed],
   );
   if (result.affectedRows !== 1) throw new Error(JSON.stringify(result));
   const [row] = await pool.execute<ICharacterRowDataPacket[]>(`SELECT * FROM characters WHERE id = ?`, [

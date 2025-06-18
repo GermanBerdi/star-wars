@@ -10,7 +10,7 @@ const toolName = "createCharacter";
 const description = "Create a new character";
 
 const paramsSchema = {
-  name: z.string().describe("Character name"),
+  character_name: z.string().describe("Character name"),
   hp: z.number().default(100).describe("Health points"),
   strength: z.number().default(10).describe("Strength attribute"),
   defense: z.number().default(10).describe("Defense attribute"),
@@ -18,20 +18,20 @@ const paramsSchema = {
 };
 
 interface cbParams {
-  name: string;
+  character_name: string;
   hp: number;
   strength: number;
   defense: number;
   speed: number;
 }
 
-const cb: ToolCallback<typeof paramsSchema> = async ({ name, hp, strength, defense, speed }: cbParams) => {
+const cb: ToolCallback<typeof paramsSchema> = async ({ character_name, hp, strength, defense, speed }: cbParams) => {
   const response: CallToolResult = {
     content: [{ type: "text", text: "" }],
   };
   try {
     const newCharacter: INewCharacterReq = {
-      name,
+      character_name,
       hp,
       strength,
       defense,

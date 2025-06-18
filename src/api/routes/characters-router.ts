@@ -6,13 +6,13 @@ const router = Router();
 
 router.post("/", async (req: Request, res: Response): Promise<void> => {
   try {
-    const { name, hp, strength, defense, speed } = req.body;
-    if (!name) {
-      res.status(400).json({ message: "Name is required." });
+    const { character_name, hp, strength, defense, speed } = req.body;
+    if (!character_name) {
+      res.status(400).json({ message: "character_name is required." });
       return;
     }
     const newCharacter: INewCharacterReq = {
-      name,
+      character_name,
       hp: hp ?? 0,
       strength: strength ?? 0,
       defense: defense ?? 0,
@@ -36,10 +36,10 @@ router.post("/", async (req: Request, res: Response): Promise<void> => {
 router.patch("/:id", async (req: Request, res: Response): Promise<void> => {
   try {
     const { id } = req.params;
-    const { name, hp, strength, defense, speed } = req.body;
+    const { character_name, hp, strength, defense, speed } = req.body;
     const characterToUpdate: IUpdateCharacterReq = {
       id: Number(id),
-      name,
+      character_name,
       hp,
       strength,
       defense,

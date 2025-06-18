@@ -11,7 +11,7 @@ const description = "Update a character";
 
 const paramsSchema = {
   id: z.number().describe("Unique identifier of the character in the database"),
-  name: z.string().optional().describe("Character name"),
+  character_name: z.string().optional().describe("Character name"),
   hp: z.number().optional().describe("Health points"),
   strength: z.number().optional().describe("Strength attribute"),
   defense: z.number().optional().describe("Defense attribute"),
@@ -20,21 +20,28 @@ const paramsSchema = {
 
 interface cbParams {
   id: number;
-  name?: string;
+  character_name?: string;
   hp?: number;
   strength?: number;
   defense?: number;
   speed?: number;
 }
 
-const cb: ToolCallback<typeof paramsSchema> = async ({ id, name, hp, strength, defense, speed }: cbParams) => {
+const cb: ToolCallback<typeof paramsSchema> = async ({
+  id,
+  character_name,
+  hp,
+  strength,
+  defense,
+  speed,
+}: cbParams) => {
   const response: CallToolResult = {
     content: [{ type: "text", text: "" }],
   };
   try {
     const characterToUpdate: IUpdateCharacterReq = {
       id,
-      name,
+      character_name,
       hp,
       strength,
       defense,
