@@ -3,8 +3,8 @@ import { ResultSetHeader } from "mysql2";
 import { INewCharacterTemplateReq, ICharacterTemplateRow, IUpdateCharacterTemplateReq } from "../../services/character-templates/character-templates-interfaces";
 import { ICharacterTemplateRowDataPacket } from "./character-templates-repo-interfaces";
 
-const create = async (newCharacter: INewCharacterTemplateReq): Promise<ICharacterTemplateRow> => {
-  const { character_name, hp, strength, defense, speed } = newCharacter;
+const create = async (newCharacterTemplate: INewCharacterTemplateReq): Promise<ICharacterTemplateRow> => {
+  const { character_name, hp, strength, defense, speed } = newCharacterTemplate;
   const [result] = await pool.execute<ResultSetHeader>(
     `INSERT INTO character_templates (character_name, hp, strength, defense, speed) VALUES (?, ?, ?, ?, ?);`,
     [character_name, hp, strength, defense, speed],
@@ -16,8 +16,8 @@ const create = async (newCharacter: INewCharacterTemplateReq): Promise<ICharacte
   return row[0];
 };
 
-const update = async (characterToUpdate: IUpdateCharacterTemplateReq): Promise<ICharacterTemplateRow> => {
-  const { id, ...fields } = characterToUpdate;
+const update = async (characterTemplateToUpdate: IUpdateCharacterTemplateReq): Promise<ICharacterTemplateRow> => {
+  const { id, ...fields } = characterTemplateToUpdate;
   const keys = Object.keys(fields).filter((key) => fields[key as keyof typeof fields] !== undefined);
   if (keys.length === 0) throw new Error("No fields to update");
   const setClause = keys.map((key) => `${key} = ?`).join(", ");
