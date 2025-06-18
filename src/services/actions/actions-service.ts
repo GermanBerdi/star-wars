@@ -1,9 +1,10 @@
 import fightService from "../fights/fights-service";
+import stringUtils from "../../utils/string-utils";
 import { ICharacterRow } from "../characters/characters-interfaces";
 import { ICombatant, IActorAndTarget, IPerformActionReq, IPerformActionRes } from "./actions-interfaces";
 import { IFightPopulatedRow } from "../fights/fights-interfaces";
 import { WinnerId } from "../fights/fights-enums";
-import { StateMessages } from "./actions-enums";
+import { ActionMessages, FightMessages } from "./actions-enums";
 
 const characterToCombatant = (combatantId: number, character: ICharacterRow, combatantHp: number): ICombatant => {
   const combatant: ICombatant = {
@@ -39,29 +40,17 @@ const calculateHPAfterDamage = (currentHp: number, damage: number): number => {
   return currentHp - damage;
 };
 
-const getStateMessages = (winnerId: WinnerId): string => {
+const composeFightMessage = (winnerId: WinnerId, character1Name: string, character2Name: string): string => {
   switch (winnerId) {
     case WinnerId.Combatant1:
+      return stringUtils.applyTemplate(FightMessages.Winner, { name: character1Name });
     case WinnerId.Combatant2:
+      return stringUtils.applyTemplate(FightMessages.Winner, { name: character2Name });
     case WinnerId.Draw:
-      return StateMessages.FightAlreadyEnded;
+      return FightMessages.Draw;
     case WinnerId.NoWinner:
     default:
-      return StateMessages.FightContinues;
-  }
-};
-
-const composeWinnerLabel = (winnerId: WinnerId, character1Name: string, character2Name: string): string => {
-  switch (winnerId) {
-    case WinnerId.Combatant1:
-      return `There can be only one — and that one is ${character1Name}.`;
-    case WinnerId.Combatant2:
-      return `There can be only one — and that one is ${character2Name}.`;
-    case WinnerId.Draw:
-      return "Blades clashed, wills broke — yet none prevailed. It's a draw.";
-    case WinnerId.NoWinner:
-    default:
-      return "The Game is not yet over. The immortals still fight.";
+      return FightMessages.NoWinner;
   }
 };
 
@@ -70,35 +59,68 @@ const performAction = async (action: IPerformActionReq): Promise<IPerformActionR
     const fightPopulated = await fightService.getByIdPopulated(action.fightId);
     const { actor, target } = getActorAndTarget(action.combatantId, fightPopulated);
     const actionPerformed: IPerformActionRes = {
-      fightId: action.fightId,
-      type: action.type,
-      message: "",
-      winnerId: fightPopulated.fight.winner_id,
-      winnerLabel: "",
+      actionInfo: {
+        performed: false,
+        type: action.type,
+        message: "",
+      },
+      fightInfo: {
+        fightId: action.fightId,
+        turn: fightPopulated.fight.turn,
+        ended: fightService.isFinished(fightPopulated.fight.winner_id),
+        winnerId: fightPopulated.fight.winner_id,
+        message: "",
+      },
       actor: actor,
       target: target,
       effects: {
         damage: 0,
       },
     };
-    if (!fightService.isFinished(fightPopulated.fight.winner_id)) {
-      const damage = calculateActionDamage();
-      const targetUpdatedHp = calculateHPAfterDamage(target.hp, damage);
-      const finalFightState = await fightService.applyActionEffects(
-        fightPopulated.fight,
-        target.combatantId,
-        targetUpdatedHp,
+    if (fightService.isFinished(fightPopulated.fight.winner_id)) {
+      actionPerformed.actionInfo.message = stringUtils.applyTemplate(ActionMessages.FightAlreadyEnded, {
+        name: actor.name,
+      });
+      actionPerformed.fightInfo.message = composeFightMessage(
+        actionPerformed.fightInfo.winnerId,
+        fightPopulated.character1.name,
+        fightPopulated.character2.name,
       );
-      actionPerformed.effects.damage = damage;
-      actionPerformed.effects.targetUpdatedHp = targetUpdatedHp;
-      actionPerformed.winnerId = finalFightState.winner_id;
+      return actionPerformed;
     }
-    actionPerformed.message = getStateMessages(actionPerformed.winnerId);
-    actionPerformed.winnerLabel = composeWinnerLabel(
-      actionPerformed.winnerId,
+    if (action.combatantId !== fightPopulated.fight.turn) {
+      actionPerformed.actionInfo.message = stringUtils.applyTemplate(ActionMessages.NotYourTurn, { name: actor.name });
+      actionPerformed.fightInfo.message = composeFightMessage(
+        actionPerformed.fightInfo.winnerId,
+        fightPopulated.character1.name,
+        fightPopulated.character2.name,
+      );
+      return actionPerformed;
+    }
+    const damage = calculateActionDamage();
+    const targetUpdatedHp = calculateHPAfterDamage(target.hp, damage);
+    const finalFightState = await fightService.applyActionEffects(
+      fightPopulated.fight,
+      target.combatantId,
+      targetUpdatedHp,
+    );
+    actionPerformed.actionInfo.performed = true;
+    actionPerformed.fightInfo.winnerId = finalFightState.winner_id;
+    actionPerformed.effects.damage = damage;
+    actionPerformed.effects.targetUpdatedHp = targetUpdatedHp;
+    actionPerformed.actionInfo.message = stringUtils.applyTemplate(ActionMessages.ActionEffect, {
+      actor: actor.name,
+      target: target.name,
+      damage: `${damage}`,
+      currentHP: `${targetUpdatedHp}`,
+      maxHP: `${target.maxHp}`,
+    });
+    actionPerformed.fightInfo.message = composeFightMessage(
+      finalFightState.winner_id,
       fightPopulated.character1.name,
       fightPopulated.character2.name,
     );
+    actionPerformed.fightInfo.ended = fightService.isFinished(finalFightState.winner_id);
     return actionPerformed;
   } catch (error) {
     const errorMessage = `Error in performAction at action service: ${error}`;

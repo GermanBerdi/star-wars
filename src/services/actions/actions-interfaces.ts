@@ -23,11 +23,18 @@ export interface IActorAndTarget {
 }
 
 export interface IPerformActionRes {
-  fightId: number;
-  type: string;
-  message: string;
-  winnerId: WinnerId;
-  winnerLabel: string;
+  actionInfo: {
+    performed: boolean;
+    type: string;
+    message: string;
+  };
+  fightInfo: {
+    fightId: number;
+    turn: number;
+    ended: boolean;
+    winnerId: WinnerId;
+    message: string;
+  };
   actor: ICombatant;
   target: ICombatant;
   effects: {
