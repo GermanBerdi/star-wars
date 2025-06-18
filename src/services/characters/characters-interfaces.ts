@@ -10,7 +10,7 @@ export interface ICharacterRow {
 }
 
 export interface INewCharacterReq {
-  name: string;
+  character_name: string;
   hp: number;
   strength: number;
   defense: number;
@@ -19,7 +19,7 @@ export interface INewCharacterReq {
 
 export interface IUpdateCharacterReq {
   id: number;
-  name?: string;
+  character_name?: string;
   hp?: number;
   strength?: number;
   defense?: number;
