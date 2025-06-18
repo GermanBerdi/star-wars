@@ -1,6 +1,6 @@
-export interface ICharacterRow {
+export interface ICharacterTemplateRow {
   id: number;
-  name: string;
+  character_name: string;
   hp: number;
   strength: number;
   defense: number;
@@ -9,7 +9,7 @@ export interface ICharacterRow {
   created_at: Date;
 }
 
-export interface INewCharacterReq {
+export interface INewCharacterTemplateReq {
   character_name: string;
   hp: number;
   strength: number;
@@ -17,7 +17,7 @@ export interface INewCharacterReq {
   speed: number;
 }
 
-export interface IUpdateCharacterReq {
+export interface IUpdateCharacterTemplateReq {
   id: number;
   character_name?: string;
   hp?: number;
