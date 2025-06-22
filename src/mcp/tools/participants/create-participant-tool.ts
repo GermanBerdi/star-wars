@@ -30,7 +30,7 @@ const paramsSchema = {
     .min(1)
     .max(100)
     .describe(
-      "Base name for this participant in the fight. For 'unique' character templates (heroes/villains), typically use the same name as the template (e.g., 'Aragorn', 'Conan'). For 'common' templates, create a personalized name (e.g., 'Thorek Martillo Ardiente', 'Sylvana Arquera Lunar') - the system will automatically append the template name in brackets."
+      "Base name for this participant in the fight. For 'unique' character templates (heroes/villains), typically use the same name as the template (e.g., 'Aragorn', 'Conan'). For 'common' templates, create a personalized name (e.g., 'Thorek Martillo Ardiente', 'Sylvana Arquera Lunar') - the system will automatically append the template name in brackets.",
     ),
   is_alive: z
     .boolean()
@@ -46,7 +46,7 @@ const paramsSchema = {
     .optional()
     .describe(
       "Optional team assignment for team-based battles. The value must be included in the fight's available_teams array (e.g., if fight has available_teams [1,2,3], then team_id must be 1, 2, or 3). If the fight's available_teams is null, leave this undefined as it indicates a free-for-all battle where participants fight individually.",
-  ),
+    ),
 };
 
 interface cbParams {
@@ -57,7 +57,13 @@ interface cbParams {
   team_id?: number;
 }
 
-const cb: ToolCallback<typeof paramsSchema> = async ({ fightId, character_template_id, participant_name, is_alive, team_id }: cbParams) => {
+const cb: ToolCallback<typeof paramsSchema> = async ({
+  fightId,
+  character_template_id,
+  participant_name,
+  is_alive,
+  team_id,
+}: cbParams) => {
   const response: CallToolResult = {
     content: [{ type: "text", text: "" }],
   };

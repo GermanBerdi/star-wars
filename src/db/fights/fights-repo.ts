@@ -1,10 +1,7 @@
 import pool from "../connection";
 import { ResultSetHeader } from "mysql2";
 
-import {
-  INewFightReq,
-  IFightRow /*, IUpdateFightReq, */,
-} from "../../services/fights/fights-interfaces";
+import { INewFightReq, IFightRow /*, IUpdateFightReq, */ } from "../../services/fights/fights-interfaces";
 import { IFightRowDataPacket } from "./fights-repo-interfaces";
 
 const create = async (newFight: INewFightReq): Promise<IFightRow> => {

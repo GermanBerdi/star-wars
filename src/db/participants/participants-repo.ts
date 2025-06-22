@@ -2,10 +2,13 @@ import pool from "../connection";
 import { ResultSetHeader } from "mysql2";
 
 import { INewParticipantReq, IParticipantRow } from "../../services/participants/participants-interfaces";
-import { ICharacterTemplateRow } from "../../services/character-templates/character-templates-interfaces"
+import { ICharacterTemplateRow } from "../../services/character-templates/character-templates-interfaces";
 import { IParticipantRowDataPacket } from "./participants-repo-interfaces";
 
-const create = async (newParticipant: INewParticipantReq, characterTemplate:ICharacterTemplateRow): Promise<IParticipantRow> => {
+const create = async (
+  newParticipant: INewParticipantReq,
+  characterTemplate: ICharacterTemplateRow,
+): Promise<IParticipantRow> => {
   const { fightId, character_template_id, participant_name, is_alive, team_id } = newParticipant;
   const { strength, defense, speed, hp } = characterTemplate;
   const query = `
@@ -22,10 +25,23 @@ const create = async (newParticipant: INewParticipantReq, characterTemplate:ICha
       team_id)
     VALUES (?,?,?,?,?,?,?,?,?,?);
   `;
-  const values = [fightId, character_template_id, participant_name, strength, defense, speed, hp, hp, is_alive, team_id];
+  const values = [
+    fightId,
+    character_template_id,
+    participant_name,
+    strength,
+    defense,
+    speed,
+    hp,
+    hp,
+    is_alive,
+    team_id,
+  ];
   const [result] = await pool.execute<ResultSetHeader>(query, values);
   if (result.affectedRows !== 1) throw new Error(JSON.stringify(result));
-  const [row] = await pool.execute<IParticipantRowDataPacket[]>(`SELECT * FROM participants WHERE id = ?`, [result.insertId]);
+  const [row] = await pool.execute<IParticipantRowDataPacket[]>(`SELECT * FROM participants WHERE id = ?`, [
+    result.insertId,
+  ]);
   return row[0];
 };
 
