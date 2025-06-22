@@ -1,35 +1,40 @@
 import { Router, Request, Response } from "express";
 
 import characterTemplatesService from "../../services/character-templates/character-templates-service";
-import { INewCharacterTemplateReq, IUpdateCharacterTemplateReq } from "../../services/character-templates/character-templates-interfaces";
+import {
+  INewCharacterTemplateReq,
+  IUpdateCharacterTemplateReq,
+} from "../../services/character-templates/character-templates-interfaces";
+import { CharacterType } from "../../services/character-templates/character-templates-enums";
 
 const router = Router();
 
 router.post("/", async (req: Request, res: Response): Promise<void> => {
   try {
-    const { character_name, hp, strength, defense, speed } = req.body;
+    const { character_name, strength, defense, speed, hp, character_type, character_description } = req.body;
     if (!character_name) {
       res.status(400).json({ message: "character_name is required." });
       return;
     }
-    const newCharacterTemplate: INewCharacterTemplateReq = {
+    const newCharacterTemplateReq: INewCharacterTemplateReq = {
       character_name,
-      hp: hp ?? 0,
       strength: strength ?? 0,
       defense: defense ?? 0,
       speed: speed ?? 0,
+      hp: hp ?? 0,
+      character_type: character_type ?? CharacterType.COMMON,
+      character_description: character_description ?? null,
     };
-    const characterTemplateCreated = await characterTemplatesService.create(newCharacterTemplate);
+    const characterTemplate = await characterTemplatesService.create(newCharacterTemplateReq);
     const response = {
       message: "Character template created",
       data: {
-        characterCreated: characterTemplateCreated,
+        characterTemplate,
       },
     };
     res.status(201).json(response);
   } catch (error) {
     const errorMessage = `Error creating character template: ${error}`;
-    console.error(errorMessage);
     res.status(500).json({ errorMessage });
   }
 });
@@ -37,26 +42,27 @@ router.post("/", async (req: Request, res: Response): Promise<void> => {
 router.patch("/:id", async (req: Request, res: Response): Promise<void> => {
   try {
     const { id } = req.params;
-    const { character_name, hp, strength, defense, speed } = req.body;
-    const characterTemplateToUpdate: IUpdateCharacterTemplateReq = {
+    const { character_name, hp, strength, defense, speed, character_type, character_description } = req.body;
+    const updateCharacterTemplateReq: IUpdateCharacterTemplateReq = {
       id: Number(id),
       character_name,
-      hp,
       strength,
       defense,
       speed,
+      hp,
+      character_type,
+      character_description,
     };
-    const characterTemplateUpdated = await characterTemplatesService.update(characterTemplateToUpdate);
+    const characterTemplate = await characterTemplatesService.update(updateCharacterTemplateReq);
     const response = {
       message: "Character template updated",
       data: {
-        charaterUpdated: characterTemplateUpdated,
+        characterTemplate,
       },
     };
     res.status(200).json(response);
   } catch (error) {
     const errorMessage = `Error updating character template: ${error}`;
-    console.error(errorMessage);
     res.status(500).json({ errorMessage });
   }
 });
@@ -67,13 +73,12 @@ router.get("/", async (req: Request, res: Response): Promise<void> => {
     const response = {
       message: "Character templates list",
       data: {
-        characters: characterTemplates,
+        characterTemplates,
       },
     };
     res.json(response);
   } catch (error) {
     const errorMessage = `Error getting character templates: ${error}`;
-    console.error(errorMessage);
     res.status(500).json({ errorMessage });
   }
 });
@@ -82,20 +87,33 @@ router.get("/:id", async (req: Request, res: Response): Promise<void> => {
   try {
     const id = Number(req.params.id);
     const characterTemplate = await characterTemplatesService.getById(id);
-    if (!characterTemplate) {
-      res.status(404).json({ error: "Character template not found" });
-      return;
-    }
     const response = {
       message: "Character template info",
       data: {
-        character: characterTemplate,
+        characterTemplate,
       },
     };
     res.status(200).json(response);
   } catch (error) {
     const errorMessage = `Error getting character template: ${error}`;
-    console.error(errorMessage);
+    if (errorMessage.includes("not found")) {
+      res.status(404).json({ errorMessage });
+      return;
+    }
+    res.status(500).json({ errorMessage });
+  }
+});
+
+router.delete("/:id", async (req: Request, res: Response): Promise<void> => {
+  try {
+    const id = Number(req.params.id);
+    await characterTemplatesService.remove(id);
+    const response = {
+      message: "Character template deleted",
+    };
+    res.status(200).json(response);
+  } catch (error) {
+    const errorMessage = `Error deleting character template: ${error}`;
     res.status(500).json({ errorMessage });
   }
 });
