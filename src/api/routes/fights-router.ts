@@ -67,6 +67,20 @@ router.get("/:id", async (req: Request, res: Response): Promise<void> => {
   }
 });
 
+router.delete("/:id", async (req: Request, res: Response): Promise<void> => {
+  try {
+    const id = Number(req.params.id);
+    await fightsService.remove(id);
+    const response = {
+      message: "Fight deleted",
+    };
+    res.status(200).json(response);
+  } catch (error) {
+    const errorMessage = `Error deleting fight: ${error}`;
+    res.status(500).json({ errorMessage });
+  }
+});
+
 router.use("/:fightId/participants", fightsParticipantsRouter);
 
 export default router;

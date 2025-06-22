@@ -38,10 +38,16 @@ export const getById = async (id: number): Promise<IFightRow | null> => {
   return rows.length > 0 ? rows[0] : null;
 };
 
+const remove = async (id: number): Promise<void> => {
+  const [result] = await pool.execute<ResultSetHeader>(`DELETE FROM fights WHERE id = ?;`, [id]);
+  if (result.affectedRows !== 1) throw new Error(JSON.stringify(result));
+};
+
 const repo = {
   create,
   // update,
   getAll,
   getById,
+  remove,
 };
 export default repo;

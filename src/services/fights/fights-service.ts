@@ -38,6 +38,16 @@ const getById = async (id: number): Promise<IFightRow> => {
   }
 };
 
+const remove = async (id: number): Promise<void> => {
+  try {
+    await fightRepo.remove(id);
+  } catch (error) {
+    const errorMessage = `Error in remove at fight service: ${error}`;
+    console.error(errorMessage);
+    throw new Error(errorMessage);
+  }
+};
+
 // const getByIdPopulated = async (id: number): Promise<IFightPopulatedRow> => {
 //   try {
 //     const fightPopulated = await fightRepo.getByIdPopulated(id);
@@ -104,6 +114,7 @@ const service = {
   create,
   getAll,
   getById,
+  remove,
   // getByIdPopulated,
   // isFinished,
   // applyActionEffects,
