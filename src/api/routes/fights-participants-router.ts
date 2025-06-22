@@ -7,7 +7,7 @@ const router = Router({ mergeParams: true });
 
 router.post("/", async (req: Request, res: Response): Promise<void> => {
   try {
-    const fightId = Number(req.params.fightId);  
+    const fightId = Number(req.params.fightId);
     const { character_template_id, participant_name, is_alive, team_id } = req.body;
     if (!character_template_id) {
       res.status(400).json({ message: "character_template_id is required." });
@@ -17,7 +17,6 @@ router.post("/", async (req: Request, res: Response): Promise<void> => {
       res.status(400).json({ message: "participant_name is required." });
       return;
     }
-    
     const newParticipantReq: INewParticipantReq = {
       fightId,
       character_template_id,
