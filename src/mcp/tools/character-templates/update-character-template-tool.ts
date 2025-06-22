@@ -17,10 +17,27 @@ const paramsSchema = {
   strength: z
     .number()
     .optional()
-    .describe("New attack power - determines how much damage the character deals in combat"),
-  defense: z.number().optional().describe("New defensive capability - reduces incoming damage from attacks"),
-  speed: z.number().optional().describe("New movement speed - determines turn order and dodge chance in fights"),
-  hp: z.number().optional().describe("New base health points - how much damage the character can take before dying"),
+    .describe(
+      "New attack power (3-18) - determines how much damage the character deals in combat. Low (3-6): weak, Average (7-12): standard, High (13-18): powerful",
+    ),
+  defense: z
+    .number()
+    .optional()
+    .describe(
+      "New defensive capability (3-18) - reduces incoming damage from attacks. Low (3-6): fragile, Average (7-12): standard armor, High (13-18): heavily armored",
+    ),
+  speed: z
+    .number()
+    .optional()
+    .describe(
+      "New movement speed (3-18) - determines turn order and dodge chance in fights. Low (3-6): slow/clunky, Average (7-12): normal agility, High (13-18): lightning fast",
+    ),
+  hp: z
+    .number()
+    .optional()
+    .describe(
+      "New base health points - how much damage the character can take before dying. Formula: Type Base (15-40) + Constitution modifier based on Defense stat (-5 to +10) + Rank modifier (0-25). Examples: Mage=15+CON+rank, Standard Warrior=30+CON+rank, Heavy Warrior=40+CON+rank. Constitution modifiers: DEF 3-8 (-5 HP), DEF 9-12 (+0 HP), DEF 13-15 (+5 HP), DEF 16-18 (+10 HP). Rank modifiers: Common soldier (+0), Veteran/Captain (+15), Unique hero (+25)",
+    ),
   character_type: z
     .nativeEnum(CharacterType)
     .optional()
