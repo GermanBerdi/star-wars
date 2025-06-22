@@ -1,38 +1,51 @@
 import { McpServer } from "@modelcontextprotocol/sdk/server/mcp.js";
 import { StdioServerTransport } from "@modelcontextprotocol/sdk/server/stdio.js";
-import { createCharacterTool } from "./tools/characters/create-character-tool";
-import { updateCharacterTool } from "./tools/characters/update-character-tool";
-import { listCharactersTool } from "./tools/characters/list-characters-tool";
-import { getCharacterByIdTool } from "./tools/characters/get-character-by-id-tool";
+import { createCharacterTemplateTool } from "./tools/character-templates/create-character-template-tool";
+import { updateCharacterTemplateTool } from "./tools/character-templates/update-character-template-tool";
+import { listCharacterTemplatesTool } from "./tools/character-templates/list-character-templates-tool";
+import { getCharacterTemplateByIdTool } from "./tools/character-templates/get-character-template-by-id-tool";
+import { removeCharacterTemplateTool } from "./tools/character-templates/remove-character-template-tool";
 import { createFightTool } from "./tools/fights/create-fight-tool";
 import { listFightsTool } from "./tools/fights/list-fights-tool";
 import { getFightByIdTool } from "./tools/fights/get-fight-by-id-tool";
-import { performActionTool } from "./tools/actions/perfom-action";
+import { createParticipantTool } from "./tools/participants/create-participant-tool";
+import { getParticipantsByFightIdTool } from "./tools/participants/get-participants-by-Fight-id-tools";
+// import { performActionTool } from "./tools/actions/perfom-action";
 import { saludarTool } from "./tools/saludar/saludar-tool";
 import { listStarshipsTool } from "./tools/starships/list-starships-tool";
 
 const mcpServer = new McpServer({
-  name: "star-wars",
+  name: "combat-system",
   version: "1.0.0",
 });
 mcpServer.tool(
-  createCharacterTool.toolName,
-  createCharacterTool.description,
-  createCharacterTool.paramsSchema,
-  createCharacterTool.cb,
+  createCharacterTemplateTool.toolName,
+  createCharacterTemplateTool.description,
+  createCharacterTemplateTool.paramsSchema,
+  createCharacterTemplateTool.cb,
 );
 mcpServer.tool(
-  updateCharacterTool.toolName,
-  updateCharacterTool.description,
-  updateCharacterTool.paramsSchema,
-  updateCharacterTool.cb,
+  updateCharacterTemplateTool.toolName,
+  updateCharacterTemplateTool.description,
+  updateCharacterTemplateTool.paramsSchema,
+  updateCharacterTemplateTool.cb,
 );
-mcpServer.tool(listCharactersTool.toolName, listCharactersTool.description, listCharactersTool.cb);
 mcpServer.tool(
-  getCharacterByIdTool.toolName,
-  getCharacterByIdTool.description,
-  getCharacterByIdTool.paramsSchema,
-  getCharacterByIdTool.cb,
+  listCharacterTemplatesTool.toolName,
+  listCharacterTemplatesTool.description,
+  listCharacterTemplatesTool.cb,
+);
+mcpServer.tool(
+  getCharacterTemplateByIdTool.toolName,
+  getCharacterTemplateByIdTool.description,
+  getCharacterTemplateByIdTool.paramsSchema,
+  getCharacterTemplateByIdTool.cb,
+);
+mcpServer.tool(
+  removeCharacterTemplateTool.toolName,
+  removeCharacterTemplateTool.description,
+  removeCharacterTemplateTool.paramsSchema,
+  removeCharacterTemplateTool.cb,
 );
 mcpServer.tool(createFightTool.toolName, createFightTool.description, createFightTool.paramsSchema, createFightTool.cb);
 mcpServer.tool(listFightsTool.toolName, listFightsTool.description, listFightsTool.cb);
@@ -43,11 +56,24 @@ mcpServer.tool(
   getFightByIdTool.cb,
 );
 mcpServer.tool(
-  performActionTool.toolName,
-  performActionTool.description,
-  performActionTool.paramsSchema,
-  performActionTool.cb,
+  createParticipantTool.toolName,
+  createParticipantTool.description,
+  createParticipantTool.paramsSchema,
+  createParticipantTool.cb,
 );
+mcpServer.tool(
+  getParticipantsByFightIdTool.toolName,
+  getParticipantsByFightIdTool.description,
+  getParticipantsByFightIdTool.paramsSchema,
+  getParticipantsByFightIdTool.cb,
+);
+
+// mcpServer.tool(
+//   performActionTool.toolName,
+//   performActionTool.description,
+//   performActionTool.paramsSchema,
+//   performActionTool.cb,
+// );
 mcpServer.tool(saludarTool.toolName, saludarTool.description, saludarTool.paramsSchema, saludarTool.cb);
 mcpServer.tool(listStarshipsTool.toolName, listStarshipsTool.description, listStarshipsTool.cb);
 
