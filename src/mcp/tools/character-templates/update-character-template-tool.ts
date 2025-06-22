@@ -75,7 +75,7 @@ const cb: ToolCallback<typeof paramsSchema> = async ({
     content: [{ type: "text", text: "" }],
   };
   try {
-    const characterTemplateToUpdate: IUpdateCharacterTemplateReq = {
+    const updateCharacterTemplateReq: IUpdateCharacterTemplateReq = {
       id,
       character_name,
       strength,
@@ -85,11 +85,11 @@ const cb: ToolCallback<typeof paramsSchema> = async ({
       character_type,
       character_description,
     };
-    const characterTemplateUpdated = await characterTemplatesService.update(characterTemplateToUpdate);
+    const characterTemplateUpdated = await characterTemplatesService.update(updateCharacterTemplateReq);
     const contentData = {
       message: "Character template updated",
       data: {
-        characterUpdated: characterTemplateUpdated,
+        characterTemplateUpdated,
       },
     };
     response.content[0].text = JSON.stringify(contentData);

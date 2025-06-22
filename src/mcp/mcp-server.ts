@@ -6,6 +6,7 @@ import { listCharacterTemplatesTool } from "./tools/character-templates/list-cha
 import { getCharacterTemplateByIdTool } from "./tools/character-templates/get-character-template-by-id-tool";
 import { removeCharacterTemplateTool } from "./tools/character-templates/remove-character-template-tool";
 import { createFightTool } from "./tools/fights/create-fight-tool";
+import { updateFightTool } from "./tools/fights/update-fight-tool";
 import { listFightsTool } from "./tools/fights/list-fights-tool";
 import { getFightByIdTool } from "./tools/fights/get-fight-by-id-tool";
 import { removeFightTool } from "./tools/fights/remove-fight-tool";
@@ -49,6 +50,7 @@ mcpServer.tool(
   removeCharacterTemplateTool.cb,
 );
 mcpServer.tool(createFightTool.toolName, createFightTool.description, createFightTool.paramsSchema, createFightTool.cb);
+mcpServer.tool(updateFightTool.toolName, updateFightTool.description, updateFightTool.paramsSchema, updateFightTool.cb);
 mcpServer.tool(listFightsTool.toolName, listFightsTool.description, listFightsTool.cb);
 mcpServer.tool(
   getFightByIdTool.toolName,

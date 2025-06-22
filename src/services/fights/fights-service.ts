@@ -1,6 +1,6 @@
 import fightRepo from "../../db/fights/fights-repo";
 
-import { INewFightReq, IFightRow /*IFightPopulatedRow, IUpdateFightReq*/ } from "./fights-interfaces";
+import { INewFightReq, IUpdateFightReq, IFightRow } from "./fights-interfaces";
 
 const create = async (newFight: INewFightReq): Promise<IFightRow> => {
   try {
@@ -18,6 +18,17 @@ const create = async (newFight: INewFightReq): Promise<IFightRow> => {
     return fight;
   } catch (error) {
     const errorMessage = `Error in create at fight service: ${error}`;
+    console.error(errorMessage);
+    throw new Error(errorMessage);
+  }
+};
+
+const update = async (updateFightReq: IUpdateFightReq): Promise<IFightRow> => {
+  try {
+    const fight = await fightRepo.update(updateFightReq);
+    return fight;
+  } catch (error) {
+    const errorMessage = `Error in update at fight service: ${error}`;
     console.error(errorMessage);
     throw new Error(errorMessage);
   }
@@ -58,6 +69,7 @@ const remove = async (id: number): Promise<void> => {
 
 const service = {
   create,
+  update,
   getAll,
   getById,
   remove,

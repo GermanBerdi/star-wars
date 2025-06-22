@@ -17,9 +17,9 @@ const create = async (newCharacterTemplate: INewCharacterTemplateReq): Promise<I
   }
 };
 
-const update = async (characterTemplateToUpdate: IUpdateCharacterTemplateReq): Promise<ICharacterTemplateRow> => {
+const update = async (updateCharacterTemplateReq: IUpdateCharacterTemplateReq): Promise<ICharacterTemplateRow> => {
   try {
-    const characterTemplate = await characterTemplatesRepo.update(characterTemplateToUpdate);
+    const characterTemplate = await characterTemplatesRepo.update(updateCharacterTemplateReq);
     return characterTemplate;
   } catch (error) {
     const errorMessage = `Error in update at character templates service: ${error}`;

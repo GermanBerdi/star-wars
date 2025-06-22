@@ -22,8 +22,8 @@ const create = async (newCharacterTemplate: INewCharacterTemplateReq): Promise<I
   return row[0];
 };
 
-const update = async (characterTemplateToUpdate: IUpdateCharacterTemplateReq): Promise<ICharacterTemplateRow> => {
-  const { id, ...fields } = characterTemplateToUpdate;
+const update = async (updateCharacterTemplateReq: IUpdateCharacterTemplateReq): Promise<ICharacterTemplateRow> => {
+  const { id, ...fields } = updateCharacterTemplateReq;
   const keys = Object.keys(fields).filter((key) => fields[key as keyof typeof fields] !== undefined);
   if (keys.length === 0) throw new Error("No fields to update");
   const setClause = keys.map((key) => `${key} = ?`).join(", ");

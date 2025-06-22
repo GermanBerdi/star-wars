@@ -17,12 +17,12 @@ export interface INewFightReq {
   available_teams: number[] | null;
 }
 
-// export interface IUpdateFightReq {
-//   id: number;
-//   combatant1_id?: number;
-//   combatant2_id?: number;
-//   combatant1_hp?: number;
-//   combatant2_hp?: number;
-//   turn?: number;
-//   winner_id?: WinnerId;
-// }
+export interface IUpdateFightReq {
+  id: number;
+  fight_name?: string;
+  available_teams?: number[] | null;
+  turn?: number;
+  pending_participants?: number[] | null;
+  fight_status?: FightStatus;
+  winner_id?: number;
+}

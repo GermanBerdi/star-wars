@@ -1,7 +1,7 @@
 import { Router, Request, Response } from "express";
 
 import fightsService from "../../services/fights/fights-service";
-import { INewFightReq } from "../../services/fights/fights-interfaces";
+import { INewFightReq, IUpdateFightReq } from "../../services/fights/fights-interfaces";
 import fightsParticipantsRouter from "./fights-participants-router";
 
 const router = Router();
@@ -27,6 +27,33 @@ router.post("/", async (req: Request, res: Response): Promise<void> => {
     res.status(201).json(response);
   } catch (error) {
     const errorMessage = `Error creating Fight: ${error}`;
+    res.status(500).json({ errorMessage });
+  }
+});
+
+router.patch("/:id", async (req: Request, res: Response): Promise<void> => {
+  try {
+    const { id } = req.params;
+    const { fight_name, available_teams, turn, pending_participants, fight_status, winner_id } = req.body;
+    const updateFightReq: IUpdateFightReq = {
+      id: Number(id),
+      fight_name,
+      available_teams,
+      turn,
+      pending_participants,
+      fight_status,
+      winner_id,
+    };
+    const fight = await fightsService.update(updateFightReq);
+    const response = {
+      message: "Fight updated",
+      data: {
+        fight,
+      },
+    };
+    res.status(200).json(response);
+  } catch (error) {
+    const errorMessage = `Error updating fight: ${error}`;
     res.status(500).json({ errorMessage });
   }
 });
