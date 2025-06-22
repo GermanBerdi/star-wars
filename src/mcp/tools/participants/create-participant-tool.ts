@@ -8,7 +8,7 @@ import { INewParticipantReq } from "../../../services/participants/participants-
 const toolName = "combat-system_participants_create";
 
 const description =
-  "Creates a new participant/combatant for an existing fight/battle. The participant is created based on a character template and assigned to the specified fight. Optionally can be assigned to a team within the fight. For 'common' character templates, the system automatically appends the template name in parentheses to the participant name (e.g., 'Thorek Martillo Ardiente' becomes 'Thorek Martillo Ardiente (Guardián de Hierro)'). Returns the newly created participant with their combat stats, team assignment, and unique ID within the fight.";
+  "Creates a new participant/combatant for an existing fight/battle. The participant is created based on a character template and assigned to the specified fight. Optionally can be assigned to a team within the fight. For 'common' character templates, the system automatically appends the template name in brackets to the participant name (e.g., 'Thorek Martillo Ardiente' becomes 'Thorek Martillo Ardiente [Guardián de Hierro]'). Returns the newly created participant with their combat stats, team assignment, and unique ID within the fight.";
 
 const paramsSchema = {
   fightId: z
@@ -30,7 +30,7 @@ const paramsSchema = {
     .min(1)
     .max(100)
     .describe(
-      "Base name for this participant in the fight. For 'unique' character templates (heroes/villains), typically use the same name as the template (e.g., 'Aragorn', 'Conan'). For 'common' templates, create a personalized name (e.g., 'Thorek Martillo Ardiente', 'Sylvana Arquera Lunar') - the system will automatically append the template name in parentheses.",
+      "Base name for this participant in the fight. For 'unique' character templates (heroes/villains), typically use the same name as the template (e.g., 'Aragorn', 'Conan'). For 'common' templates, create a personalized name (e.g., 'Thorek Martillo Ardiente', 'Sylvana Arquera Lunar') - the system will automatically append the template name in brackets."
     ),
   is_alive: z
     .boolean()

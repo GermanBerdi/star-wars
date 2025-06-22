@@ -10,7 +10,7 @@ const create = async (newParticipant: INewParticipantReq): Promise<IParticipantR
     await fightsService.getById(newParticipant.fightId);
     const characterTemplate = await characterTemplatesService.getById(newParticipant.character_template_id);
     if (characterTemplate.character_type === CharacterType.COMMON)
-      newParticipant.participant_name+= `(${characterTemplate.character_name})`
+      newParticipant.participant_name+= ` [${characterTemplate.character_name}]`
     const participants = await participantsRepo.getByFightId(newParticipant.fightId);
     const usedNames = participants.map(participant => participant.participant_name);
     if (usedNames.includes(newParticipant.participant_name))
