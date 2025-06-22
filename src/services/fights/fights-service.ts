@@ -1,4 +1,5 @@
 import fightRepo from "../../db/fights/fights-repo";
+import participantsService from "../participants/participants-service";
 
 import { INewFightReq, IUpdateFightReq, IFightRow } from "./fights-interfaces";
 
@@ -67,12 +68,39 @@ const remove = async (id: number): Promise<void> => {
   }
 };
 
+const setParticipantsOrder = async (id: number): Promise<IFightRow> => {
+  try {
+    const participants = await participantsService.getByFightId(id);
+    const participantsWithInitiative = participants.map((participant) => {
+      const initiative = participantsService.rollInitiative(participant);
+      return {
+        id: participant.id,
+        initiative,
+      };
+    });
+    const pending_participants = participantsWithInitiative
+      .sort((a, b) => b.initiative - a.initiative)
+      .map((p) => p.id);
+    const updateFightReq: IUpdateFightReq = {
+      id,
+      pending_participants,
+    };
+    const fight = await update(updateFightReq);
+    return fight;
+  } catch (error) {
+    const errorMessage = `Error in setParticipantsOrder at fight service: ${error}`;
+    console.error(errorMessage);
+    throw new Error(errorMessage);
+  }
+};
+
 const service = {
   create,
   update,
   getAll,
   getById,
   remove,
+  setParticipantsOrder,
 };
 
 export default service;

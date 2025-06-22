@@ -31,6 +31,23 @@ router.post("/", async (req: Request, res: Response): Promise<void> => {
   }
 });
 
+router.post("/:id/set-participants-order", async (req, res) => {
+  try {
+    const id = Number(req.params.id);
+    const fight = await fightsService.setParticipantsOrder(id);
+    const response = {
+      message: "Fight updated",
+      data: {
+        fight,
+      },
+    };
+    res.status(200).json(response);
+  } catch (error) {
+    const errorMessage = `Error setting participants-order: ${error}`;
+    res.status(500).json({ errorMessage });
+  }
+});
+
 router.patch("/:id", async (req: Request, res: Response): Promise<void> => {
   try {
     const { id } = req.params;

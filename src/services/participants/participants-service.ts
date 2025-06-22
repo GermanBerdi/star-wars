@@ -1,9 +1,11 @@
 import participantsRepo from "../../db/participants/participants-repo";
 import fightsService from "../fights/fights-service";
-import characterTemplatesService from "../../services/character-templates/character-templates-service";
+import characterTemplatesService from "../character-templates/character-templates-service";
+import rollsService from "../rolls/rolls-service";
 
 import { INewParticipantReq, IParticipantRow } from "./participants-interfaces";
 import { CharacterType } from "../character-templates/character-templates-enums";
+import { Dice } from "../rolls/rolls-enums";
 
 const create = async (newParticipant: INewParticipantReq): Promise<IParticipantRow> => {
   try {
@@ -47,10 +49,15 @@ const getByFightId = async (fightId: number): Promise<IParticipantRow[]> => {
   }
 };
 
+const rollInitiative = (participant: IParticipantRow): number => {
+  return participant.speed + rollsService.roll(Dice._1D6);
+};
+
 const service = {
   create,
   getAll,
   getByFightId,
+  rollInitiative,
 };
 
 export default service;
