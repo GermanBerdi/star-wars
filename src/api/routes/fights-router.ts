@@ -8,13 +8,14 @@ const router = Router();
 
 router.post("/", async (req: Request, res: Response): Promise<void> => {
   try {
-    const { fight_name } = req.body;
+    const { fight_name, available_teams } = req.body;
     if (!fight_name) {
       res.status(400).json({ message: "fight_name is required." });
       return;
     }
     const newFightReq: INewFightReq = {
       fight_name,
+      available_teams: available_teams ?? null,
     };
     const fight = await fightsService.create(newFightReq);
     const response = {

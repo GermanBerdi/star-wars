@@ -5,8 +5,11 @@ import { INewFightReq, IFightRow /*, IUpdateFightReq, */ } from "../../services/
 import { IFightRowDataPacket } from "./fights-repo-interfaces";
 
 const create = async (newFight: INewFightReq): Promise<IFightRow> => {
-  const { fight_name } = newFight;
-  const [result] = await pool.execute<ResultSetHeader>(`INSERT INTO fights (fight_name) VALUES (?);`, [fight_name]);
+  const { fight_name, available_teams } = newFight;
+  const [result] = await pool.execute<ResultSetHeader>(
+    `INSERT INTO fights (fight_name, available_teams) VALUES (?,?);`,
+    [fight_name, available_teams],
+  );
   if (result.affectedRows !== 1) throw new Error(JSON.stringify(result));
   const [row] = await pool.execute<IFightRowDataPacket[]>(`SELECT * FROM fights WHERE id = ?`, [result.insertId]);
   return row[0];
