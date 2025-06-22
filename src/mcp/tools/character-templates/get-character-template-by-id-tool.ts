@@ -4,15 +4,19 @@ import { z } from "zod";
 
 import characterTemplatesService from "../../../services/character-templates/character-templates-service";
 
-const toolName = "getCharacterTemplateById";
+const toolName = "combat-system_characterTemplates_getById";
 
-const description = "Retrieves detailed information for a specific character template by its unique ID. Returns the character's complete stats including name, HP, strength, defense, speed, and creation/update timestamps. Use this when you need to examine or reference a particular character's current attributes before making modifications or comparisons.";
+const description =
+  "Retrieves detailed information for a specific character template by its unique ID. Returns the character's complete stats including name, HP, strength, defense, speed, and creation/update timestamps. Use this when you need to examine or reference a particular character's current attributes before making modifications or comparisons.";
 
 const paramsSchema = {
-  id: z.number()
+  id: z
+    .number()
     .int()
     .positive()
-    .describe("Unique numeric identifier of the character template to retrieve from the database (e.g., 1 for Aragorn, 2 for Conan)")
+    .describe(
+      "Unique numeric identifier of the character template to retrieve from the database (e.g., 1 for Aragorn, 2 for Conan)",
+    ),
 };
 
 interface cbParams {
@@ -34,8 +38,11 @@ const cb: ToolCallback<typeof paramsSchema> = async ({ id }: cbParams) => {
     response.content[0].text = JSON.stringify(contentData);
   } catch (error) {
     const errorMessage = `Error getting character template: ${error}`;
-    console.error(errorMessage);
-    response.content[0].text = JSON.stringify(errorMessage);
+    const errorData = {
+      error: true,
+      message: errorMessage,
+    };
+    response.content[0].text = JSON.stringify(errorData);
   }
   return response;
 };
