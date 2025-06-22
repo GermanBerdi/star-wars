@@ -4,8 +4,6 @@ import fightsService from "../../services/fights/fights-service";
 import { INewFightReq } from "../../services/fights/fights-interfaces";
 import fightsParticipantsRouter from "./fights-participants-router";
 
-// import fightsActionsRouter from "./fights-actions-router";
-
 const router = Router();
 
 router.post("/", async (req: Request, res: Response): Promise<void> => {
@@ -69,28 +67,6 @@ router.get("/:id", async (req: Request, res: Response): Promise<void> => {
   }
 });
 
-// router.get("/:id/populated", async (req: Request, res: Response): Promise<void> => {
-//   try {
-//     const id = Number(req.params.id);
-//     const fightPopulated = await fightService.getByIdPopulated(id);
-//     if (!fightPopulated) {
-//       res.status(404).json({ error: "Fight not found" });
-//       return;
-//     }
-//     const response = {
-//       message: "Fight populated info",
-//       data: {
-//         fight: fightPopulated,
-//       },
-//     };
-//     res.status(200).json(response);
-//   } catch (error) {
-//     const errorMessage = `Error getting fight: ${error}`;
-//     res.status(500).json({ errorMessage });
-//   }
-// });
-
 router.use("/:fightId/participants", fightsParticipantsRouter);
-// router.use("/:fightId/actions", fightsActionsRouter);
 
 export default router;
