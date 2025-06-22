@@ -2,14 +2,21 @@ import { ToolCallback } from "@modelcontextprotocol/sdk/server/mcp.js";
 import { CallToolResult } from "@modelcontextprotocol/sdk/types.js";
 import { z } from "zod";
 
-import fightService from "../../../services/fights/fights-service";
+import fightsService from "../../../services/fights/fights-service";
 
-const toolName = "getFightById";
+const toolName = "combat-system_fights_getById";
 
-const description = "Get one fight by Id";
+const description =
+  "Retrieves detailed information for a specific fight/battle by its unique ID. Returns comprehensive fight data including participant details, combat rounds, damage dealt, winner/loser, duration, and complete battle log. Use this to examine specific fight outcomes, analyze combat performance, or review detailed battle statistics for a particular encounter.";
 
 const paramsSchema = {
-  id: z.number().describe("Unique identifier of the fight in the database"),
+  id: z
+    .number()
+    .int()
+    .positive()
+    .describe(
+      "Unique numeric identifier of the specific fight/battle to retrieve from the database (e.g., 1 for the first fight, 15 for fight #15). This ID corresponds to the fight records returned by listFights()",
+    ),
 };
 
 interface cbParams {
@@ -21,7 +28,7 @@ const cb: ToolCallback<typeof paramsSchema> = async ({ id }: cbParams) => {
     content: [{ type: "text", text: "" }],
   };
   try {
-    const fight = await fightService.getById(id);
+    const fight = await fightsService.getById(id);
     const contentData = {
       message: "Fight",
       data: {
@@ -30,9 +37,12 @@ const cb: ToolCallback<typeof paramsSchema> = async ({ id }: cbParams) => {
     };
     response.content[0].text = JSON.stringify(contentData);
   } catch (error) {
-    const errorMessage = `Error getting fights: ${error}`;
-    console.error(errorMessage);
-    response.content[0].text = JSON.stringify(errorMessage);
+    const errorMessage = `Error getting fight: ${error}`;
+    const errorData = {
+      error: true,
+      message: errorMessage,
+    };
+    response.content[0].text = JSON.stringify(errorData);
   }
   return response;
 };

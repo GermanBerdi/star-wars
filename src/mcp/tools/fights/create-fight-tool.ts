@@ -2,36 +2,37 @@ import { ToolCallback } from "@modelcontextprotocol/sdk/server/mcp.js";
 import { CallToolResult } from "@modelcontextprotocol/sdk/types.js";
 import { z } from "zod";
 
-import fightService from "../../../services/fights/fights-service";
+import fightsService from "../../../services/fights/fights-service";
+import { INewFightReq } from "../../../services/fights/fights-interfaces";
 
-const toolName = "createFight";
+const toolName = "combat-system_fights_create";
 
-const description = "Create a new fight";
+const description =
+  "Creates a new empty fight/battle with a given name. The fight is created without participants - combatants must be added separately by creating records in the fights_participants table that reference this fight's ID. Returns the newly created fight with its unique ID and initial status.";
 
 const paramsSchema = {
-  id1: z
-    .number()
+  fight_name: z
+    .string()
+    .min(1)
+    .max(50)
     .describe(
-      "The unique identifier (ID) of the character who will be assigned as the first combatant in the upcoming fight. Used to fetch and initialize their combat data.",
-    ),
-  id2: z
-    .number()
-    .describe(
-      "The unique identifier (ID) of the character who will be assigned as the second combatant in the upcoming fight. Used to fetch and initialize their combat data.",
+      "The name/title for the new fight or battle (e.g., 'Arena Championship', 'Forest Duel', 'Dragon Tournament'). Must be between 1-50 characters long.",
     ),
 };
 
 interface cbParams {
-  id1: number;
-  id2: number;
+  fight_name: string;
 }
 
-const cb: ToolCallback<typeof paramsSchema> = async ({ id1, id2 }: cbParams) => {
+const cb: ToolCallback<typeof paramsSchema> = async ({ fight_name }: cbParams) => {
   const response: CallToolResult = {
     content: [{ type: "text", text: "" }],
   };
   try {
-    const fightCreated = await fightService.create(id1, id2);
+    const newFight: INewFightReq = {
+      fight_name,
+    };
+    const fightCreated = await fightsService.create(newFight);
     const contentData = {
       message: "Fight created",
       data: {
@@ -41,8 +42,11 @@ const cb: ToolCallback<typeof paramsSchema> = async ({ id1, id2 }: cbParams) => 
     response.content[0].text = JSON.stringify(contentData);
   } catch (error) {
     const errorMessage = `Error creating fight: ${error}`;
-    console.error(errorMessage);
-    response.content[0].text = JSON.stringify(errorMessage);
+    const errorData = {
+      error: true,
+      message: errorMessage,
+    };
+    response.content[0].text = JSON.stringify(errorData);
   }
   return response;
 };
