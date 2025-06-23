@@ -1,27 +1,35 @@
 import fightRepo from "../../db/fights/fights-repo";
+import participantsService from "../participants/participants-service";
 
-import characterService from "../characters/characters-service";
-import { IFightRow, INewFightReq, IFightPopulatedRow, IUpdateFightReq } from "./fights-interfaces";
-import { WinnerId, Turn } from "./fights-enums";
+import { INewFightReq, IUpdateFightReq, IFightRow } from "./fights-interfaces";
 
-const create = async (id1: number, id2: number): Promise<IFightRow> => {
+const create = async (newFight: INewFightReq): Promise<IFightRow> => {
   try {
-    const character1 = await characterService.getById(id1);
-    const character2 = await characterService.getById(id2);
-    const newFight: INewFightReq = {
-      combatant1: {
-        id: character1.id,
-        hp: character1.hp,
-      },
-      combatant2: {
-        id: character2.id,
-        hp: character2.hp,
-      },
-    };
+    if (!newFight.fight_name || newFight.fight_name.trim().length === 0) {
+      throw new Error(`fight_name cannot be empty`);
+    }
+    if (
+      newFight.available_teams !== null &&
+      (!Array.isArray(newFight.available_teams) ||
+        !newFight.available_teams.every((team) => typeof team === "number" && team > 0))
+    ) {
+      throw new Error(`available_teams must be null (for free-for-all) or an array of positive numbers`);
+    }
     const fight = await fightRepo.create(newFight);
     return fight;
   } catch (error) {
     const errorMessage = `Error in create at fight service: ${error}`;
+    console.error(errorMessage);
+    throw new Error(errorMessage);
+  }
+};
+
+const update = async (updateFightReq: IUpdateFightReq): Promise<IFightRow> => {
+  try {
+    const fight = await fightRepo.update(updateFightReq);
+    return fight;
+  } catch (error) {
+    const errorMessage = `Error in update at fight service: ${error}`;
     console.error(errorMessage);
     throw new Error(errorMessage);
   }
@@ -50,63 +58,37 @@ const getById = async (id: number): Promise<IFightRow> => {
   }
 };
 
-const getByIdPopulated = async (id: number): Promise<IFightPopulatedRow> => {
+const remove = async (id: number): Promise<void> => {
   try {
-    const fightPopulated = await fightRepo.getByIdPopulated(id);
-    if (!fightPopulated) throw new Error(`Fight with id ${id} not found.`);
-    return fightPopulated;
+    await fightRepo.remove(id);
   } catch (error) {
-    const errorMessage = `Error in getByIdPopulated at fight service: ${error}`;
+    const errorMessage = `Error in remove at fight service: ${error}`;
     console.error(errorMessage);
     throw new Error(errorMessage);
   }
 };
 
-const isFinished = (winnerId: WinnerId): boolean => {
-  return winnerId !== WinnerId.NoWinner;
-};
-
-const calculateWinnerId = (fight: IFightRow): WinnerId => {
-  if (fight.combatant1_hp > 0 && fight.combatant2_hp <= 0) return WinnerId.Combatant1;
-  if (fight.combatant2_hp > 0 && fight.combatant1_hp <= 0) return WinnerId.Combatant2;
-  if (fight.combatant1_hp <= 0 && fight.combatant1_hp <= 0) return WinnerId.Draw;
-  return WinnerId.NoWinner;
-};
-
-const rotateTurn = (currentTurn: number): Turn => {
-  switch (currentTurn) {
-    case Turn.Combatant1:
-      return Turn.Combatant2;
-    case Turn.Combatant2:
-    default:
-      return Turn.Combatant1;
-  }
-};
-
-const applyActionEffects = async (
-  fight: IFightRow,
-  targetCombatantId: number,
-  targetUpdatedHp: number,
-): Promise<IFightRow> => {
+const setParticipantsOrder = async (id: number): Promise<IFightRow> => {
   try {
-    const newFightState = { ...fight };
-    const fightToUpdate: IUpdateFightReq = {
-      id: fight.id,
+    const participants = await participantsService.getByFightId(id);
+    const participantsWithInitiative = participants.map((participant) => {
+      const initiative = participantsService.rollInitiative(participant);
+      return {
+        id: participant.id,
+        initiative,
+      };
+    });
+    const pending_participants = participantsWithInitiative
+      .sort((a, b) => b.initiative - a.initiative)
+      .map((p) => p.id);
+    const updateFightReq: IUpdateFightReq = {
+      id,
+      pending_participants,
     };
-    if (targetCombatantId === 1) {
-      newFightState.combatant1_hp = targetUpdatedHp;
-      fightToUpdate.combatant1_hp = targetUpdatedHp;
-    } else {
-      newFightState.combatant2_hp = targetUpdatedHp;
-      fightToUpdate.combatant2_hp = targetUpdatedHp;
-    }
-    const newWinnerId = calculateWinnerId(newFightState);
-    if (newFightState.winner_id !== newWinnerId) fightToUpdate.winner_id = newWinnerId;
-    fightToUpdate.turn = rotateTurn(fight.turn);
-    const fightUpdated = await fightRepo.update(fightToUpdate);
-    return fightUpdated;
+    const fight = await update(updateFightReq);
+    return fight;
   } catch (error) {
-    const errorMessage = `Error in applyActionEffects at fight service: ${error}`;
+    const errorMessage = `Error in setParticipantsOrder at fight service: ${error}`;
     console.error(errorMessage);
     throw new Error(errorMessage);
   }
@@ -114,11 +96,11 @@ const applyActionEffects = async (
 
 const service = {
   create,
+  update,
   getAll,
   getById,
-  getByIdPopulated,
-  isFinished,
-  applyActionEffects,
+  remove,
+  setParticipantsOrder,
 };
 
 export default service;

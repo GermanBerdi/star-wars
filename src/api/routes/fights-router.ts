@@ -1,17 +1,23 @@
 import { Router, Request, Response } from "express";
-import fightService from "../../services/fights/fights-service";
-import fightsActionsRouter from "./fights-actions-router";
+
+import fightsService from "../../services/fights/fights-service";
+import { INewFightReq, IUpdateFightReq } from "../../services/fights/fights-interfaces";
+import fightsParticipantsRouter from "./fights-participants-router";
 
 const router = Router();
 
 router.post("/", async (req: Request, res: Response): Promise<void> => {
   try {
-    const { id1, id2 } = req.body;
-    if (!id1 || !id2) {
-      res.status(400).json({ message: "id1 and id2 are required." });
+    const { fight_name, available_teams } = req.body;
+    if (!fight_name) {
+      res.status(400).json({ message: "fight_name is required." });
       return;
     }
-    const fight = await fightService.create(id1, id2);
+    const newFightReq: INewFightReq = {
+      fight_name,
+      available_teams: available_teams ?? null,
+    };
+    const fight = await fightsService.create(newFightReq);
     const response = {
       message: "Fight created",
       data: {
@@ -21,14 +27,57 @@ router.post("/", async (req: Request, res: Response): Promise<void> => {
     res.status(201).json(response);
   } catch (error) {
     const errorMessage = `Error creating Fight: ${error}`;
-    console.error(errorMessage);
+    res.status(500).json({ errorMessage });
+  }
+});
+
+router.post("/:id/set-participants-order", async (req, res) => {
+  try {
+    const id = Number(req.params.id);
+    const fight = await fightsService.setParticipantsOrder(id);
+    const response = {
+      message: "Fight updated",
+      data: {
+        fight,
+      },
+    };
+    res.status(200).json(response);
+  } catch (error) {
+    const errorMessage = `Error setting participants-order: ${error}`;
+    res.status(500).json({ errorMessage });
+  }
+});
+
+router.patch("/:id", async (req: Request, res: Response): Promise<void> => {
+  try {
+    const { id } = req.params;
+    const { fight_name, available_teams, turn, pending_participants, fight_status, winner_id } = req.body;
+    const updateFightReq: IUpdateFightReq = {
+      id: Number(id),
+      fight_name,
+      available_teams,
+      turn,
+      pending_participants,
+      fight_status,
+      winner_id,
+    };
+    const fight = await fightsService.update(updateFightReq);
+    const response = {
+      message: "Fight updated",
+      data: {
+        fight,
+      },
+    };
+    res.status(200).json(response);
+  } catch (error) {
+    const errorMessage = `Error updating fight: ${error}`;
     res.status(500).json({ errorMessage });
   }
 });
 
 router.get("/", async (req: Request, res: Response): Promise<void> => {
   try {
-    const fights = await fightService.getAll();
+    const fights = await fightsService.getAll();
     const response = {
       message: "Fights list",
       data: {
@@ -38,7 +87,6 @@ router.get("/", async (req: Request, res: Response): Promise<void> => {
     res.json(response);
   } catch (error) {
     const errorMessage = `Error getting fights: ${error}`;
-    console.error(errorMessage);
     res.status(500).json({ errorMessage });
   }
 });
@@ -46,11 +94,7 @@ router.get("/", async (req: Request, res: Response): Promise<void> => {
 router.get("/:id", async (req: Request, res: Response): Promise<void> => {
   try {
     const id = Number(req.params.id);
-    const fight = await fightService.getById(id);
-    if (!fight) {
-      res.status(404).json({ error: "Fight not found" });
-      return;
-    }
+    const fight = await fightsService.getById(id);
     const response = {
       message: "Fight info",
       data: {
@@ -60,33 +104,28 @@ router.get("/:id", async (req: Request, res: Response): Promise<void> => {
     res.status(200).json(response);
   } catch (error) {
     const errorMessage = `Error getting fight: ${error}`;
-    console.error(errorMessage);
+    if (errorMessage.includes("not found")) {
+      res.status(404).json({ errorMessage });
+      return;
+    }
     res.status(500).json({ errorMessage });
   }
 });
 
-router.get("/:id/populated", async (req: Request, res: Response): Promise<void> => {
+router.delete("/:id", async (req: Request, res: Response): Promise<void> => {
   try {
     const id = Number(req.params.id);
-    const fightPopulated = await fightService.getByIdPopulated(id);
-    if (!fightPopulated) {
-      res.status(404).json({ error: "Fight not found" });
-      return;
-    }
+    await fightsService.remove(id);
     const response = {
-      message: "Fight populated info",
-      data: {
-        fight: fightPopulated,
-      },
+      message: "Fight deleted",
     };
     res.status(200).json(response);
   } catch (error) {
-    const errorMessage = `Error getting fight: ${error}`;
-    console.error(errorMessage);
+    const errorMessage = `Error deleting fight: ${error}`;
     res.status(500).json({ errorMessage });
   }
 });
 
-router.use("/:fightId/actions", fightsActionsRouter);
+router.use("/:fightId/participants", fightsParticipantsRouter);
 
 export default router;

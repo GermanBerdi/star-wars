@@ -1,41 +1,28 @@
-import { WinnerId } from "./fights-enums";
-import { ICharacterRow } from "../characters/characters-interfaces";
+import { FightStatus } from "./fights-enums";
 
 export interface IFightRow {
   id: number;
-  combatant1_id: number;
-  combatant2_id: number;
-  combatant1_hp: number;
-  combatant2_hp: number;
+  fight_name: string;
+  available_teams: number[] | null;
   turn: number;
-  winner_id: WinnerId;
+  pending_participants: number[] | null;
+  fight_status: FightStatus;
+  winner_id: number;
   updated_at: Date;
   created_at: Date;
 }
 
-export interface IFightPopulatedRow {
-  fight: IFightRow;
-  character1: ICharacterRow;
-  character2: ICharacterRow;
-}
-
 export interface INewFightReq {
-  combatant1: {
-    id: number;
-    hp: number;
-  };
-  combatant2: {
-    id: number;
-    hp: number;
-  };
+  fight_name: string;
+  available_teams: number[] | null;
 }
 
 export interface IUpdateFightReq {
   id: number;
-  combatant1_id?: number;
-  combatant2_id?: number;
-  combatant1_hp?: number;
-  combatant2_hp?: number;
+  fight_name?: string;
+  available_teams?: number[] | null;
   turn?: number;
-  winner_id?: WinnerId;
+  pending_participants?: number[] | null;
+  fight_status?: FightStatus;
+  winner_id?: number;
 }

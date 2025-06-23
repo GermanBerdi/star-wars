@@ -4,10 +4,10 @@ import { z } from "zod";
 
 import fightsService from "../../../services/fights/fights-service";
 
-const toolName = "combat-system_fights_getById";
+const toolName = "combat-system_fights_remove";
 
 const description =
-  "Retrieves detailed information for a specific fight/battle by its unique ID. Returns comprehensive fight data including participant details, combat rounds, damage dealt, winner/loser, duration, and complete battle log. Use this to examine specific fight outcomes, analyze combat performance, or review detailed battle statistics for a particular encounter.";
+  "Removes/deletes a specific fight by its unique ID. This permanently deletes the fight from the database. Use this when you want to remove a fight that is no longer needed or was created by mistake.";
 
 const paramsSchema = {
   id: z
@@ -15,7 +15,7 @@ const paramsSchema = {
     .int()
     .positive()
     .describe(
-      "Unique numeric identifier of the specific fight/battle to retrieve from the database (e.g., 1 for the first fight, 15 for fight #15). This ID corresponds to the fight records returned by listFights()",
+      "Unique numeric identifier of the fight to remove from the database (e.g., 1 for 'Epic Battle', 2 for 'Final Showdown')",
     ),
 };
 
@@ -28,16 +28,14 @@ const cb: ToolCallback<typeof paramsSchema> = async ({ id }: cbParams) => {
     content: [{ type: "text", text: "" }],
   };
   try {
-    const fight = await fightsService.getById(id);
+    await fightsService.remove(id);
     const contentData = {
-      message: "Fight",
-      data: {
-        fight,
-      },
+      message: "Fight removed",
+      data: {},
     };
     response.content[0].text = JSON.stringify(contentData);
   } catch (error) {
-    const errorMessage = `Error getting fight: ${error}`;
+    const errorMessage = `Error removing fight: ${error}`;
     const errorData = {
       error: true,
       message: errorMessage,
@@ -47,7 +45,7 @@ const cb: ToolCallback<typeof paramsSchema> = async ({ id }: cbParams) => {
   return response;
 };
 
-export const getFightByIdTool = {
+export const removeFightTool = {
   toolName,
   description,
   paramsSchema,
