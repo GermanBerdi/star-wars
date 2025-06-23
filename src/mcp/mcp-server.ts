@@ -10,6 +10,7 @@ import { updateFightTool } from "./tools/fights/update-fight-tool";
 import { listFightsTool } from "./tools/fights/list-fights-tool";
 import { getFightByIdTool } from "./tools/fights/get-fight-by-id-tool";
 import { removeFightTool } from "./tools/fights/remove-fight-tool";
+import { settingParticipantsOrderTool } from "./tools/fights/set-participants-order-tool";
 import { createParticipantTool } from "./tools/participants/create-participant-tool";
 import { getParticipantsByFightIdTool } from "./tools/participants/get-participants-by-Fight-id-tools";
 // import { performActionTool } from "./tools/actions/perfom-action";
@@ -59,6 +60,7 @@ mcpServer.tool(
   getFightByIdTool.cb,
 );
 mcpServer.tool(removeFightTool.toolName, removeFightTool.description, removeFightTool.paramsSchema, removeFightTool.cb);
+mcpServer.tool(settingParticipantsOrderTool.toolName, settingParticipantsOrderTool.description, settingParticipantsOrderTool.paramsSchema, settingParticipantsOrderTool.cb);
 mcpServer.tool(
   createParticipantTool.toolName,
   createParticipantTool.description,
