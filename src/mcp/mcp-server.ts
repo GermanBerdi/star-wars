@@ -60,7 +60,12 @@ mcpServer.tool(
   getFightByIdTool.cb,
 );
 mcpServer.tool(removeFightTool.toolName, removeFightTool.description, removeFightTool.paramsSchema, removeFightTool.cb);
-mcpServer.tool(settingParticipantsOrderTool.toolName, settingParticipantsOrderTool.description, settingParticipantsOrderTool.paramsSchema, settingParticipantsOrderTool.cb);
+mcpServer.tool(
+  settingParticipantsOrderTool.toolName,
+  settingParticipantsOrderTool.description,
+  settingParticipantsOrderTool.paramsSchema,
+  settingParticipantsOrderTool.cb,
+);
 mcpServer.tool(
   createParticipantTool.toolName,
   createParticipantTool.description,

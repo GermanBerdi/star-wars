@@ -18,7 +18,7 @@ const paramsSchema = {
     .positive()
     .describe(
       "Unique numeric identifier of the fight/battle to set participant order for (e.g., 8 for 'Torneo de los Campeones'). " +
-      "The fight must exist in the system and contain at least one alive participant."
+        "The fight must exist in the system and contain at least one alive participant.",
     ),
 };
 
@@ -26,9 +26,7 @@ interface cbParams {
   id: number;
 }
 
-const cb: ToolCallback<typeof paramsSchema> = async ({
-  id,
-}: cbParams) => {
+const cb: ToolCallback<typeof paramsSchema> = async ({ id }: cbParams) => {
   const response: CallToolResult = {
     content: [{ type: "text", text: "" }],
   };
