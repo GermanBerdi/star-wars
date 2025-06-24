@@ -25,7 +25,7 @@ const paramsSchema = {
     .number()
     .default(10)
     .describe(
-      "Defensive capability (3-18) - reduces incoming damage from attacks. Low (3-6): fragile, Average (7-12): standard armor, High (13-18): heavily armored",
+      "Armor Class (1-10) - defensive capability based on equipped armor. Lower values provide better protection: AC 1 (full plate): maximum protection, AC 3-4 (plate mail): heavy armor, AC 5-7 (chain mail, scale): medium armor, AC 8-10 (leather, padded, none): light/no armor. Reduces incoming damage from attacks. Use 'List Armor Types' to see all available armors and copy the armor_class value here (e.g., Leather armor = AC 8, Chain mail = AC 5, Full plate = AC 1).",
     ),
   speed: z
     .number()
