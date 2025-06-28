@@ -1,8 +1,8 @@
 import { Router } from "express";
 
-import strengthRouter from "./abilities-strength-router";
-import dexterityRouter from "./abilities-dexterity-router";
-import constitutionRouter from "./abilities-constitution-router";
+import strengthRouter from "./ability-strength-router";
+import dexterityRouter from "./ability-dexterity-router";
+import constitutionRouter from "./ability-constitution-router";
 
 const router = Router();
 
