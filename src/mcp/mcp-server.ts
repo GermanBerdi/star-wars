@@ -5,6 +5,7 @@ import { listAbilityConstitutionTool } from "./tools/abilities/list-ability-cons
 import { listAbilityDexterityTool } from "./tools/abilities/list-ability-dexterity-tool";
 import { listAbilityStrengthTool } from "./tools/abilities/list-ability-sterngth-tool";
 import { listArmorTypesTool } from "./tools/armor-types/list-armor-types-tool";
+import { listCharacterClassesTool } from "./tools/character/list-character-classes-tool";
 import { createCharacterTemplateTool } from "./tools/character/create-character-template-tool";
 import { updateCharacterTemplateTool } from "./tools/character/update-character-template-tool";
 import { listCharacterTemplatesTool } from "./tools/character/list-character-templates-tool";
@@ -34,6 +35,12 @@ mcpServer.tool(
 mcpServer.tool(listAbilityDexterityTool.toolName, listAbilityDexterityTool.description, listAbilityDexterityTool.cb);
 mcpServer.tool(listAbilityStrengthTool.toolName, listAbilityStrengthTool.description, listAbilityStrengthTool.cb);
 mcpServer.tool(listArmorTypesTool.toolName, listArmorTypesTool.description, listArmorTypesTool.cb);
+
+mcpServer.tool(
+  listCharacterClassesTool.toolName,
+  listCharacterClassesTool.description,
+  listCharacterClassesTool.cb,
+);
 mcpServer.tool(
   createCharacterTemplateTool.toolName,
   createCharacterTemplateTool.description,

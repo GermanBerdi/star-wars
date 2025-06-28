@@ -3,7 +3,7 @@ import { CallToolResult } from "@modelcontextprotocol/sdk/types.js";
 
 import abilityConstitutionService from "../../../services/abilities/ability-constitution-service";
 
-const toolName = "combat-system_abilities_constitution_list";
+const toolName = "combat-system_abilitiesConstitution_list";
 
 const description =
   "List Constitution Abilities - Retrieves all constitution values (3-25) with their survival modifiers (hit point adjustment, system shock, resurrection survival, poison save), regeneration capabilities, and warrior-specific bonuses. In AD&D, constitution is normally rolled with 3d6 (3-18 range, with 18 being rare at 1/216 odds). When creating characters, consider these probabilities - while you have freedom to assign any value, extreme scores at either end (very low 3-5 or very high 16-18+) should reflect truly remarkable characters, whether exceptionally frail or extraordinarily hardy.";
