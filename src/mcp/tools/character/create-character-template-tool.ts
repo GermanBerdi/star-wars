@@ -2,9 +2,9 @@ import { ToolCallback } from "@modelcontextprotocol/sdk/server/mcp.js";
 import { CallToolResult } from "@modelcontextprotocol/sdk/types.js";
 import { z } from "zod";
 
-import characterTemplatesService from "../../../services/character-templates/character-templates-service";
-import { INewCharacterTemplateReq } from "../../../services/character-templates/character-templates-interfaces";
-import { CharacterType } from "../../../services/character-templates/character-templates-enums";
+import characterTemplatesService from "../../../services/character/character-templates-service";
+import { INewCharacterTemplateReq } from "../../../services/character/character-templates-interfaces";
+import { CharacterType } from "../../../services/character/character-templates-enums";
 
 const toolName = "combat-system_characterTemplates_create";
 

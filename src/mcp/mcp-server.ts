@@ -5,11 +5,11 @@ import { listAbilityConstitutionTool } from "./tools/abilities/list-ability-cons
 import { listAbilityDexterityTool } from "./tools/abilities/list-ability-dexterity-tool";
 import { listAbilityStrengthTool } from "./tools/abilities/list-ability-sterngth-tool";
 import { listArmorTypesTool } from "./tools/armor-types/list-armor-types-tool";
-import { createCharacterTemplateTool } from "./tools/character-templates/create-character-template-tool";
-import { updateCharacterTemplateTool } from "./tools/character-templates/update-character-template-tool";
-import { listCharacterTemplatesTool } from "./tools/character-templates/list-character-templates-tool";
-import { getCharacterTemplateByIdTool } from "./tools/character-templates/get-character-template-by-id-tool";
-import { removeCharacterTemplateTool } from "./tools/character-templates/remove-character-template-tool";
+import { createCharacterTemplateTool } from "./tools/character/create-character-template-tool";
+import { updateCharacterTemplateTool } from "./tools/character/update-character-template-tool";
+import { listCharacterTemplatesTool } from "./tools/character/list-character-templates-tool";
+import { getCharacterTemplateByIdTool } from "./tools/character/get-character-template-by-id-tool";
+import { removeCharacterTemplateTool } from "./tools/character/remove-character-template-tool";
 import { createFightTool } from "./tools/fights/create-fight-tool";
 import { updateFightTool } from "./tools/fights/update-fight-tool";
 import { listFightsTool } from "./tools/fights/list-fights-tool";
@@ -26,7 +26,11 @@ const mcpServer = new McpServer({
   name: "combat-system",
   version: "1.0.0",
 });
-mcpServer.tool(listAbilityConstitutionTool.toolName, listAbilityConstitutionTool.description, listAbilityConstitutionTool.cb);
+mcpServer.tool(
+  listAbilityConstitutionTool.toolName,
+  listAbilityConstitutionTool.description,
+  listAbilityConstitutionTool.cb,
+);
 mcpServer.tool(listAbilityDexterityTool.toolName, listAbilityDexterityTool.description, listAbilityDexterityTool.cb);
 mcpServer.tool(listAbilityStrengthTool.toolName, listAbilityStrengthTool.description, listAbilityStrengthTool.cb);
 mcpServer.tool(listArmorTypesTool.toolName, listArmorTypesTool.description, listArmorTypesTool.cb);

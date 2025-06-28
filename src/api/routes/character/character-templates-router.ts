@@ -1,11 +1,11 @@
 import { Router, Request, Response } from "express";
 
-import characterTemplatesService from "../../services/character-templates/character-templates-service";
+import characterTemplatesService from "../../../services/character/character-templates-service";
 import {
   INewCharacterTemplateReq,
   IUpdateCharacterTemplateReq,
-} from "../../services/character-templates/character-templates-interfaces";
-import { CharacterType } from "../../services/character-templates/character-templates-enums";
+} from "../../../services/character/character-templates-interfaces";
+import { CharacterType } from "../../../services/character/character-templates-enums";
 
 const router = Router();
 

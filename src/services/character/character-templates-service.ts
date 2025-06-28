@@ -1,4 +1,4 @@
-import characterTemplatesRepo from "../../db/character-templates/character-templates-repo";
+import characterTemplatesRepo from "../../db/character/character-templates-repo";
 
 import {
   INewCharacterTemplateReq,

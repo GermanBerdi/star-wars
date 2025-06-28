@@ -1,7 +1,7 @@
 import { ToolCallback } from "@modelcontextprotocol/sdk/server/mcp.js";
 import { CallToolResult } from "@modelcontextprotocol/sdk/types.js";
 
-import characterTemplatesService from "../../../services/character-templates/character-templates-service";
+import characterTemplatesService from "../../../services/character/character-templates-service";
 
 const toolName = "combat-system_characterTemplates_list";
 

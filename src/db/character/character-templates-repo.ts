@@ -5,7 +5,7 @@ import {
   INewCharacterTemplateReq,
   ICharacterTemplateRow,
   IUpdateCharacterTemplateReq,
-} from "../../services/character-templates/character-templates-interfaces";
+} from "../../services/character/character-templates-interfaces";
 import { ICharacterTemplateRowDataPacket } from "./character-templates-repo-interfaces";
 
 const create = async (newCharacterTemplate: INewCharacterTemplateReq): Promise<ICharacterTemplateRow> => {

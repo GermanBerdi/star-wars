@@ -2,7 +2,7 @@ import pool from "../connection";
 import { ResultSetHeader } from "mysql2";
 
 import { INewParticipantReq, IParticipantRow } from "../../services/participants/participants-interfaces";
-import { ICharacterTemplateRow } from "../../services/character-templates/character-templates-interfaces";
+import { ICharacterTemplateRow } from "../../services/character/character-templates-interfaces";
 import { IParticipantRowDataPacket } from "./participants-repo-interfaces";
 
 const create = async (
