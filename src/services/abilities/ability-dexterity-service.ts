@@ -28,7 +28,7 @@ const getById = async (id: number): Promise<IAbilityDexterityRow> => {
 const getByAbilityScore = async (abilityScore: number): Promise<IAbilityDexterityRow> => {
   try {
     const dexterityModifier = await abilitiesDexterityRepo.getByAbilityScore(abilityScore);
-    if (!dexterityModifier) throw new Error(`Ability dexteroty with abilityScore ${abilityScore} not found.`);
+    if (!dexterityModifier) throw new Error(`Ability dexterity with abilityScore ${abilityScore} not found.`);
     return dexterityModifier;
   } catch (error) {
     const errorMessage = `Error in getByAbilityScore at abilities dexterity service: ${error}`;
