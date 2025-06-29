@@ -1,6 +1,7 @@
 import { Router, Request, Response } from "express";
 
 import characterTemplatesService from "../../../services/character/character-templates-service";
+import { validateCreateCharacterTemplate } from "./middlewares/character-templates-validation";
 import {
   INewCharacterTemplateReq,
   IUpdateCharacterTemplateReq,
@@ -9,21 +10,19 @@ import { CharacterType } from "../../../services/character/character-templates-e
 
 const router = Router();
 
-router.post("/", async (req: Request, res: Response): Promise<void> => {
+router.post("/", validateCreateCharacterTemplate, async (req: Request, res: Response): Promise<void> => {
   try {
-    const { character_name, strength, defense, speed, hp, character_type, character_description } = req.body;
-    if (!character_name) {
-      res.status(400).json({ message: "character_name is required." });
-      return;
-    }
     const newCharacterTemplateReq: INewCharacterTemplateReq = {
-      character_name,
-      strength: strength ?? 0,
-      defense: defense ?? 0,
-      speed: speed ?? 0,
-      hp: hp ?? 0,
-      character_type: character_type ?? CharacterType.COMMON,
-      character_description: character_description ?? null,
+      character_name: req.body.character_name,
+      class_id: req.body.class_id,
+      character_level: req.body.character_level,
+      strength_id: req.body.strength_id,
+      dexterity_id: req.body.dexterity_id,
+      constitution_id: req.body.constitution_id,
+      armor_type_id: req.body.armor_type_id,
+      speed: req.body.speed,
+      character_type: req.body.character_type,
+      character_description: req.body.character_description,
     };
     const characterTemplate = await characterTemplatesService.create(newCharacterTemplateReq);
     const response = {
