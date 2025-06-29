@@ -1,7 +1,7 @@
 import pool from "../connection";
 
-import { IAbilityStrengthRow } from "../../services/abilities/ability-strength-service-interfaces";
-import { IAbilityStrengthRowDataPacket } from "./ability-strength-repo-interfaces";
+import type { IAbilityStrengthRow } from "../../services/abilities/ability-strength-service-interfaces";
+import type { IAbilityStrengthRowDataPacket } from "./ability-strength-repo-interfaces";
 
 const getAll = async (): Promise<IAbilityStrengthRow[]> => {
   const [rows] = await pool.query<IAbilityStrengthRowDataPacket[]>(

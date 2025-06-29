@@ -1,6 +1,6 @@
 import abilitiesStrengthRepo from "../../db/abilities/ability-strength-repo";
 
-import { IAbilityStrengthRow } from "./ability-strength-service-interfaces";
+import type { IAbilityStrengthRow } from "./ability-strength-service-interfaces";
 
 const getAll = async (): Promise<IAbilityStrengthRow[]> => {
   try {

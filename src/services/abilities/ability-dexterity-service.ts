@@ -1,6 +1,6 @@
 import abilitiesDexterityRepo from "../../db/abilities/ability-dexterity-repo";
 
-import { IAbilityDexterityRow } from "./ability-dexterity-service-interfaces";
+import type { IAbilityDexterityRow } from "./ability-dexterity-service-interfaces";
 
 const getAll = async (): Promise<IAbilityDexterityRow[]> => {
   try {

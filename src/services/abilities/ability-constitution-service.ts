@@ -1,6 +1,6 @@
 import abilitiesConstitutionRepo from "../../db/abilities/ability-constitution-repo";
 
-import { IAbilityConstitutionRow } from "./ability-constitution-service-interfaces";
+import type { IAbilityConstitutionRow } from "./ability-constitution-service-interfaces";
 
 const getAll = async (): Promise<IAbilityConstitutionRow[]> => {
   try {
@@ -31,7 +31,7 @@ const getByAbilityScore = async (abilityScore: number): Promise<IAbilityConstitu
     if (!constitutionModifier) throw new Error(`Ability constitution with abilityScore ${abilityScore} not found.`);
     return constitutionModifier;
   } catch (error) {
-    const errorMessage = `Error in getByAbilityScore at constitution dexterity service: ${error}`;
+    const errorMessage = `Error in getByAbilityScore at constitution service: ${error}`;
     console.error(errorMessage);
     throw new Error(errorMessage);
   }
