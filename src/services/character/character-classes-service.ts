@@ -13,8 +13,21 @@ const getAll = async (): Promise<ICharacterClassRow[]> => {
   }
 };
 
+const getById = async (id: number): Promise<ICharacterClassRow> => {
+  try {
+    const characterClass = await characterClassesRepo.getById(id);
+    if (!characterClass) throw new Error(`Character class with id ${id} not found.`);
+    return characterClass;
+  } catch (error) {
+    const errorMessage = `Error in getById at character classes service: ${error}`;
+    console.error(errorMessage);
+    throw new Error(errorMessage);
+  }
+};
+
 const service = {
   getAll,
+  getById,
 };
 
 export default service;

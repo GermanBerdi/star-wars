@@ -8,7 +8,15 @@ const getAll = async (): Promise<ICharacterClassRow[]> => {
   return rows;
 };
 
+const getById = async (id: number): Promise<ICharacterClassRow | null> => {
+  const [rows] = await pool.query<ICharacterClassRowDataPacket[]>(`SELECT * FROM character_classes WHERE id = ?;`, [
+    id,
+  ]);
+  return rows.length > 0 ? rows[0] : null;
+};
+
 const repo = {
   getAll,
+  getById,
 };
 export default repo;
