@@ -6,7 +6,6 @@ import {
   INewCharacterTemplateReq,
   IUpdateCharacterTemplateReq,
 } from "../../../services/character/character-templates-interfaces";
-import { CharacterType } from "../../../services/character/character-templates-enums";
 
 const router = Router();
 
@@ -75,7 +74,7 @@ router.get("/", async (req: Request, res: Response): Promise<void> => {
         characterTemplates,
       },
     };
-    res.json(response);
+    res.status(200).json(response);
   } catch (error) {
     const errorMessage = `Error getting character templates: ${error}`;
     res.status(500).json({ errorMessage });

@@ -13,7 +13,7 @@ router.get("/", async (req: Request, res: Response): Promise<void> => {
         characterClasses,
       },
     };
-    res.json(response);
+    res.status(200).json(response);
   } catch (error) {
     const errorMessage = `Error getting character classes: ${error}`;
     res.status(500).json({ errorMessage });

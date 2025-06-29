@@ -1,29 +1,30 @@
 import characterTemplatesRepo from "../../db/character/character-templates-repo";
 
 import rollsService from "../rolls/rolls-service";
-import characterClassesService from "../character/character-classes-service";
 import abilityStrengthService from "../abilities/ability-strength-service";
 import abilityDexterityService from "../abilities/ability-dexterity-service";
 import abilityConstitutionService from "../abilities/ability-constitution-service";
+import thac0sService from "../../services/thac0s/thac0s-service";
+import characterClassesService from "../character/character-classes-service";
 import armorTypesService from "../armor-types/armor-types-service";
+
+import type { IAbilityStrengthRow } from "../abilities/ability-strength-service-interfaces";
+import type { IAbilityDexterityRow } from "../abilities/ability-dexterity-service-interfaces";
+import type { IAbilityConstitutionRow } from "../abilities/ability-constitution-service-interfaces";
+import type { IArmorTypeRow } from "../armor-types/armor-types-interfaces";
+import type { ICharacterClassRow } from "./character-classes-interfaces";
 import type {
+  IThac0Modifiers,
   INewCharacterTemplateReq,
+  ICharacterTemplateRow,
   ICharacterTemplateCalculated,
   IUpdateCharacterTemplateReq,
-  ICharacterTemplateRow,
-  IThac0Modifiers,
 } from "./character-templates-interfaces";
-import type { IArmorTypeRow } from "../armor-types/armor-types-interfaces";
-import type { IAbilityDexterityRow } from "../abilities/ability-dexterity-service-interfaces";
-import type { ICharacterClassRow } from "./character-classes-interfaces";
-import { ArmorType } from "../armor-types/armor_types-enums";
-import { IAbilityConstitutionRow } from "../abilities/ability-constitution-service-interfaces";
-import { ClassGroup } from "./character-classes-enums";
-import { IAbilityStrengthRow } from "../abilities/ability-strength-service-interfaces";
 
-import thac0sService from "../../services/thac0s/thac0s-service";
-import { Thac0 } from "../thac0s/thac0s-enums";
 import { Dice } from "../rolls/rolls-enums";
+import { ClassGroup } from "./character-classes-enums";
+import { ArmorType } from "../armor-types/armor_types-enums";
+import { Thac0 } from "../thac0s/thac0s-enums";
 import { CharacterType } from "./character-templates-enums";
 
 const getOrRollStrength = async (
