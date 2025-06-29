@@ -2,18 +2,52 @@ import pool from "../connection";
 import { ResultSetHeader } from "mysql2";
 
 import {
-  INewCharacterTemplateReq,
+  ICharacterTemplateCalculated,
   ICharacterTemplateRow,
   IUpdateCharacterTemplateReq,
 } from "../../services/character/character-templates-interfaces";
 import { ICharacterTemplateRowDataPacket } from "./character-templates-repo-interfaces";
 
-const create = async (newCharacterTemplate: INewCharacterTemplateReq): Promise<ICharacterTemplateRow> => {
-  const { character_name, strength, defense, speed, hp, character_type, character_description } = newCharacterTemplate;
-  const [result] = await pool.execute<ResultSetHeader>(
-    `INSERT INTO character_templates (character_name, strength, defense, speed, hp, character_type, character_description) VALUES (?, ?, ?, ?, ?, ? ,?);`,
-    [character_name, strength, defense, speed, hp, character_type, character_description],
-  );
+const create = async (newCharacterTemplateCalculated: ICharacterTemplateCalculated): Promise<ICharacterTemplateRow> => {
+  const query = `
+    INSERT INTO character_templates (
+      character_name,
+      class_id,
+      character_level,
+      strength_id,
+      dexterity_id,
+      constitution_id,
+      armor_type_id,
+      armor_class,
+      speed,
+      hit_dices,
+      hit_dices_modified,
+      hp,
+      thac0_modifiers,
+      thac0,
+      character_type,
+      character_description
+    ) VALUES (?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?);
+  `;
+  const values = [
+    newCharacterTemplateCalculated.character_name,
+    newCharacterTemplateCalculated.class_id,
+    newCharacterTemplateCalculated.character_level,
+    newCharacterTemplateCalculated.strength_id,
+    newCharacterTemplateCalculated.dexterity_id,
+    newCharacterTemplateCalculated.constitution_id,
+    newCharacterTemplateCalculated.armor_type_id,
+    newCharacterTemplateCalculated.armor_class,
+    newCharacterTemplateCalculated.speed,
+    newCharacterTemplateCalculated.hit_dices,
+    newCharacterTemplateCalculated.hit_dices_modified,
+    newCharacterTemplateCalculated.hp,
+    newCharacterTemplateCalculated.thac0_modifiers,
+    newCharacterTemplateCalculated.thac0,
+    newCharacterTemplateCalculated.character_type,
+    newCharacterTemplateCalculated.character_description,
+  ];
+  const [result] = await pool.execute<ResultSetHeader>(query, values);
   if (result.affectedRows !== 1) throw new Error(JSON.stringify(result));
   const [row] = await pool.execute<ICharacterTemplateRowDataPacket[]>(
     `SELECT * FROM character_templates WHERE id = ?`,
