@@ -8,7 +8,13 @@ const getAll = async (): Promise<IArmorTypeRow[]> => {
   return rows;
 };
 
+const getById = async (id: number): Promise<IArmorTypeRow | null> => {
+  const [rows] = await pool.query<IArmorTypeRowDataPacket[]>(`SELECT * FROM armor_types WHERE id = ?;`, [id]);
+  return rows.length > 0 ? rows[0] : null;
+};
+
 const repo = {
   getAll,
+  getById,
 };
 export default repo;
