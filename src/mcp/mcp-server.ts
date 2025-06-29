@@ -6,7 +6,7 @@ import { listAbilityDexterityTool } from "./tools/abilities/list-ability-dexteri
 import { listAbilityStrengthTool } from "./tools/abilities/list-ability-sterngth-tool";
 import { listArmorTypesTool } from "./tools/armor-types/list-armor-types-tool";
 import { listCharacterClassesTool } from "./tools/character/list-character-classes-tool";
-import { createCharacterTemplateTool } from "./tools/character/create-character-template-tool";
+// import { createCharacterTemplateTool } from "./tools/character/create-character-template-tool";
 import { updateCharacterTemplateTool } from "./tools/character/update-character-template-tool";
 import { listCharacterTemplatesTool } from "./tools/character/list-character-templates-tool";
 import { getCharacterTemplateByIdTool } from "./tools/character/get-character-template-by-id-tool";
@@ -17,8 +17,8 @@ import { listFightsTool } from "./tools/fights/list-fights-tool";
 import { getFightByIdTool } from "./tools/fights/get-fight-by-id-tool";
 import { removeFightTool } from "./tools/fights/remove-fight-tool";
 import { settingParticipantsOrderTool } from "./tools/fights/set-participants-order-tool";
-import { createParticipantTool } from "./tools/participants/create-participant-tool";
-import { getParticipantsByFightIdTool } from "./tools/participants/get-participants-by-Fight-id-tools";
+// import { createParticipantTool } from "./tools/participants/create-participant-tool";
+// import { getParticipantsByFightIdTool } from "./tools/participants/get-participants-by-Fight-id-tools";
 // import { performActionTool } from "./tools/actions/perfom-action";
 import { saludarTool } from "./tools/saludar/saludar-tool";
 import { listStarshipsTool } from "./tools/starships/list-starships-tool";
@@ -36,17 +36,13 @@ mcpServer.tool(listAbilityDexterityTool.toolName, listAbilityDexterityTool.descr
 mcpServer.tool(listAbilityStrengthTool.toolName, listAbilityStrengthTool.description, listAbilityStrengthTool.cb);
 mcpServer.tool(listArmorTypesTool.toolName, listArmorTypesTool.description, listArmorTypesTool.cb);
 
-mcpServer.tool(
-  listCharacterClassesTool.toolName,
-  listCharacterClassesTool.description,
-  listCharacterClassesTool.cb,
-);
-mcpServer.tool(
-  createCharacterTemplateTool.toolName,
-  createCharacterTemplateTool.description,
-  createCharacterTemplateTool.paramsSchema,
-  createCharacterTemplateTool.cb,
-);
+mcpServer.tool(listCharacterClassesTool.toolName, listCharacterClassesTool.description, listCharacterClassesTool.cb);
+// mcpServer.tool(
+//   createCharacterTemplateTool.toolName,
+//   createCharacterTemplateTool.description,
+//   createCharacterTemplateTool.paramsSchema,
+//   createCharacterTemplateTool.cb,
+// );
 mcpServer.tool(
   updateCharacterTemplateTool.toolName,
   updateCharacterTemplateTool.description,
@@ -86,18 +82,18 @@ mcpServer.tool(
   settingParticipantsOrderTool.paramsSchema,
   settingParticipantsOrderTool.cb,
 );
-mcpServer.tool(
-  createParticipantTool.toolName,
-  createParticipantTool.description,
-  createParticipantTool.paramsSchema,
-  createParticipantTool.cb,
-);
-mcpServer.tool(
-  getParticipantsByFightIdTool.toolName,
-  getParticipantsByFightIdTool.description,
-  getParticipantsByFightIdTool.paramsSchema,
-  getParticipantsByFightIdTool.cb,
-);
+// mcpServer.tool(
+//   createParticipantTool.toolName,
+//   createParticipantTool.description,
+//   createParticipantTool.paramsSchema,
+//   createParticipantTool.cb,
+// );
+// mcpServer.tool(
+//   getParticipantsByFightIdTool.toolName,
+//   getParticipantsByFightIdTool.description,
+//   getParticipantsByFightIdTool.paramsSchema,
+//   getParticipantsByFightIdTool.cb,
+// );
 
 // mcpServer.tool(
 //   performActionTool.toolName,
