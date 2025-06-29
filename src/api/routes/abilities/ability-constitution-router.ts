@@ -13,9 +13,30 @@ router.get("/", async (req: Request, res: Response): Promise<void> => {
         constitutionModifiers,
       },
     };
-    res.json(response);
+    res.status(200).json(response);
   } catch (error) {
     const errorMessage = `Error getting constitution modifiers: ${error}`;
+    res.status(500).json({ errorMessage });
+  }
+});
+
+router.get("/:id", async (req: Request, res: Response): Promise<void> => {
+  try {
+    const id = Number(req.params.id);
+    const constitutionModifier = await abilityConstitutionService.getById(id);
+    const response = {
+      message: "Constitution modifier",
+      data: {
+        constitutionModifier,
+      },
+    };
+    res.status(200).json(response);
+  } catch (error) {
+    const errorMessage = `Error getting constitution modifier: ${error}`;
+    if (errorMessage.includes("not found")) {
+      res.status(404).json({ errorMessage });
+      return;
+    }
     res.status(500).json({ errorMessage });
   }
 });

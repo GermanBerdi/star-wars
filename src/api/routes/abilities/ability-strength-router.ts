@@ -13,9 +13,30 @@ router.get("/", async (req: Request, res: Response): Promise<void> => {
         strengthModifiers,
       },
     };
-    res.json(response);
+    res.status(200).json(response);
   } catch (error) {
     const errorMessage = `Error getting strength modifiers: ${error}`;
+    res.status(500).json({ errorMessage });
+  }
+});
+
+router.get("/:id", async (req: Request, res: Response): Promise<void> => {
+  try {
+    const id = req.params.id;
+    const strengthModifier = await abilityStrengthService.getById(id);
+    const response = {
+      message: "Strength modifier",
+      data: {
+        strengthModifier,
+      },
+    };
+    res.status(200).json(response);
+  } catch (error) {
+    const errorMessage = `Error getting strength modifier: ${error}`;
+    if (errorMessage.includes("not found")) {
+      res.status(404).json({ errorMessage });
+      return;
+    }
     res.status(500).json({ errorMessage });
   }
 });

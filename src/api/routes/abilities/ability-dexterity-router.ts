@@ -13,9 +13,30 @@ router.get("/", async (req: Request, res: Response): Promise<void> => {
         dexterityModifiers,
       },
     };
-    res.json(response);
+    res.status(200).json(response);
   } catch (error) {
     const errorMessage = `Error getting dexterity modifiers: ${error}`;
+    res.status(500).json({ errorMessage });
+  }
+});
+
+router.get("/:id", async (req: Request, res: Response): Promise<void> => {
+  try {
+    const id = Number(req.params.id);
+    const dexterityModifier = await abilityDexterityService.getById(id);
+    const response = {
+      message: "Dexterity modifier",
+      data: {
+        dexterityModifier,
+      },
+    };
+    res.status(200).json(response);
+  } catch (error) {
+    const errorMessage = `Error getting dexterity modifier: ${error}`;
+    if (errorMessage.includes("not found")) {
+      res.status(404).json({ errorMessage });
+      return;
+    }
     res.status(500).json({ errorMessage });
   }
 });
