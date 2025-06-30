@@ -1,6 +1,6 @@
 import thac0sRepo from "../../db/thac0s/thac0s-repo";
 
-import { IThac0sRow } from "./thac0s-interfaces";
+import type { IThac0sRow } from "./thac0s-interfaces";
 
 const getAll = async (): Promise<IThac0sRow[]> => {
   try {

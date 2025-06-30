@@ -1,6 +1,6 @@
-import characterClassesRepo from "../../db/character/character-classes-repo";
+import characterClassesRepo from "../../db/character-classes/character-classes-repo";
 
-import { ICharacterClassRow } from "./character-classes-interfaces";
+import type { ICharacterClassRow } from "./character-classes-interfaces";
 
 const getAll = async (): Promise<ICharacterClassRow[]> => {
   try {
