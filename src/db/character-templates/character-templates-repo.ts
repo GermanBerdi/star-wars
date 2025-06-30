@@ -1,7 +1,11 @@
 import pool from "../connection";
 import type { ResultSetHeader } from "mysql2";
 
-import type { ICharacterTemplateCalculated, ICharacterTemplateRow, IUpdateCharacterTemplateReq } from "../../services/character-templates/character-templates-interfaces";
+import type {
+  ICharacterTemplateCalculated,
+  ICharacterTemplateRow,
+  IUpdateCharacterTemplateReq,
+} from "../../services/character-templates/character-templates-interfaces";
 import type { ICharacterTemplateRowDataPacket } from "./character-templates-repo-interfaces";
 
 const create = async (newCharacterTemplateCalculated: ICharacterTemplateCalculated): Promise<ICharacterTemplateRow> => {

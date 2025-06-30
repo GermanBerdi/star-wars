@@ -9,7 +9,11 @@ import { ClassGroup, ArmorType, Thac0 } from "../calculations/character/characte
 import { Dice } from "../calculations/rolls/rolls-enums";
 import { CharacterType } from "./character-templates-enums";
 
-import type { IAbilityStrengthRow, IAbilityDexterityRow, IAbilityConstitutionRow } from "../abilities/abilities-service-interfaces";
+import type {
+  IAbilityStrengthRow,
+  IAbilityDexterityRow,
+  IAbilityConstitutionRow,
+} from "../abilities/abilities-service-interfaces";
 
 import type {
   INewCharacterTemplateReq,
@@ -87,7 +91,9 @@ const create = async (newCharacterTemplateReq: INewCharacterTemplateReq): Promis
       newCharacterTemplateReq.character_level,
       strength,
     );
-    newCharacterTemplateCalculated.thac0 = calcService.character.calculateThac0(newCharacterTemplateCalculated.thac0_modifiers);
+    newCharacterTemplateCalculated.thac0 = calcService.character.calculateThac0(
+      newCharacterTemplateCalculated.thac0_modifiers,
+    );
     const characterTemplate = await characterTemplatesRepo.create(newCharacterTemplateCalculated);
     return characterTemplate;
   } catch (error) {

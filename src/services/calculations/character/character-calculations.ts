@@ -4,7 +4,11 @@ import thac0sService from "../../thac0s/thac0s-service";
 import { ClassGroup } from "./character-enums";
 
 import type { IArmorTypeRow } from "../../armor-types/armor-types-interfaces";
-import type { IAbilityStrengthRow, IAbilityDexterityRow, IAbilityConstitutionRow } from "../../abilities/abilities-service-interfaces";
+import type {
+  IAbilityStrengthRow,
+  IAbilityDexterityRow,
+  IAbilityConstitutionRow,
+} from "../../abilities/abilities-service-interfaces";
 import type { ICharacterClassRow } from "../../character-classes/character-classes-interfaces";
 import type { IThac0Modifiers } from "../../character-templates/character-templates-interfaces";
 
@@ -66,12 +70,12 @@ const calculateThac0 = (thac0Modifiers: IThac0Modifiers): number => {
 };
 
 const service = {
-  armorClass,  
+  armorClass,
   rollHitDices,
   calculateHitDicesModified,
   calculateHp,
   calculateThac0Modifiers,
-  calculateThac0
+  calculateThac0,
 };
 
 export default service;

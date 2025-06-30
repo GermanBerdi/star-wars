@@ -1,7 +1,10 @@
 import pool from "../connection";
 import type { ResultSetHeader } from "mysql2";
 
-import type { INewParticipantReq, IParticipantRow } from "../../services/character-participants/character-participants-interfaces";
+import type {
+  INewParticipantReq,
+  IParticipantRow,
+} from "../../services/character-participants/character-participants-interfaces";
 import type { ICharacterTemplateRow } from "../../services/character-templates/character-templates-interfaces";
 import type { IParticipantRowDataPacket } from "./participants-repo-interfaces";
 
