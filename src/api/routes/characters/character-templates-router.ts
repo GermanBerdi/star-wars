@@ -1,11 +1,14 @@
-import { Router, Request, Response } from "express";
+import { Router } from "express";
+import type { Request, Response } from "express";
 
-import characterTemplatesService from "../../../services/character/character-templates-service";
+import characterTemplatesService from "../../../services/character-templates/character-templates-service";
+
 import { validateCreateCharacterTemplate } from "./middlewares/character-templates-validation";
-import {
+
+import type {
   INewCharacterTemplateReq,
   IUpdateCharacterTemplateReq,
-} from "../../../services/character/character-templates-interfaces";
+} from "../../../services/character-templates/character-templates-interfaces";
 
 const router = Router();
 

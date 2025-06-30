@@ -1,4 +1,6 @@
-// import { Router, Request, Response } from "express";
+import { Router } from "express";
+import type { Request, Response } from "express";
+
 // import actionService from "../../services/actions/actions-service";
 // import { IPerformActionReq } from "../../services/actions/actions-interfaces";
 // const router = Router({ mergeParams: true });

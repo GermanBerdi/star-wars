@@ -1,6 +1,7 @@
-import { Router, Request, Response } from "express";
+import { Router } from "express";
+import type { Request, Response } from "express";
 
-import thac0sService from "../../services/thac0s/thac0s-service";
+import thac0sService from "../../../services/thac0s/thac0s-service";
 
 const router = Router();
 
@@ -13,7 +14,7 @@ router.get("/", async (req: Request, res: Response): Promise<void> => {
         thac0s,
       },
     };
-    res.json(response);
+    res.status(200).json(response);
   } catch (error) {
     const errorMessage = `Error getting thac0s: ${error}`;
     res.status(500).json({ errorMessage });

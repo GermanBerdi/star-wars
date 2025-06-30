@@ -1,4 +1,5 @@
-import { Router, Request, Response } from "express";
+import { Router } from "express";
+import type { Request, Response } from "express";
 
 // import participantsService from "../../services/participants/participants-service";
 // import { INewParticipantReq } from "../../services/participants/participants-interfaces";

@@ -1,12 +1,13 @@
-import { Router, Request, Response } from "express";
+import { Router } from "express";
+import type { Request, Response } from "express";
 
-import abilityStrengthService from "../../../services/abilities/ability-strength-service";
+import abilitiesService from "../../../services/abilities/abilities-service";
 
 const router = Router();
 
 router.get("/", async (req: Request, res: Response): Promise<void> => {
   try {
-    const strengthModifiers = await abilityStrengthService.getAll();
+    const strengthModifiers = await abilitiesService.strength.getAll();
     const response = {
       message: "Strength modifiers",
       data: {
@@ -23,7 +24,7 @@ router.get("/", async (req: Request, res: Response): Promise<void> => {
 router.get("/:id", async (req: Request, res: Response): Promise<void> => {
   try {
     const id = req.params.id;
-    const strengthModifier = await abilityStrengthService.getById(id);
+    const strengthModifier = await abilitiesService.strength.getById(id);
     const response = {
       message: "Strength modifier",
       data: {

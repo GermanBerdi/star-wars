@@ -1,10 +1,11 @@
-import { Router, Request, Response } from "express";
+import { Router } from "express";
+import type { Request, Response } from "express";
 
 const router = Router();
 
 router.get("/", (req: Request, res: Response): void => {
   const response = { status: "ok" };
-  res.json(response);
+  res.status(200).json(response);
 });
 
 export default router;

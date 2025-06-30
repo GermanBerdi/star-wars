@@ -1,4 +1,4 @@
-import { Request, Response, NextFunction } from "express";
+import type { Request, Response, NextFunction } from "express";
 
 export const validateCreateCharacterTemplate = (req: Request, res: Response, next: NextFunction): void => {
   if (!req.body.character_name) {

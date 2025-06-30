@@ -1,8 +1,10 @@
-import { Router, Request, Response } from "express";
+import { Router } from "express";
+import type { Request, Response } from "express";
 
-import fightsService from "../../services/fights/fights-service";
-import { INewFightReq, IUpdateFightReq } from "../../services/fights/fights-interfaces";
-import fightsParticipantsRouter from "./fights-participants-router";
+import fightsService from "../../../services/fights/fights-service";
+
+import type { INewFightReq, IUpdateFightReq } from "../../../services/fights/fights-interfaces";
+// import fightsParticipantsRouter from "./fights-participants-router";
 
 const router = Router();
 
@@ -84,7 +86,7 @@ router.get("/", async (req: Request, res: Response): Promise<void> => {
         fights,
       },
     };
-    res.json(response);
+    res.status(200).json(response);
   } catch (error) {
     const errorMessage = `Error getting fights: ${error}`;
     res.status(500).json({ errorMessage });
@@ -126,6 +128,6 @@ router.delete("/:id", async (req: Request, res: Response): Promise<void> => {
   }
 });
 
-router.use("/:fightId/participants", fightsParticipantsRouter);
+// router.use("/:fightId/participants", fightsParticipantsRouter);
 
 export default router;

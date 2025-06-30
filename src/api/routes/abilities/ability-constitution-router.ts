@@ -1,12 +1,13 @@
-import { Router, Request, Response } from "express";
+import { Router } from "express";
+import type { Request, Response } from "express";
 
-import abilityConstitutionService from "../../../services/abilities/ability-constitution-service";
+import abilitiesService from "../../../services/abilities/abilities-service";
 
 const router = Router();
 
 router.get("/", async (req: Request, res: Response): Promise<void> => {
   try {
-    const constitutionModifiers = await abilityConstitutionService.getAll();
+    const constitutionModifiers = await abilitiesService.constitution.getAll();
     const response = {
       message: "Constitution modifiers",
       data: {
@@ -23,7 +24,7 @@ router.get("/", async (req: Request, res: Response): Promise<void> => {
 router.get("/:id", async (req: Request, res: Response): Promise<void> => {
   try {
     const id = Number(req.params.id);
-    const constitutionModifier = await abilityConstitutionService.getById(id);
+    const constitutionModifier = await abilitiesService.constitution.getById(id);
     const response = {
       message: "Constitution modifier",
       data: {

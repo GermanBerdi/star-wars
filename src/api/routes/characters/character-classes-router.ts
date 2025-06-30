@@ -1,6 +1,7 @@
-import { Router, Request, Response } from "express";
+import { Router } from "express";
+import type { Request, Response } from "express";
 
-import characterClassesService from "../../../services/character/character-classes-service";
+import characterClassesService from "../../../services/character-classes/character-classes-service";
 
 const router = Router();
 

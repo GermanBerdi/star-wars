@@ -1,12 +1,13 @@
-import { Router, Request, Response } from "express";
+import { Router } from "express";
+import type { Request, Response } from "express";
 
-import abilityDexterityService from "../../../services/abilities/ability-dexterity-service";
+import abilitiesService from "../../../services/abilities/abilities-service";
 
 const router = Router();
 
 router.get("/", async (req: Request, res: Response): Promise<void> => {
   try {
-    const dexterityModifiers = await abilityDexterityService.getAll();
+    const dexterityModifiers = await abilitiesService.dexterity.getAll();
     const response = {
       message: "Dexterity modifiers",
       data: {
@@ -23,7 +24,7 @@ router.get("/", async (req: Request, res: Response): Promise<void> => {
 router.get("/:id", async (req: Request, res: Response): Promise<void> => {
   try {
     const id = Number(req.params.id);
-    const dexterityModifier = await abilityDexterityService.getById(id);
+    const dexterityModifier = await abilitiesService.dexterity.getById(id);
     const response = {
       message: "Dexterity modifier",
       data: {
