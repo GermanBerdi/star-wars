@@ -1,7 +1,8 @@
 import fightRepo from "../../db/fights/fights-repo";
-import participantsService from "../participants/participants-service";
 
-import { INewFightReq, IUpdateFightReq, IFightRow } from "./fights-interfaces";
+import participantsService from "../character-participants/character-participants-service";
+
+import type { INewFightReq, IUpdateFightReq, IFightRow } from "./fights-interfaces";
 
 const create = async (newFight: INewFightReq): Promise<IFightRow> => {
   try {

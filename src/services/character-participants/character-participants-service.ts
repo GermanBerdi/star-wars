@@ -1,11 +1,13 @@
 import participantsRepo from "../../db/participants/participants-repo";
-import fightsService from "../fights/fights-service";
-import characterTemplatesService from "../character/character-templates-service";
-import rollsService from "../rolls/rolls-service";
 
-import { INewParticipantReq, IParticipantRow } from "./participants-interfaces";
-import { CharacterType } from "../character/character-templates-enums";
-import { Dice } from "../rolls/rolls-enums";
+import fightsService from "../fights/fights-service";
+import characterTemplatesService from "../character-templates/character-templates-service";
+import rollsService from "../calculations/rolls/rolls-calculations";
+
+import { Dice } from "../calculations/rolls/rolls-enums";
+
+import type { INewParticipantReq, IParticipantRow } from "./character-participants-interfaces";
+import type { CharacterType } from "../character-templates/character-templates-enums";
 
 // const create = async (newParticipant: INewParticipantReq): Promise<IParticipantRow> => {
 //   try {
