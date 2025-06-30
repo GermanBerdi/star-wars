@@ -1,7 +1,7 @@
-import { ToolCallback } from "@modelcontextprotocol/sdk/server/mcp.js";
-import { CallToolResult } from "@modelcontextprotocol/sdk/types.js";
+import type { ToolCallback } from "@modelcontextprotocol/sdk/server/mcp.js";
+import type { CallToolResult } from "@modelcontextprotocol/sdk/types.js";
 
-import abilityDexterityService from "../../../services/abilities/ability-dexterity-service";
+import abilitiesService from "../../../services/abilities/abilities-service";
 
 const toolName = "combat-system_abilitiesDexterity_list";
 
@@ -13,7 +13,7 @@ const cb: ToolCallback<undefined> = async () => {
     content: [{ type: "text", text: "" }],
   };
   try {
-    const dexterityModifiers = await abilityDexterityService.getAll();
+    const dexterityModifiers = await abilitiesService.dexterity.getAll();
     const contentData = {
       message: "Dexterity modifiers list",
       data: {

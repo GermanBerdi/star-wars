@@ -1,7 +1,7 @@
-import { ToolCallback } from "@modelcontextprotocol/sdk/server/mcp.js";
-import { CallToolResult } from "@modelcontextprotocol/sdk/types.js";
+import type { ToolCallback } from "@modelcontextprotocol/sdk/server/mcp.js";
+import type { CallToolResult } from "@modelcontextprotocol/sdk/types.js";
 
-import abilityConstitutionService from "../../../services/abilities/ability-constitution-service";
+import abilitiesService from "../../../services/abilities/abilities-service";
 
 const toolName = "combat-system_abilitiesConstitution_list";
 
@@ -13,7 +13,7 @@ const cb: ToolCallback<undefined> = async () => {
     content: [{ type: "text", text: "" }],
   };
   try {
-    const constitutionModifiers = await abilityConstitutionService.getAll();
+    const constitutionModifiers = await abilitiesService.constitution.getAll();
     const contentData = {
       message: "Constitution modifiers list",
       data: {
