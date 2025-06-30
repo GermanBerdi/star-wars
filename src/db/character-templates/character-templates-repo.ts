@@ -1,12 +1,8 @@
 import pool from "../connection";
-import { ResultSetHeader } from "mysql2";
+import type { ResultSetHeader } from "mysql2";
 
-import {
-  ICharacterTemplateCalculated,
-  ICharacterTemplateRow,
-  IUpdateCharacterTemplateReq,
-} from "../../services/character/character-templates-interfaces";
-import { ICharacterTemplateRowDataPacket } from "./character-templates-repo-interfaces";
+import type { ICharacterTemplateCalculated, ICharacterTemplateRow, IUpdateCharacterTemplateReq } from "../../services/character-templates/character-templates-interfaces";
+import type { ICharacterTemplateRowDataPacket } from "./character-templates-repo-interfaces";
 
 const create = async (newCharacterTemplateCalculated: ICharacterTemplateCalculated): Promise<ICharacterTemplateRow> => {
   const query = `
@@ -100,4 +96,5 @@ const repo = {
   getById,
   remove,
 };
+
 export default repo;

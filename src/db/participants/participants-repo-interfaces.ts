@@ -1,5 +1,5 @@
-import { RowDataPacket } from "mysql2";
+import type { RowDataPacket } from "mysql2";
 
-import { IParticipantRow } from "../../services/participants/participants-interfaces";
+import type { IParticipantRow } from "../../services/character-participants/character-participants-interfaces";
 
 export interface IParticipantRowDataPacket extends IParticipantRow, RowDataPacket {}

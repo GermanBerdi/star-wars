@@ -1,9 +1,9 @@
 import pool from "../connection";
-import { ResultSetHeader } from "mysql2";
+import type { ResultSetHeader } from "mysql2";
 
-import { INewParticipantReq, IParticipantRow } from "../../services/participants/participants-interfaces";
-import { ICharacterTemplateRow } from "../../services/character/character-templates-interfaces";
-import { IParticipantRowDataPacket } from "./participants-repo-interfaces";
+import type { INewParticipantReq, IParticipantRow } from "../../services/character-participants/character-participants-interfaces";
+import type { ICharacterTemplateRow } from "../../services/character-templates/character-templates-interfaces";
+import type { IParticipantRowDataPacket } from "./participants-repo-interfaces";
 
 // const create = async (
 //   newParticipant: INewParticipantReq,
@@ -62,4 +62,5 @@ const repo = {
   getAll,
   getByFightId,
 };
+
 export default repo;

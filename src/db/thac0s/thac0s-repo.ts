@@ -1,7 +1,7 @@
 import pool from "../connection";
 
-import { IThac0sRow } from "../../services/thac0s/thac0s-interfaces";
-import { IThac0sRowDataPacket } from "./thac0s-repo-interfaces";
+import type { IThac0sRow } from "../../services/thac0s/thac0s-interfaces";
+import type { IThac0sRowDataPacket } from "./thac0s-repo-interfaces";
 
 const getAll = async (): Promise<IThac0sRow[]> => {
   const [rows] = await pool.query<IThac0sRowDataPacket[]>("SELECT * FROM thac0s;");
@@ -23,4 +23,5 @@ const repo = {
   getById,
   getByCharacterLevel,
 };
+
 export default repo;
