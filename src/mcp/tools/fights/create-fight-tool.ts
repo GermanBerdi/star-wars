@@ -1,9 +1,10 @@
-import { ToolCallback } from "@modelcontextprotocol/sdk/server/mcp.js";
-import { CallToolResult } from "@modelcontextprotocol/sdk/types.js";
 import { z } from "zod";
+import type { ToolCallback } from "@modelcontextprotocol/sdk/server/mcp.js";
+import type { CallToolResult } from "@modelcontextprotocol/sdk/types.js";
 
 import fightsService from "../../../services/fights/fights-service";
-import { INewFightReq } from "../../../services/fights/fights-interfaces";
+
+import type { INewFightReq } from "../../../services/fights/fights-interfaces";
 
 const toolName = "combat-system_fights_create";
 

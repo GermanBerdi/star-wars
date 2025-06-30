@@ -1,7 +1,7 @@
-import { ToolCallback } from "@modelcontextprotocol/sdk/server/mcp.js";
-import { CallToolResult } from "@modelcontextprotocol/sdk/types.js";
+import type { ToolCallback } from "@modelcontextprotocol/sdk/server/mcp.js";
+import type { CallToolResult } from "@modelcontextprotocol/sdk/types.js";
 
-import characterClassesService from "../../../services/character/character-classes-service";
+import characterClassesService from "../../../services/character-classes/character-classes-service";
 
 const toolName = "combat-system_characterClasses_list";
 

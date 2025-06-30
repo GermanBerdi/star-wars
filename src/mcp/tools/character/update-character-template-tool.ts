@@ -1,10 +1,12 @@
-import { ToolCallback } from "@modelcontextprotocol/sdk/server/mcp.js";
-import { CallToolResult } from "@modelcontextprotocol/sdk/types.js";
 import { z } from "zod";
+import type { ToolCallback } from "@modelcontextprotocol/sdk/server/mcp.js";
+import type { CallToolResult } from "@modelcontextprotocol/sdk/types.js";
 
-import characterTemplatesService from "../../../services/character/character-templates-service";
-import { IUpdateCharacterTemplateReq } from "../../../services/character/character-templates-interfaces";
-import { CharacterType } from "../../../services/character/character-templates-enums";
+import characterTemplatesService from "../../../services/character-templates/character-templates-service";
+
+import { CharacterType } from "../../../services/character-templates/character-templates-enums";
+
+import type { IUpdateCharacterTemplateReq } from "../../../services/character-templates/character-templates-interfaces";
 
 const toolName = "combat-system_characterTemplates_update";
 

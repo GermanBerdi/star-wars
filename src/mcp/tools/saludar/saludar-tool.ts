@@ -1,5 +1,5 @@
 import { z } from "zod";
-import { ToolCallback } from "@modelcontextprotocol/sdk/server/mcp.js";
+import type { ToolCallback } from "@modelcontextprotocol/sdk/server/mcp.js";
 
 const toolName = "saludar";
 
