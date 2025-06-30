@@ -1,4 +1,4 @@
-import abilitiesStrengthRepo from "../../db/abilities/ability-strength-repo";
+import abilitiesStrengthRepo from "../../../db/ability-strength/ability-strength-repo";
 
 import type { IAbilityStrengthRow } from "./ability-strength-service-interfaces";
 

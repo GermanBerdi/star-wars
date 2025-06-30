@@ -1,4 +1,4 @@
-import abilitiesConstitutionRepo from "../../db/abilities/ability-constitution-repo";
+import abilitiesConstitutionRepo from "../../../db/ability-constitution/ability-constitution-repo";
 
 import type { IAbilityConstitutionRow } from "./ability-constitution-service-interfaces";
 

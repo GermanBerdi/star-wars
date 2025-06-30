@@ -1,4 +1,4 @@
-import abilitiesDexterityRepo from "../../db/abilities/ability-dexterity-repo";
+import abilitiesDexterityRepo from "../../../db/ability-dexterity/ability-dexterity-repo";
 
 import type { IAbilityDexterityRow } from "./ability-dexterity-service-interfaces";
 
