@@ -1,6 +1,6 @@
 import pool from "../connection";
 
-import type { IAbilityConstitutionRow } from "../../services/abilities/ability-constitution-service-interfaces";
+import type { IAbilityConstitutionRow } from "../../services/abilities/abilities-service-interfaces";
 import type { IAbilityConstitutionRowDataPacket } from "./ability-constitution-repo-interfaces";
 
 const getAll = async (): Promise<IAbilityConstitutionRow[]> => {
@@ -34,4 +34,5 @@ const repo = {
   getById,
   getByAbilityScore,
 };
+
 export default repo;

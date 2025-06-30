@@ -1,6 +1,6 @@
 import pool from "../connection";
 
-import type { IAbilityStrengthRow } from "../../services/abilities/ability-strength-service-interfaces";
+import type { IAbilityStrengthRow } from "../../services/abilities/abilities-service-interfaces";
 import type { IAbilityStrengthRowDataPacket } from "./ability-strength-repo-interfaces";
 
 const getAll = async (): Promise<IAbilityStrengthRow[]> => {
@@ -50,4 +50,5 @@ const repo = {
   getById,
   getByAbilityScore,
 };
+
 export default repo;

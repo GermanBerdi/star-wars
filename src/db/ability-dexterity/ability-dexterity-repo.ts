@@ -1,6 +1,6 @@
 import pool from "../connection";
 
-import type { IAbilityDexterityRow } from "../../services/abilities/ability-dexterity-service-interfaces";
+import type { IAbilityDexterityRow } from "../../services/abilities/abilities-service-interfaces";
 import type { IAbilityDexterityRowDataPacket } from "./ability-dexterity-repo-interfaces";
 
 const getAll = async (): Promise<IAbilityDexterityRow[]> => {
@@ -33,4 +33,5 @@ const repo = {
   getById,
   getByAbilityScore,
 };
+
 export default repo;
