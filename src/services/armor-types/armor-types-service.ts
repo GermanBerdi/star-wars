@@ -1,6 +1,6 @@
 import armorTypesRepo from "../../db/armor-types/armor-types-repo";
 
-import { IArmorTypeRow } from "./armor-types-interfaces";
+import type { IArmorTypeRow } from "./armor-types-interfaces";
 
 const getAll = async (): Promise<IArmorTypeRow[]> => {
   try {
