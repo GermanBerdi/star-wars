@@ -130,6 +130,24 @@ const rerollAbilities = async (rerollAbilitiesReq: IRerollAbilitiesReq): Promise
   }
 };
 
+const rerollHitDices = async (id: number): Promise<ICharacterTemplateRow> => {
+  try {
+    const currentCharacterTemplate = await getById(id);
+    const characterClass = await characterClassesService.getById(currentCharacterTemplate.class_id);
+    const newHitDices = calcService.character.rollHitDices(characterClass, currentCharacterTemplate.character_level);
+    const updateCharacterTemplateReq: IUpdateCharacterTemplateReq = {
+      id,
+      hit_dices: newHitDices,
+    };
+    const characterTemplate = await update(updateCharacterTemplateReq);
+    return characterTemplate;
+  } catch (error) {
+    const errorMessage = `Error in reroll hit dices at character templates service: ${error}`;
+    console.error(errorMessage);
+    throw new Error(errorMessage);
+  }
+};
+
 const update = async (updateCharacterTemplateReq: IUpdateCharacterTemplateReq): Promise<ICharacterTemplateRow> => {
   try {
     const currentCharacterTemplate = await getById(updateCharacterTemplateReq.id);
@@ -279,6 +297,7 @@ const remove = async (id: number): Promise<void> => {
 const service = {
   create,
   rerollAbilities,
+  rerollHitDices,
   update,
   getAll,
   getById,

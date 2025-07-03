@@ -63,6 +63,23 @@ router.post("/:id/reroll-abilities", async (req: Request, res: Response): Promis
   }
 });
 
+router.post("/:id/reroll-hit-dices", async (req: Request, res: Response): Promise<void> => {
+  try {
+    const id = Number(req.params.id);
+    const characterTemplate = await characterTemplatesService.rerollHitDices(id);
+    const response = {
+      message: "Character template hit dices rerolled",
+      data: {
+        characterTemplate,
+      },
+    };
+    res.status(200).json(response);
+  } catch (error) {
+    const errorMessage = `Error rerolling hit dices in character template: ${error}`;
+    res.status(500).json({ errorMessage });
+  }
+});
+
 router.patch("/:id", async (req: Request, res: Response): Promise<void> => {
   try {
     const { id } = req.params;
