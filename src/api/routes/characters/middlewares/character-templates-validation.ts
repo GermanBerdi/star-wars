@@ -19,3 +19,24 @@ export const validateCreateCharacterTemplate = (req: Request, res: Response, nex
   }
   next();
 };
+
+export const validateReassignAbilities = (req: Request, res: Response, next: NextFunction): void => {
+  // Validate that body is an array with exactly 3 elements
+  if (!Array.isArray(req.body) || req.body.length !== 3) {
+    res.status(400).json({
+      errorMessage: "Body must be an array of 3 elements",
+    });
+    return;
+  }
+
+  // Validate that array contains exactly [1, 2, 3] in any order
+  const validValues = [1, 2, 3];
+  if (!req.body.every((value) => validValues.includes(value)) || new Set(req.body).size !== 3) {
+    res.status(400).json({
+      errorMessage: "Array must contain exactly [1, 2, 3] in any order",
+    });
+    return;
+  }
+
+  next();
+};

@@ -23,6 +23,7 @@ import type {
   IUpdateCharacterTemplateCalculatedReq,
 } from "./character-templates-interfaces";
 import type { ICharacterClassRow } from "../character-classes/character-classes-interfaces";
+import { Dice } from "../calculations/rolls/rolls-enums";
 
 const getOrRollStrength = async (
   classGroup: ClassGroup,
@@ -261,6 +262,43 @@ const update = async (updateCharacterTemplateReq: IUpdateCharacterTemplateReq): 
   }
 };
 
+const reassignAbilities = async (id: number, reassignArray: number[]): Promise<ICharacterTemplateRow> => {
+  try {
+    const currentCharacter = await getById(id);
+    const currentClass = await characterClassesService.getById(currentCharacter.class_id);
+    const currentStrength = await abilitiesService.strength.getById(currentCharacter.strength_id);
+    const currentDexterity = await abilitiesService.dexterity.getById(currentCharacter.dexterity_id);
+    const currentConstitution = await abilitiesService.constitution.getById(currentCharacter.constitution_id);
+    const currentScores = [
+      currentStrength.ability_score,
+      currentDexterity.ability_score,
+      currentConstitution.ability_score,
+    ];
+    const strIndex = reassignArray[0] - 1;
+    const dexIndex = reassignArray[1] - 1;
+    const conIndex = reassignArray[2] - 1;
+    const newStrengthScore = currentScores[strIndex];
+    const newDexterityScore = currentScores[dexIndex];
+    const newConstitutionScore = currentScores[conIndex];
+    const exceptionalStrength =
+      newStrengthScore === 18 && currentClass.class_group === ClassGroup.WARRIOR
+        ? calcService.rolls.rollDices(Dice._1D100)
+        : null;
+    const newStrength = await abilitiesService.strength.getByAbilityScore(newStrengthScore, exceptionalStrength);
+    const newDexterity = await abilitiesService.dexterity.getByAbilityScore(newDexterityScore);
+    const newConstitution = await abilitiesService.constitution.getByAbilityScore(newConstitutionScore);
+    const updateCharacterTemplateReq: IUpdateCharacterTemplateReq = {
+      id,
+      strength_id: newStrength.id,
+      dexterity_id: newDexterity.id,
+      constitution_id: newConstitution.id,
+    };
+    return await update(updateCharacterTemplateReq);
+  } catch (error) {
+    throw new Error(`Error reassigning attributes for character template ${id}: ${error}`);
+  }
+};
+
 const getAll = async (): Promise<ICharacterTemplateRow[]> => {
   try {
     const characterTemplates = await characterTemplatesRepo.getAll();
@@ -299,6 +337,7 @@ const service = {
   rerollAbilities,
   rerollHitDices,
   update,
+  reassignAbilities,
   getAll,
   getById,
   remove,
