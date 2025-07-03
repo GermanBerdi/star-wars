@@ -56,9 +56,9 @@ export interface INewCharacterTemplateCalculatedReq {
 
 export interface IRerollAbilitiesReq {
   id: number;
-  strength: boolean;
-  dexterity: boolean;
-  constitution: boolean;
+  strength?: boolean;
+  dexterity?: boolean;
+  constitution?: boolean;
 }
 
 export interface IUpdateCharacterTemplateReq {
