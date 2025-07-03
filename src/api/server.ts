@@ -1,7 +1,7 @@
 import express from "express";
-import apiRouter from "./router";
+import apiRouter from "./routes/router";
 import pool from "../db/connection";
-import { RowDataPacket } from "mysql2";
+import type { RowDataPacket } from "mysql2";
 
 const PORT = process.env.PORT || 3000;
 

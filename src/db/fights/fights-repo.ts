@@ -1,8 +1,8 @@
 import pool from "../connection";
-import { ResultSetHeader } from "mysql2";
+import type { ResultSetHeader } from "mysql2";
 
-import { INewFightReq, IFightRow, IUpdateFightReq } from "../../services/fights/fights-interfaces";
-import { IFightRowDataPacket } from "./fights-repo-interfaces";
+import type { INewFightReq, IFightRow, IUpdateFightReq } from "../../services/fights/fights-interfaces";
+import type { IFightRowDataPacket } from "./fights-repo-interfaces";
 
 const create = async (newFight: INewFightReq): Promise<IFightRow> => {
   const { fight_name, available_teams } = newFight;
@@ -50,4 +50,5 @@ const repo = {
   getById,
   remove,
 };
+
 export default repo;
