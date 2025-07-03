@@ -1,16 +1,17 @@
 import { McpServer } from "@modelcontextprotocol/sdk/server/mcp.js";
 import { StdioServerTransport } from "@modelcontextprotocol/sdk/server/stdio.js";
-
 import { listAbilityConstitutionTool } from "./tools/abilities/list-ability-constitution-tool";
 import { listAbilityDexterityTool } from "./tools/abilities/list-ability-dexterity-tool";
-import { listAbilityStrengthTool } from "./tools/abilities/list-ability-sterngth-tool";
-import { listArmorTypesTool } from "./tools/armor-types/list-armor-types-tool";
-import { listCharacterClassesTool } from "./tools/character/list-character-classes-tool";
-// import { createCharacterTemplateTool } from "./tools/character/create-character-template-tool";
-import { updateCharacterTemplateTool } from "./tools/character/update-character-template-tool";
-import { listCharacterTemplatesTool } from "./tools/character/list-character-templates-tool";
+import { listAbilityStrengthTool } from "./tools/abilities/list-ability-strength-tool";
+import { createCharacterTemplateTool } from "./tools/character/create-character-template-tool";
 import { getCharacterTemplateByIdTool } from "./tools/character/get-character-template-by-id-tool";
+import { listCharacterArmorTypesTool } from "./tools/character/list-character-armor-types-tool";
+import { listCharacterClassesTool } from "./tools/character/list-character-classes-tool";
+import { listCharacterTemplatesTool } from "./tools/character/list-character-templates-tool";
 import { removeCharacterTemplateTool } from "./tools/character/remove-character-template-tool";
+import { rerollCharacterTemplateAbilitiesTool } from "./tools/character/reroll-character-template-abilities-tool";
+import { rerollCharacterTemplateHitDicesTool } from "./tools/character/reroll-character-template-hit-dices-tool";
+import { updateCharacterTemplateTool } from "./tools/character/update-character-template-tool";
 import { createFightTool } from "./tools/fights/create-fight-tool";
 import { updateFightTool } from "./tools/fights/update-fight-tool";
 import { listFightsTool } from "./tools/fights/list-fights-tool";
@@ -34,25 +35,11 @@ mcpServer.tool(
 );
 mcpServer.tool(listAbilityDexterityTool.toolName, listAbilityDexterityTool.description, listAbilityDexterityTool.cb);
 mcpServer.tool(listAbilityStrengthTool.toolName, listAbilityStrengthTool.description, listAbilityStrengthTool.cb);
-mcpServer.tool(listArmorTypesTool.toolName, listArmorTypesTool.description, listArmorTypesTool.cb);
-
-mcpServer.tool(listCharacterClassesTool.toolName, listCharacterClassesTool.description, listCharacterClassesTool.cb);
-// mcpServer.tool(
-//   createCharacterTemplateTool.toolName,
-//   createCharacterTemplateTool.description,
-//   createCharacterTemplateTool.paramsSchema,
-//   createCharacterTemplateTool.cb,
-// );
 mcpServer.tool(
-  updateCharacterTemplateTool.toolName,
-  updateCharacterTemplateTool.description,
-  updateCharacterTemplateTool.paramsSchema,
-  updateCharacterTemplateTool.cb,
-);
-mcpServer.tool(
-  listCharacterTemplatesTool.toolName,
-  listCharacterTemplatesTool.description,
-  listCharacterTemplatesTool.cb,
+  createCharacterTemplateTool.toolName,
+  createCharacterTemplateTool.description,
+  createCharacterTemplateTool.paramsSchema,
+  createCharacterTemplateTool.cb,
 );
 mcpServer.tool(
   getCharacterTemplateByIdTool.toolName,
@@ -60,11 +47,36 @@ mcpServer.tool(
   getCharacterTemplateByIdTool.paramsSchema,
   getCharacterTemplateByIdTool.cb,
 );
+mcpServer.tool(listCharacterArmorTypesTool.toolName, listCharacterArmorTypesTool.description, listCharacterArmorTypesTool.cb);
+mcpServer.tool(listCharacterClassesTool.toolName, listCharacterClassesTool.description, listCharacterClassesTool.cb);
+mcpServer.tool(
+  listCharacterTemplatesTool.toolName,
+  listCharacterTemplatesTool.description,
+  listCharacterTemplatesTool.cb,
+);
 mcpServer.tool(
   removeCharacterTemplateTool.toolName,
   removeCharacterTemplateTool.description,
   removeCharacterTemplateTool.paramsSchema,
   removeCharacterTemplateTool.cb,
+);
+mcpServer.tool(
+  rerollCharacterTemplateAbilitiesTool.toolName,
+  rerollCharacterTemplateAbilitiesTool.description,
+  rerollCharacterTemplateAbilitiesTool.paramsSchema,
+  rerollCharacterTemplateAbilitiesTool.cb,
+);
+mcpServer.tool(
+  rerollCharacterTemplateHitDicesTool.toolName,
+  rerollCharacterTemplateHitDicesTool.description,
+  rerollCharacterTemplateHitDicesTool.paramsSchema,
+  rerollCharacterTemplateHitDicesTool.cb,
+);
+mcpServer.tool(
+  updateCharacterTemplateTool.toolName,
+  updateCharacterTemplateTool.description,
+  updateCharacterTemplateTool.paramsSchema,
+  updateCharacterTemplateTool.cb,
 );
 mcpServer.tool(createFightTool.toolName, createFightTool.description, createFightTool.paramsSchema, createFightTool.cb);
 mcpServer.tool(updateFightTool.toolName, updateFightTool.description, updateFightTool.paramsSchema, updateFightTool.cb);

@@ -8,38 +8,48 @@ import { CharacterType } from "../../../services/character-templates/character-t
 
 import type { IUpdateCharacterTemplateReq } from "../../../services/character-templates/character-templates-interfaces";
 
-const toolName = "combat-system_characterTemplates_update";
+const toolName = "combat-system_character_templates_update";
 
 const description =
-  "Updates an existing character template by modifying its stats (hp, strength, defense, speed) or name. Only provided fields will be updated, others remain unchanged.";
+  "Updates an existing character template for AD&D 2nd edition combat system. The system automatically recalculates all derived stats (AC, HP, THAC0, hit dice) based on the updated parameters. Only provided fields will be updated, others remain unchanged.";
 
 const paramsSchema = {
   id: z.number().describe("Unique identifier of the character template to update"),
   character_name: z.string().optional().describe("New name for the character template (e.g., 'Aragorn the Brave')"),
-  strength: z
+  class_id: z
     .number()
     .optional()
     .describe(
-      "New attack power (3-18) - determines how much damage the character deals in combat. Low (3-6): weak, Average (7-12): standard, High (13-18): powerful",
+      "Character class ID. Use 'List Character Classes' to see available classes (warrior, priest, rogue, wizard groups)",
     ),
-  defense: z
+  character_level: z
+    .number()
+    .min(1)
+    .optional()
+    .describe("Character level (1+) - affects hit dice, hit points, and THAC0 calculations"),
+  strength_id: z
+    .string()
+    .optional()
+    .describe(
+      "Strength attribute ID. Use 'List Strength Abilities' to see available values and their combat modifiers",
+    ),
+  dexterity_id: z
     .number()
     .optional()
     .describe(
-      "New Armor Class (1-10) - defensive capability based on equipped armor. Lower values provide better protection: AC 1 (full plate): maximum protection, AC 3-4 (plate mail): heavy armor, AC 5-7 (chain mail, scale): medium armor, AC 8-10 (leather, padded, none): light/no armor. Reduces incoming damage from attacks. Use 'List Armor Types' to see all available armors and copy the armor_class value here (e.g., Leather armor = AC 8, Chain mail = AC 5, Full plate = AC 1).",
+      "Dexterity attribute ID. Use 'List Dexterity Abilities' to see available values and their AC/missile bonuses",
     ),
-  speed: z
+  constitution_id: z
     .number()
     .optional()
     .describe(
-      "New movement speed (3-18) - determines turn order and dodge chance in fights. Low (3-6): slow/clunky, Average (7-12): normal agility, High (13-18): lightning fast",
+      "Constitution attribute ID. Use 'List Constitution Abilities' to see available values and their HP modifiers",
     ),
-  hp: z
+  armor_type_id: z
     .number()
     .optional()
-    .describe(
-      "New base health points - how much damage the character can take before dying. Formula: Type Base (15-40) + Constitution modifier based on Defense stat (-5 to +10) + Rank modifier (0-25). Examples: Mage=15+CON+rank, Standard Warrior=30+CON+rank, Heavy Warrior=40+CON+rank. Constitution modifiers: DEF 3-8 (-5 HP), DEF 9-12 (+0 HP), DEF 13-15 (+5 HP), DEF 16-18 (+10 HP). Rank modifiers: Common soldier (+0), Veteran/Captain (+15), Unique hero (+25)",
-    ),
+    .describe("Armor type ID. Use 'List Armor Types' to see all available armor options with their armor class values"),
+  hit_dices: z.array(z.number()).optional().describe("Array of hit dice rolls for the character's current level"),
   character_type: z
     .nativeEnum(CharacterType)
     .optional()
@@ -52,27 +62,19 @@ const paramsSchema = {
     .describe("Optional description or lore about the character, combat notes, or tactical information"),
 };
 
-interface cbParams {
-  id: number;
-  character_name?: string;
-  strength?: number;
-  defense?: number;
-  speed?: number;
-  hp?: number;
-  character_type?: CharacterType;
-  character_description?: string;
-}
-
 const cb: ToolCallback<typeof paramsSchema> = async ({
   id,
   character_name,
-  strength,
-  defense,
-  speed,
-  hp,
+  class_id,
+  character_level,
+  strength_id,
+  dexterity_id,
+  constitution_id,
+  armor_type_id,
+  hit_dices,
   character_type,
   character_description,
-}: cbParams) => {
+}: IUpdateCharacterTemplateReq) => {
   const response: CallToolResult = {
     content: [{ type: "text", text: "" }],
   };
@@ -80,10 +82,13 @@ const cb: ToolCallback<typeof paramsSchema> = async ({
     const updateCharacterTemplateReq: IUpdateCharacterTemplateReq = {
       id,
       character_name,
-      strength,
-      defense,
-      speed,
-      hp,
+      class_id,
+      character_level,
+      strength_id,
+      dexterity_id,
+      constitution_id,
+      armor_type_id,
+      hit_dices,
       character_type,
       character_description,
     };
