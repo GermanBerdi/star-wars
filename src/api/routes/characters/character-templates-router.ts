@@ -45,12 +45,12 @@ router.post("/", validateCreateCharacterTemplate, async (req: Request, res: Resp
 
 router.post("/:id/reroll-abilities", async (req: Request, res: Response): Promise<void> => {
   try {
-    const { id } = req.params;
+    const id = Number(req.params.id);
     const rerolAbilitiesReq: IRerollAbilitiesReq = {
-      id: Number(id),
-      strength: req.body.strength === true,
-      dexterity: req.body.dexterity === true,
-      constitution: req.body.constitution === true,
+      id,
+      strength: req.body.strength,
+      dexterity: req.body.dexterity,
+      constitution: req.body.constitution,
     };
     const characterTemplate = await characterTemplatesService.rerollAbilities(rerolAbilitiesReq);
     const response = {
@@ -85,9 +85,9 @@ router.post("/:id/reroll-hit-dices", async (req: Request, res: Response): Promis
 
 router.patch("/:id", async (req: Request, res: Response): Promise<void> => {
   try {
-    const { id } = req.params;
+    const id = Number(req.params.id);
     const updateCharacterTemplateReq: IUpdateCharacterTemplateReq = {
-      id: Number(id),
+      id,
       character_name: req.body.character_name,
       class_id: req.body.class_id,
       character_level: req.body.character_level,
