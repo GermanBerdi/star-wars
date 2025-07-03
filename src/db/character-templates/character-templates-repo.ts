@@ -19,7 +19,6 @@ const create = async (newCharacterTemplateCalculated: ICharacterTemplateCalculat
       constitution_id,
       armor_type_id,
       armor_class,
-      speed,
       hit_dices,
       hit_dices_modified,
       hp,
@@ -27,7 +26,7 @@ const create = async (newCharacterTemplateCalculated: ICharacterTemplateCalculat
       thac0,
       character_type,
       character_description
-    ) VALUES (?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?);
+    ) VALUES (?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?);
   `;
   const values = [
     newCharacterTemplateCalculated.character_name,
@@ -38,7 +37,6 @@ const create = async (newCharacterTemplateCalculated: ICharacterTemplateCalculat
     newCharacterTemplateCalculated.constitution_id,
     newCharacterTemplateCalculated.armor_type_id,
     newCharacterTemplateCalculated.armor_class,
-    newCharacterTemplateCalculated.speed,
     newCharacterTemplateCalculated.hit_dices,
     newCharacterTemplateCalculated.hit_dices_modified,
     newCharacterTemplateCalculated.hp,

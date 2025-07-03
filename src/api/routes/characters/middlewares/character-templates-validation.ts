@@ -17,9 +17,5 @@ export const validateCreateCharacterTemplate = (req: Request, res: Response, nex
     res.status(400).json({ message: "armor_type_id is required." });
     return;
   }
-  if (!req.body.speed) {
-    res.status(400).json({ message: "speed is required." });
-    return;
-  }
   next();
 };

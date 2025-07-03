@@ -7,6 +7,7 @@ import { validateCreateCharacterTemplate } from "./middlewares/character-templat
 
 import type {
   INewCharacterTemplateReq,
+  IRerollAbilitiesReq,
   IUpdateCharacterTemplateReq,
 } from "../../../services/character-templates/character-templates-interfaces";
 
@@ -22,7 +23,6 @@ router.post("/", validateCreateCharacterTemplate, async (req: Request, res: Resp
       dexterity_id: req.body.dexterity_id,
       constitution_id: req.body.constitution_id,
       armor_type_id: req.body.armor_type_id,
-      speed: req.body.speed,
       character_type: req.body.character_type,
       character_description: req.body.character_description,
     };
@@ -36,6 +36,29 @@ router.post("/", validateCreateCharacterTemplate, async (req: Request, res: Resp
     res.status(201).json(response);
   } catch (error) {
     const errorMessage = `Error creating character template: ${error}`;
+    res.status(500).json({ errorMessage });
+  }
+});
+
+router.post("/:id/reroll-abilities", async (req: Request, res: Response): Promise<void> => {
+  try {
+    const { id } = req.params;
+    const rerolAbilitiesReq: IRerollAbilitiesReq = {
+      id: Number(id),
+      strength: req.body.strength === true,
+      dexterity: req.body.dexterity === true,
+      constitution: req.body.constitution === true,
+    };
+    const characterTemplate = await characterTemplatesService.rerollAbilities(rerolAbilitiesReq);
+    const response = {
+      message: "Character template abilities rerolled",
+      data: {
+        characterTemplate,
+      },
+    };
+    res.status(200).json(response);
+  } catch (error) {
+    const errorMessage = `Error rerolling abilities in character template: ${error}`;
     res.status(500).json({ errorMessage });
   }
 });

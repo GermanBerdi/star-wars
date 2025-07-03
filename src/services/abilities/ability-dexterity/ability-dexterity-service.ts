@@ -1,5 +1,7 @@
 import abilitiesDexterityRepo from "../../../db/ability-dexterity/ability-dexterity-repo";
 
+import calcService from "../../calculations/calc-service";
+
 import type { IAbilityDexterityRow } from "./ability-dexterity-service-interfaces";
 
 const getAll = async (): Promise<IAbilityDexterityRow[]> => {
@@ -37,10 +39,22 @@ const getByAbilityScore = async (abilityScore: number): Promise<IAbilityDexterit
   }
 };
 
+const getByRolling = async (): Promise<IAbilityDexterityRow> => {
+  try {
+    const abilityScore = calcService.rolls.rollAbility();
+    return getByAbilityScore(abilityScore);
+  } catch (error) {
+    const errorMessage = `Error in getByRolling at abilities dexterity service: ${error}`;
+    console.error(errorMessage);
+    throw new Error(errorMessage);
+  }
+};
+
 const service = {
   getAll,
   getById,
   getByAbilityScore,
+  getByRolling,
 };
 
 export default service;
