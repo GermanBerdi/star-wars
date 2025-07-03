@@ -8,6 +8,7 @@ import { listCharacterClassesTool } from "./tools/character-classes/list-charact
 import { createCharacterTemplateTool } from "./tools/character-templates/create-character-template-tool";
 import { getCharacterTemplateByIdTool } from "./tools/character-templates/get-character-template-by-id-tool";
 import { listCharacterTemplatesTool } from "./tools/character-templates/list-character-templates-tool";
+import { reassignCharacterTemplateAbilitiesTool } from "./tools/character-templates/reassign-character-template-abilities-tool";
 import { removeCharacterTemplateTool } from "./tools/character-templates/remove-character-template-tool";
 import { rerollCharacterTemplateAbilitiesTool } from "./tools/character-templates/reroll-character-template-abilities-tool";
 import { rerollCharacterTemplateHitDicesTool } from "./tools/character-templates/reroll-character-template-hit-dices-tool";
@@ -53,6 +54,12 @@ mcpServer.tool(
   listCharacterTemplatesTool.toolName,
   listCharacterTemplatesTool.description,
   listCharacterTemplatesTool.cb,
+);
+mcpServer.tool(
+  reassignCharacterTemplateAbilitiesTool.toolName,
+  reassignCharacterTemplateAbilitiesTool.description,
+  reassignCharacterTemplateAbilitiesTool.paramsSchema,
+  reassignCharacterTemplateAbilitiesTool.cb,
 );
 mcpServer.tool(
   removeCharacterTemplateTool.toolName,

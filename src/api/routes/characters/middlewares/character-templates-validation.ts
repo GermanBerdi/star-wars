@@ -24,7 +24,7 @@ export const validateReassignAbilities = (req: Request, res: Response, next: Nex
   // Validate that body is an array with exactly 3 elements
   if (!Array.isArray(req.body) || req.body.length !== 3) {
     res.status(400).json({
-      errorMessage: "Body must be an array of 3 elements",
+      message: "Body must be an array of 3 elements",
     });
     return;
   }
@@ -33,7 +33,7 @@ export const validateReassignAbilities = (req: Request, res: Response, next: Nex
   const validValues = [1, 2, 3];
   if (!req.body.every((value) => validValues.includes(value)) || new Set(req.body).size !== 3) {
     res.status(400).json({
-      errorMessage: "Array must contain exactly [1, 2, 3] in any order",
+      message: "Array must contain exactly [1, 2, 3] in any order",
     });
     return;
   }

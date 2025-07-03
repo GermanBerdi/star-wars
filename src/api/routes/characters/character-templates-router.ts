@@ -120,7 +120,7 @@ router.patch(
     try {
       const id = Number(req.params.id);
       const reassignArray = req.body;
-      const characterTemplate = await characterTemplatesService.reassignAbilities(Number(id), reassignArray);
+      const characterTemplate = await characterTemplatesService.reassignAbilities(id, reassignArray);
       const response = {
         message: "Character template abilities reassigned",
         data: {
