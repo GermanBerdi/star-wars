@@ -4,7 +4,7 @@ import type { CallToolResult } from "@modelcontextprotocol/sdk/types.js";
 
 import characterTemplatesService from "../../../services/character-templates/character-templates-service";
 
-const toolName = "combat-system_characterTemplates_getById";
+const toolName = "combat-system_character_templates_getById";
 
 const description =
   "Retrieves detailed information for a specific character template by its unique ID. Returns the character's complete stats including name, HP, strength, defense, speed, and creation/update timestamps. Use this when you need to examine or reference a particular character's current attributes before making modifications or comparisons.";
@@ -19,11 +19,7 @@ const paramsSchema = {
     ),
 };
 
-interface cbParams {
-  id: number;
-}
-
-const cb: ToolCallback<typeof paramsSchema> = async ({ id }: cbParams) => {
+const cb: ToolCallback<typeof paramsSchema> = async ({ id }: { id: number }) => {
   const response: CallToolResult = {
     content: [{ type: "text", text: "" }],
   };

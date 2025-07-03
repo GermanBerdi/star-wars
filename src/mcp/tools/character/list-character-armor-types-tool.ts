@@ -3,7 +3,7 @@ import type { CallToolResult } from "@modelcontextprotocol/sdk/types.js";
 
 import armorTypesService from "../../../services/armor-types/armor-types-service";
 
-const toolName = "combat-system_armorTypes_list";
+const toolName = "combat-system_character_armor_types_list";
 
 const description =
   "List Armor Types - Retrieves all available armor types with their stats (name, armor class, description, cost, weight) for viewing and management purposes";
@@ -32,7 +32,7 @@ const cb: ToolCallback<undefined> = async () => {
   return response;
 };
 
-export const listArmorTypesTool = {
+export const listCharacterArmorTypesTool = {
   toolName,
   description,
   cb,

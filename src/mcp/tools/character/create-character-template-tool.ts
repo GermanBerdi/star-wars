@@ -8,7 +8,7 @@ import { CharacterType } from "../../../services/character-templates/character-t
 
 import type { INewCharacterTemplateReq } from "../../../services/character-templates/character-templates-interfaces";
 
-const toolName = "combat-system_characterTemplates_create";
+const toolName = "combat-system_character_templates_create";
 
 const description =
   "Creates a new character template for AD&D 2nd edition combat system. The system automatically calculates all derived stats (AC, HP, THAC0, hit dice) based on the provided parameters. Use the List tools to explore available classes, armor types, and ability scores before creating your character.";

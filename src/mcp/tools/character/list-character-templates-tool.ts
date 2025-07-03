@@ -3,7 +3,7 @@ import type { CallToolResult } from "@modelcontextprotocol/sdk/types.js";
 
 import characterTemplatesService from "../../../services/character-templates/character-templates-service";
 
-const toolName = "combat-system_characterTemplates_list";
+const toolName = "combat-system_character_templates_list";
 
 const description =
   "List Characters Templates - Retrieves all available character templates with their stats (name, HP, strength, defense, speed) for viewing and management purposes";

@@ -4,7 +4,7 @@ import type { CallToolResult } from "@modelcontextprotocol/sdk/types.js";
 
 import characterTemplatesService from "../../../services/character-templates/character-templates-service";
 
-const toolName = "combat-system_characterTemplates_remove";
+const toolName = "combat-system_character_templates_remove";
 
 const description =
   "Removes/deletes a specific character template by its unique ID. This permanently deletes the character from the database. Use this when you want to remove a character template that is no longer needed.";
@@ -19,11 +19,7 @@ const paramsSchema = {
     ),
 };
 
-interface cbParams {
-  id: number;
-}
-
-const cb: ToolCallback<typeof paramsSchema> = async ({ id }: cbParams) => {
+const cb: ToolCallback<typeof paramsSchema> = async ({ id }: { id: number }) => {
   const response: CallToolResult = {
     content: [{ type: "text", text: "" }],
   };

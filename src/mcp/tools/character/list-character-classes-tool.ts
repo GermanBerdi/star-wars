@@ -3,7 +3,7 @@ import type { CallToolResult } from "@modelcontextprotocol/sdk/types.js";
 
 import characterClassesService from "../../../services/character-classes/character-classes-service";
 
-const toolName = "combat-system_characterClasses_list";
+const toolName = "combat-system_character_classes_list";
 
 const description =
   "List Character Classes - Retrieves all available character classes with their properties (class name, group classification, hit dice configuration, hit dice limits, and fixed hit point bonuses). Shows warrior, priest, rogue, and wizard class groups with their specific mechanics for character creation and advancement in AD&D combat system.";
