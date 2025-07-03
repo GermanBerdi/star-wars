@@ -4,7 +4,7 @@ import type { CallToolResult } from "@modelcontextprotocol/sdk/types.js";
 
 import characterTemplatesService from "../../../services/character-templates/character-templates-service";
 
-const toolName = "combat-system_character_templates_getById";
+const toolName = "combat-system_character_templates_get_by_id";
 
 const description =
   "Retrieves detailed information for a specific character template by its unique ID. Returns the character's complete stats including name, HP, strength, defense, speed, and creation/update timestamps. Use this when you need to examine or reference a particular character's current attributes before making modifications or comparisons.";
