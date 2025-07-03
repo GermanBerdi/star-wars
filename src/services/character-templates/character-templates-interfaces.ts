@@ -36,7 +36,7 @@ export interface INewCharacterTemplateReq {
   character_description?: string;
 }
 
-export interface ICharacterTemplateCalculated {
+export interface INewCharacterTemplateCalculatedReq {
   character_name: string;
   class_id: number;
   character_level: number;
@@ -64,10 +64,32 @@ export interface IRerollAbilitiesReq {
 export interface IUpdateCharacterTemplateReq {
   id: number;
   character_name?: string;
-  strength?: number;
-  defense?: number;
-  speed?: number;
-  hp?: number;
+  class_id?: number;
+  character_level?: number;
+  strength_id?: string;
+  dexterity_id?: number;
+  constitution_id?: number;
+  armor_type_id?: number;
+  hit_dices?: number[];
   character_type?: CharacterType;
   character_description?: string;
+}
+
+export interface IUpdateCharacterTemplateCalculatedReq {
+  id: number;
+  character_name?: string;
+  class_id?: number;
+  character_level?: number;
+  strength_id?: string;
+  dexterity_id?: number;
+  constitution_id?: number;
+  armor_type_id?: number;
+  armor_class?: number;
+  hit_dices?: number[];
+  hit_dices_modified?: number[];
+  hp?: number;
+  thac0_modifiers?: IThac0Modifiers;
+  thac0?: number;
+  character_type?: CharacterType;
+  character_description?: string | null;
 }

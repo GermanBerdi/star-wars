@@ -2,13 +2,15 @@ import pool from "../connection";
 import type { ResultSetHeader } from "mysql2";
 
 import type {
-  ICharacterTemplateCalculated,
+  INewCharacterTemplateCalculatedReq,
   ICharacterTemplateRow,
-  IUpdateCharacterTemplateReq,
+  IUpdateCharacterTemplateCalculatedReq,
 } from "../../services/character-templates/character-templates-interfaces";
 import type { ICharacterTemplateRowDataPacket } from "./character-templates-repo-interfaces";
 
-const create = async (newCharacterTemplateCalculated: ICharacterTemplateCalculated): Promise<ICharacterTemplateRow> => {
+const create = async (
+  newCharacterTemplateCalculated: INewCharacterTemplateCalculatedReq,
+): Promise<ICharacterTemplateRow> => {
   const query = `
     INSERT INTO character_templates (
       character_name,
@@ -54,8 +56,10 @@ const create = async (newCharacterTemplateCalculated: ICharacterTemplateCalculat
   return row[0];
 };
 
-const update = async (updateCharacterTemplateReq: IUpdateCharacterTemplateReq): Promise<ICharacterTemplateRow> => {
-  const { id, ...fields } = updateCharacterTemplateReq;
+const update = async (
+  updateCharacterTemplateCalculated: IUpdateCharacterTemplateCalculatedReq,
+): Promise<ICharacterTemplateRow> => {
+  const { id, ...fields } = updateCharacterTemplateCalculated;
   const keys = Object.keys(fields).filter((key) => fields[key as keyof typeof fields] !== undefined);
   if (keys.length === 0) throw new Error("No fields to update");
   const setClause = keys.map((key) => `${key} = ?`).join(", ");

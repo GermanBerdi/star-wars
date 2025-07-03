@@ -66,16 +66,18 @@ router.post("/:id/reroll-abilities", async (req: Request, res: Response): Promis
 router.patch("/:id", async (req: Request, res: Response): Promise<void> => {
   try {
     const { id } = req.params;
-    const { character_name, hp, strength, defense, speed, character_type, character_description } = req.body;
     const updateCharacterTemplateReq: IUpdateCharacterTemplateReq = {
       id: Number(id),
-      character_name,
-      strength,
-      defense,
-      speed,
-      hp,
-      character_type,
-      character_description,
+      character_name: req.body.character_name,
+      class_id: req.body.class_id,
+      character_level: req.body.character_level,
+      strength_id: req.body.strength_id,
+      dexterity_id: req.body.dexterity_id,
+      constitution_id: req.body.constitution_id,
+      armor_type_id: req.body.armor_type_id,
+      hit_dices: req.body.hit_dices,
+      character_type: req.body.character_type,
+      character_description: req.body.character_description,
     };
     const characterTemplate = await characterTemplatesService.update(updateCharacterTemplateReq);
     const response = {

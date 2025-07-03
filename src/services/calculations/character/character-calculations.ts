@@ -27,6 +27,29 @@ const rollHitDices = (characterClass: ICharacterClassRow, characterLevel: number
   return hitDices;
 };
 
+const validateHitDices = (hitDices: number[], characterClass: ICharacterClassRow, characterLevel: number): boolean => {
+  const hitDice = characterClass.hit_dice;
+  const numberOfDices = Math.min(characterLevel, characterClass.hit_dice_limit);
+  if (hitDices.length !== numberOfDices) return false;
+  return hitDices.every((value) => value >= 1 && value <= hitDice);
+};
+
+const adjustHitDicesByLevel = (
+  hitDices: number[],
+  characterClass: ICharacterClassRow,
+  characterLevel: number,
+): number[] => {
+  const hitDicesAdjusted = [...hitDices];
+  const hitDice = characterClass.hit_dice;
+  const numberOfDices = Math.min(characterLevel, characterClass.hit_dice_limit);
+  if (hitDicesAdjusted.length > numberOfDices) return hitDicesAdjusted.slice(0, numberOfDices);
+  while (hitDicesAdjusted.length < numberOfDices) {
+    const roll = rollCalculation.rollNumber(hitDice);
+    hitDicesAdjusted.push(roll);
+  }
+  return hitDicesAdjusted;
+};
+
 const calculateHitDicesModified = (
   hitDices: number[],
   characterClass: ICharacterClassRow,
@@ -72,6 +95,8 @@ const calculateThac0 = (thac0Modifiers: IThac0Modifiers): number => {
 const service = {
   armorClass,
   rollHitDices,
+  validateHitDices,
+  adjustHitDicesByLevel,
   calculateHitDicesModified,
   calculateHp,
   calculateThac0Modifiers,
