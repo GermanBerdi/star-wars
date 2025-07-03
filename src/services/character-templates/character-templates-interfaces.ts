@@ -9,12 +9,11 @@ export interface ICharacterTemplateRow {
   character_name: string;
   class_id: number;
   character_level: number;
-  strength_id: number;
+  strength_id: string;
   dexterity_id: number;
   constitution_id: number;
   armor_type_id: number;
   armor_class: number;
-  speed: number;
   hit_dices: number[];
   hp: number;
   thac0_modifiers: IThac0Modifiers;
@@ -33,7 +32,6 @@ export interface INewCharacterTemplateReq {
   dexterity_id?: number;
   constitution_id?: number;
   armor_type_id: number;
-  speed: number;
   character_type?: CharacterType;
   character_description?: string;
 }
@@ -47,7 +45,6 @@ export interface ICharacterTemplateCalculated {
   constitution_id: number;
   armor_type_id: number;
   armor_class: number;
-  speed: number;
   hit_dices: number[];
   hit_dices_modified: number[];
   hp: number;
@@ -55,6 +52,13 @@ export interface ICharacterTemplateCalculated {
   thac0: number;
   character_type: CharacterType;
   character_description: string | null;
+}
+
+export interface IRerollAbilitiesReq {
+  id: number;
+  strength: boolean;
+  dexterity: boolean;
+  constitution: boolean;
 }
 
 export interface IUpdateCharacterTemplateReq {
