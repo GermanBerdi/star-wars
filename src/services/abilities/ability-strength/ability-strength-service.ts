@@ -61,11 +61,16 @@ const getByRolling = async (classGroup: ClassGroup): Promise<IAbilityStrengthRow
   }
 };
 
+const hasExcepcionalStrength = (strength: IAbilityStrengthRow): boolean => {
+  return strength.exceptional_strength_min !== null && strength.exceptional_strength_max !== null;
+};
+
 const service = {
   getAll,
   getById,
   getByAbilityScore,
   getByRolling,
+  hasExcepcionalStrength,
 };
 
 export default service;
