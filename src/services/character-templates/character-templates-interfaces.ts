@@ -4,6 +4,7 @@ export interface IThac0Modifiers {
   base: number;
   strength_hit_probability: number;
 }
+
 export interface ICharacterTemplateRow {
   id: number;
   character_name: string;
@@ -12,6 +13,9 @@ export interface ICharacterTemplateRow {
   strength_id: string;
   dexterity_id: number;
   constitution_id: number;
+  intelligence_id: number;
+  wisdom_id: number;
+  charisma_id: number;
   armor_type_id: number;
   armor_class: number;
   hit_dices: number[];
@@ -20,6 +24,7 @@ export interface ICharacterTemplateRow {
   thac0: number;
   character_type: CharacterType;
   character_description: string | null;
+  last_exceptional_strength_id: string;
   updated_at: Date;
   created_at: Date;
 }
@@ -31,6 +36,9 @@ export interface INewCharacterTemplateReq {
   strength_id?: string;
   dexterity_id?: number;
   constitution_id?: number;
+  intelligence_id?: number;
+  wisdom_id?: number;
+  charisma_id?: number;
   armor_type_id: number;
   character_type?: CharacterType;
   character_description?: string;
@@ -43,6 +51,9 @@ export interface INewCharacterTemplateCalculatedReq {
   strength_id: string;
   dexterity_id: number;
   constitution_id: number;
+  intelligence_id: number;
+  wisdom_id: number;
+  charisma_id: number;
   armor_type_id: number;
   armor_class: number;
   hit_dices: number[];
@@ -52,6 +63,7 @@ export interface INewCharacterTemplateCalculatedReq {
   thac0: number;
   character_type: CharacterType;
   character_description: string | null;
+  last_exceptional_strength_id: string | null;
 }
 
 export interface IRerollAbilitiesReq {
@@ -59,6 +71,9 @@ export interface IRerollAbilitiesReq {
   strength?: boolean;
   dexterity?: boolean;
   constitution?: boolean;
+  intelligence?: boolean;
+  wisdom?: boolean;
+  charisma?: boolean;
 }
 
 export interface IUpdateCharacterTemplateReq {
@@ -69,6 +84,9 @@ export interface IUpdateCharacterTemplateReq {
   strength_id?: string;
   dexterity_id?: number;
   constitution_id?: number;
+  intelligence_id?: number;
+  wisdom_id?: number;
+  charisma_id?: number;
   armor_type_id?: number;
   hit_dices?: number[];
   character_type?: CharacterType;
@@ -83,6 +101,9 @@ export interface IUpdateCharacterTemplateCalculatedReq {
   strength_id?: string;
   dexterity_id?: number;
   constitution_id?: number;
+  intelligence_id?: number;
+  wisdom_id?: number;
+  charisma_id?: number;
   armor_type_id?: number;
   armor_class?: number;
   hit_dices?: number[];
@@ -92,4 +113,5 @@ export interface IUpdateCharacterTemplateCalculatedReq {
   thac0?: number;
   character_type?: CharacterType;
   character_description?: string | null;
+  last_exceptional_strength_id?: string | null;
 }
