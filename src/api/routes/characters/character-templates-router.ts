@@ -25,6 +25,9 @@ router.post("/", validateCreateCharacterTemplate, async (req: Request, res: Resp
       strength_id: req.body.strength_id,
       dexterity_id: req.body.dexterity_id,
       constitution_id: req.body.constitution_id,
+      intelligence_id: req.body.intelligence_id,
+      wisdom_id: req.body.wisdom_id,
+      charisma_id: req.body.charisma_id,
       armor_type_id: req.body.armor_type_id,
       character_type: req.body.character_type,
       character_description: req.body.character_description,
@@ -51,6 +54,9 @@ router.post("/:id/reroll-abilities", async (req: Request, res: Response): Promis
       strength: req.body.strength,
       dexterity: req.body.dexterity,
       constitution: req.body.constitution,
+      intelligence: req.body.intelligence,
+      wisdom: req.body.wisdom,
+      charisma: req.body.charisma,
     };
     const characterTemplate = await characterTemplatesService.rerollAbilities(rerolAbilitiesReq);
     const response = {
@@ -94,6 +100,9 @@ router.patch("/:id", async (req: Request, res: Response): Promise<void> => {
       strength_id: req.body.strength_id,
       dexterity_id: req.body.dexterity_id,
       constitution_id: req.body.constitution_id,
+      intelligence_id: req.body.intelligence_id,
+      wisdom_id: req.body.wisdom_id,
+      charisma_id: req.body.charisma_id,
       armor_type_id: req.body.armor_type_id,
       hit_dices: req.body.hit_dices,
       character_type: req.body.character_type,

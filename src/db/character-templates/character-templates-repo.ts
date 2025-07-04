@@ -19,6 +19,9 @@ const create = async (
       strength_id,
       dexterity_id,
       constitution_id,
+      intelligence_id,
+      wisdom_id,
+      charisma_id,
       armor_type_id,
       armor_class,
       hit_dices,
@@ -27,8 +30,9 @@ const create = async (
       thac0_modifiers,
       thac0,
       character_type,
-      character_description
-    ) VALUES (?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?);
+      character_description,
+      last_exceptional_strength_id
+    ) VALUES (?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?);
   `;
   const values = [
     newCharacterTemplateCalculated.character_name,
@@ -37,6 +41,9 @@ const create = async (
     newCharacterTemplateCalculated.strength_id,
     newCharacterTemplateCalculated.dexterity_id,
     newCharacterTemplateCalculated.constitution_id,
+    newCharacterTemplateCalculated.intelligence_id,
+    newCharacterTemplateCalculated.wisdom_id,
+    newCharacterTemplateCalculated.charisma_id,
     newCharacterTemplateCalculated.armor_type_id,
     newCharacterTemplateCalculated.armor_class,
     newCharacterTemplateCalculated.hit_dices,
@@ -46,6 +53,7 @@ const create = async (
     newCharacterTemplateCalculated.thac0,
     newCharacterTemplateCalculated.character_type,
     newCharacterTemplateCalculated.character_description,
+    newCharacterTemplateCalculated.last_exceptional_strength_id,
   ];
   const [result] = await pool.execute<ResultSetHeader>(query, values);
   if (result.affectedRows !== 1) throw new Error(JSON.stringify(result));
