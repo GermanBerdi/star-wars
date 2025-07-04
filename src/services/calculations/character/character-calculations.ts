@@ -1,8 +1,11 @@
 import rollCalculation from "../rolls/rolls-calculations";
+import abilitiesService from "../../abilities/abilities-service";
 import thac0sService from "../../thac0s/thac0s-service";
 
+import { Dice } from "../rolls/rolls-enums";
 import { ClassGroup } from "./character-enums";
 
+import type { ICharacterTemplateRow, IThac0Modifiers } from "../../character-templates/character-templates-interfaces";
 import type { IArmorTypeRow } from "../../armor-types/armor-types-interfaces";
 import type {
   IAbilityStrengthRow,
@@ -10,7 +13,14 @@ import type {
   IAbilityConstitutionRow,
 } from "../../abilities/abilities-service-interfaces";
 import type { ICharacterClassRow } from "../../character-classes/character-classes-interfaces";
-import type { IThac0Modifiers } from "../../character-templates/character-templates-interfaces";
+import calcService from "../calc-service";
+
+const restoreOrRollExceptionalStrength = async (character: ICharacterTemplateRow): Promise<IAbilityStrengthRow> => {
+  if (character.last_exceptional_strength_id)
+    return await abilitiesService.strength.getById(character.last_exceptional_strength_id);
+  const exceptionalStrength = calcService.rolls.rollDices(Dice._1D100);
+  return await abilitiesService.strength.getByAbilityScore(18, exceptionalStrength);
+};
 
 const armorClass = (armorType: IArmorTypeRow, dexterity: IAbilityDexterityRow) => {
   return armorType.armor_class + dexterity.defensive_adjustment;
@@ -93,6 +103,7 @@ const calculateThac0 = (thac0Modifiers: IThac0Modifiers): number => {
 };
 
 const service = {
+  restoreOrRollExceptionalStrength,
   armorClass,
   rollHitDices,
   validateHitDices,
