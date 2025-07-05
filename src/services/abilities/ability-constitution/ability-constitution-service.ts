@@ -42,7 +42,7 @@ const getByAbilityScore = async (abilityScore: number): Promise<IAbilityConstitu
 const getByRolling = async (): Promise<IAbilityConstitutionRow> => {
   try {
     const abilityScore = calcService.rolls.rollAbility();
-    return getByAbilityScore(abilityScore);
+    return await getByAbilityScore(abilityScore);
   } catch (error) {
     const errorMessage = `Error in getByRolling at abilities constitution service: ${error}`;
     console.error(errorMessage);
