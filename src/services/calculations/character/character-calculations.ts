@@ -2,8 +2,8 @@ import rollCalculation from "../rolls/rolls-calculations";
 import abilitiesService from "../../abilities/abilities-service";
 import thac0sService from "../../thac0s/thac0s-service";
 
-import { Dice } from "../rolls/rolls-enums";
 import { ClassGroup } from "./character-enums";
+import { StrengthIds } from "../../abilities/ability-strength/ability-strength-service-enums";
 
 import type { ICharacterTemplateRow, IThac0Modifiers } from "../../character-templates/character-templates-interfaces";
 import type { IArmorTypeRow } from "../../armor-types/armor-types-interfaces";
@@ -13,18 +13,27 @@ import type {
   IAbilityConstitutionRow,
 } from "../../abilities/abilities-service-interfaces";
 import type { ICharacterClassRow } from "../../character-classes/character-classes-interfaces";
-import calcService from "../calc-service";
 
 const restoreOrRollExceptionalStrength = async (character: ICharacterTemplateRow): Promise<IAbilityStrengthRow> => {
   if (character.last_exceptional_strength_id)
     return await abilitiesService.strength.getById(character.last_exceptional_strength_id);
-  const exceptionalStrength = calcService.rolls.rollDices(Dice._1D100);
-  return await abilitiesService.strength.getByAbilityScore(18, exceptionalStrength);
+  return await abilitiesService.strength.getExceptionalStrengthByRolling();
 };
 
-const armorClass = (armorType: IArmorTypeRow, dexterity: IAbilityDexterityRow) => {
-  return armorType.armor_class + dexterity.defensive_adjustment;
+const adjustStrength18ByClass  = async (character: ICharacterTemplateRow, classGroup: ClassGroup): Promise<IAbilityStrengthRow> => {
+  if (!isWarrior(classGroup) && abilitiesService.strength.isExceptionalStrengthId(character.strength_id))
+    return await abilitiesService.strength.getById(StrengthIds.STR_18);
+  if (isWarrior(classGroup) && abilitiesService.strength.is18StrengthId(character.strength_id))
+    return await restoreOrRollExceptionalStrength(character);
+  throw new Error(`Strength adjustment not needed: character already has valid strength: ${character.strength_id} for class group: ${classGroup}`);
 };
+
+const isFirstExceptionalStrength = (character: ICharacterTemplateRow, strengthId: string): Boolean =>
+  (character.last_exceptional_strength_id === null && abilitiesService.strength.isExceptionalStrengthId(strengthId));
+
+const isWarrior = (classGroup: ClassGroup) => classGroup === ClassGroup.WARRIOR;
+
+const armorClass = (armorType: IArmorTypeRow, dexterity: IAbilityDexterityRow) => armorType.armor_class + dexterity.defensive_adjustment;
 
 const rollHitDices = (characterClass: ICharacterClassRow, characterLevel: number): number[] => {
   const hitDices: number[] = [];
@@ -104,6 +113,9 @@ const calculateThac0 = (thac0Modifiers: IThac0Modifiers): number => {
 
 const service = {
   restoreOrRollExceptionalStrength,
+  adjustStrength18ByClass,
+  isFirstExceptionalStrength,
+  isWarrior,
   armorClass,
   rollHitDices,
   validateHitDices,
