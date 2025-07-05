@@ -52,6 +52,7 @@ const update = async (
           currentCharacterTemplate,
           characterClass.class_group,
         );
+        updateCharacterTemplateCalculated.strength_id = strength.id;
       }
       if (calcService.character.isFirstExceptionalStrength(currentCharacterTemplate, strength.id))
         updateCharacterTemplateCalculated.last_exceptional_strength_id = strength.id;
