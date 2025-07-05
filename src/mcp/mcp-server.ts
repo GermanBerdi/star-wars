@@ -32,11 +32,7 @@ const mcpServer = new McpServer({
   name: "combat-system",
   version: "1.0.0",
 });
-mcpServer.tool(
-  listAbilityCharismaTool.toolName,
-  listAbilityCharismaTool.description,
-  listAbilityCharismaTool.cb,
-);
+mcpServer.tool(listAbilityCharismaTool.toolName, listAbilityCharismaTool.description, listAbilityCharismaTool.cb);
 mcpServer.tool(
   listAbilityConstitutionTool.toolName,
   listAbilityConstitutionTool.description,

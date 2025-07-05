@@ -64,7 +64,9 @@ const paramsSchema = {
     ),
   armor_type_id: z
     .number()
-    .describe("Armor type ID. Consult 'List Armor Types' table to see all available armor options (from None AC 10 to Full Plate AC 1) with their armor class values, costs, and weights"),
+    .describe(
+      "Armor type ID. Consult 'List Armor Types' table to see all available armor options (from None AC 10 to Full Plate AC 1) with their armor class values, costs, and weights",
+    ),
   character_type: z
     .nativeEnum(CharacterType)
     .default(CharacterType.COMMON)
