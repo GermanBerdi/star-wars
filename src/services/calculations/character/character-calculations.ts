@@ -24,8 +24,7 @@ const adjustStrength18ByClass = async (
   character: ICharacterTemplateRow,
   classGroup: ClassGroup,
 ): Promise<IAbilityStrengthRow> => {
-  if (!isWarrior(classGroup))
-    return await abilitiesService.strength.getById(StrengthIds.STR_18);
+  if (!isWarrior(classGroup)) return await abilitiesService.strength.getById(StrengthIds.STR_18);
   return await restoreOrRollExceptionalStrength(character);
 };
 

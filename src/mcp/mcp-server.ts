@@ -1,8 +1,11 @@
 import { McpServer } from "@modelcontextprotocol/sdk/server/mcp.js";
 import { StdioServerTransport } from "@modelcontextprotocol/sdk/server/stdio.js";
+import { listAbilityCharismaTool } from "./tools/abilities/list-ability-charisma-tool";
 import { listAbilityConstitutionTool } from "./tools/abilities/list-ability-constitution-tool";
 import { listAbilityDexterityTool } from "./tools/abilities/list-ability-dexterity-tool";
+import { listAbilityIntelligenceTool } from "./tools/abilities/list-ability-intelligence-tool";
 import { listAbilityStrengthTool } from "./tools/abilities/list-ability-strength-tool";
+import { listAbilityWisdomTool } from "./tools/abilities/list-ability-wisdom-tool";
 import { listArmorTypesTool } from "./tools/armor-types/list-armor-types-tool";
 import { listCharacterClassesTool } from "./tools/character-classes/list-character-classes-tool";
 import { createCharacterTemplateTool } from "./tools/character-templates/create-character-template-tool";
@@ -30,12 +33,23 @@ const mcpServer = new McpServer({
   version: "1.0.0",
 });
 mcpServer.tool(
+  listAbilityCharismaTool.toolName,
+  listAbilityCharismaTool.description,
+  listAbilityCharismaTool.cb,
+);
+mcpServer.tool(
   listAbilityConstitutionTool.toolName,
   listAbilityConstitutionTool.description,
   listAbilityConstitutionTool.cb,
 );
 mcpServer.tool(listAbilityDexterityTool.toolName, listAbilityDexterityTool.description, listAbilityDexterityTool.cb);
+mcpServer.tool(
+  listAbilityIntelligenceTool.toolName,
+  listAbilityIntelligenceTool.description,
+  listAbilityIntelligenceTool.cb,
+);
 mcpServer.tool(listAbilityStrengthTool.toolName, listAbilityStrengthTool.description, listAbilityStrengthTool.cb);
+mcpServer.tool(listAbilityWisdomTool.toolName, listAbilityWisdomTool.description, listAbilityWisdomTool.cb);
 mcpServer.tool(listArmorTypesTool.toolName, listArmorTypesTool.description, listArmorTypesTool.cb);
 mcpServer.tool(listCharacterClassesTool.toolName, listCharacterClassesTool.description, listCharacterClassesTool.cb);
 mcpServer.tool(
