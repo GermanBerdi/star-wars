@@ -24,13 +24,9 @@ const adjustStrength18ByClass = async (
   character: ICharacterTemplateRow,
   classGroup: ClassGroup,
 ): Promise<IAbilityStrengthRow> => {
-  if (!isWarrior(classGroup) && abilitiesService.strength.isExceptionalStrengthId(character.strength_id))
+  if (!isWarrior(classGroup))
     return await abilitiesService.strength.getById(StrengthIds.STR_18);
-  if (isWarrior(classGroup) && abilitiesService.strength.is18StrengthId(character.strength_id))
-    return await restoreOrRollExceptionalStrength(character);
-  throw new Error(
-    `Strength adjustment not needed: character already has valid strength: ${character.strength_id} for class group: ${classGroup}`,
-  );
+  return await restoreOrRollExceptionalStrength(character);
 };
 
 const isFirstExceptionalStrength = (character: ICharacterTemplateRow, strengthId: string): Boolean =>
