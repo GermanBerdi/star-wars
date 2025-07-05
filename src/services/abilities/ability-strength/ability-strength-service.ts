@@ -77,7 +77,8 @@ const getExceptionalStrengthByRolling = async (): Promise<IAbilityStrengthRow> =
 
 const is18StrengthId = (strengthId: string): boolean => strengthId === StrengthIds.STR_18;
 
-const isExceptionalStrengthId = (strengthId: string): boolean => strengthId in ExceptionalStrengthIds;
+const isExceptionalStrengthId = (strengthId: string): boolean =>
+  Object.values(ExceptionalStrengthIds).includes(strengthId as ExceptionalStrengthIds);
 
 const isValidStrengthIdClass = (strengthId: string, classGroup: ClassGroup): boolean => {
   if (!is18StrengthId(strengthId) && !isExceptionalStrengthId(strengthId)) return true;
