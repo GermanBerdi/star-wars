@@ -7,7 +7,11 @@ import characterClassesService from "../character-classes/character-classes-serv
 import armorTypesService from "../armor-types/armor-types-service";
 
 import type { IAbilityStrengthRow } from "../abilities/abilities-service-interfaces";
-import type { ICharacterTemplateRow, IUpdateCharacterTemplateReq, IUpdateCharacterTemplateCalculatedReq } from "./character-templates-interfaces";
+import type {
+  ICharacterTemplateRow,
+  IUpdateCharacterTemplateReq,
+  IUpdateCharacterTemplateCalculatedReq,
+} from "./character-templates-interfaces";
 import type { ICharacterClassRow } from "../character-classes/character-classes-interfaces";
 
 const update = async (
@@ -41,14 +45,19 @@ const update = async (
       characterClass = await characterClassesService.getById(
         updateCharacterTemplateReq.class_id || currentCharacterTemplate.class_id,
       );
-      if (!abilitiesService.strength.isValidStrengthIdClass(strength.id,characterClass.class_group)) {
-        if (updateCharacterTemplateReq.strength_id) throw new Error(`Invalid strength ${strength.id} for class group ${characterClass.class_group}`);
-        strength = await calcService.character.adjustStrength18ByClass(currentCharacterTemplate,characterClass.class_group);
+      if (!abilitiesService.strength.isValidStrengthIdClass(strength.id, characterClass.class_group)) {
+        if (updateCharacterTemplateReq.strength_id)
+          throw new Error(`Invalid strength ${strength.id} for class group ${characterClass.class_group}`);
+        strength = await calcService.character.adjustStrength18ByClass(
+          currentCharacterTemplate,
+          characterClass.class_group,
+        );
       }
-      if (calcService.character.isFirstExceptionalStrength(currentCharacterTemplate,strength.id))
+      if (calcService.character.isFirstExceptionalStrength(currentCharacterTemplate, strength.id))
         updateCharacterTemplateCalculated.last_exceptional_strength_id = strength.id;
       else if (updateCharacterTemplateReq.strength_id && !isReassign)
-        updateCharacterTemplateCalculated.last_exceptional_strength_id = abilitiesService.strength.isExceptionalStrengthId(strength.id) ? strength.id : null;
+        updateCharacterTemplateCalculated.last_exceptional_strength_id =
+          abilitiesService.strength.isExceptionalStrengthId(strength.id) ? strength.id : null;
     }
     if (updateCharacterTemplateReq.dexterity_id || updateCharacterTemplateReq.armor_type_id) {
       const dexterity = await abilitiesService.dexterity.getById(
@@ -75,7 +84,9 @@ const update = async (
       );
       if (updateCharacterTemplateReq.hit_dices) {
         // User provided explicit dice rolls - validate and use them
-        if (!calcService.character.validateHitDices(updateCharacterTemplateReq.hit_dices, characterClass, characterLevel))
+        if (
+          !calcService.character.validateHitDices(updateCharacterTemplateReq.hit_dices, characterClass, characterLevel)
+        )
           throw new Error(`Invalid hit dices for class ${characterClass} and level ${characterLevel}`);
         updateCharacterTemplateCalculated.hit_dices = updateCharacterTemplateReq.hit_dices;
       } else if (
@@ -176,7 +187,7 @@ const reassignAbilities = async (id: number, reassignArray: number[]): Promise<I
     const newCharismaScore = currentScores[chaIndex];
     const newStrength =
       newStrengthScore === 18
-        ? await calcService.character.adjustStrength18ByClass(currentCharacter,currentClass.class_group)
+        ? await calcService.character.adjustStrength18ByClass(currentCharacter, currentClass.class_group)
         : await abilitiesService.strength.getByAbilityScore(newStrengthScore, null);
     const newDexterity = await abilitiesService.dexterity.getByAbilityScore(newDexterityScore);
     const newConstitution = await abilitiesService.constitution.getByAbilityScore(newConstitutionScore);
@@ -201,7 +212,7 @@ const reassignAbilities = async (id: number, reassignArray: number[]): Promise<I
 const updater = {
   update,
   reassignAbilities,
-}
+};
 
 export { update };
 export default updater;

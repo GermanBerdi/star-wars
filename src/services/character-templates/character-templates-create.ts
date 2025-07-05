@@ -127,6 +127,6 @@ const create = async (newCharacterTemplateReq: INewCharacterTemplateReq): Promis
 
 const creator = {
   create,
-}
+};
 
 export default creator;

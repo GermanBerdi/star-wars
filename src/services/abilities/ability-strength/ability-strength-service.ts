@@ -52,7 +52,10 @@ const getByAbilityScore = async (
 const getByRolling = async (classGroup: ClassGroup): Promise<IAbilityStrengthRow> => {
   try {
     const abilityScore = calcService.rolls.rollAbility();
-    const exceptionalStrength = abilityScore === 18 && calcService.character.isWarrior(classGroup) ? calcService.rolls.rollDices(Dice._1D100) : null;
+    const exceptionalStrength =
+      abilityScore === 18 && calcService.character.isWarrior(classGroup)
+        ? calcService.rolls.rollDices(Dice._1D100)
+        : null;
     return await getByAbilityScore(abilityScore, exceptionalStrength);
   } catch (error) {
     const errorMessage = `Error in getByRolling at abilities strength service: ${error}`;
@@ -70,7 +73,7 @@ const getExceptionalStrengthByRolling = async (): Promise<IAbilityStrengthRow> =
     console.error(errorMessage);
     throw new Error(errorMessage);
   }
-}
+};
 
 const is18StrengthId = (strengthId: string): boolean => strengthId === StrengthIds.STR_18;
 

@@ -20,20 +20,26 @@ const restoreOrRollExceptionalStrength = async (character: ICharacterTemplateRow
   return await abilitiesService.strength.getExceptionalStrengthByRolling();
 };
 
-const adjustStrength18ByClass  = async (character: ICharacterTemplateRow, classGroup: ClassGroup): Promise<IAbilityStrengthRow> => {
+const adjustStrength18ByClass = async (
+  character: ICharacterTemplateRow,
+  classGroup: ClassGroup,
+): Promise<IAbilityStrengthRow> => {
   if (!isWarrior(classGroup) && abilitiesService.strength.isExceptionalStrengthId(character.strength_id))
     return await abilitiesService.strength.getById(StrengthIds.STR_18);
   if (isWarrior(classGroup) && abilitiesService.strength.is18StrengthId(character.strength_id))
     return await restoreOrRollExceptionalStrength(character);
-  throw new Error(`Strength adjustment not needed: character already has valid strength: ${character.strength_id} for class group: ${classGroup}`);
+  throw new Error(
+    `Strength adjustment not needed: character already has valid strength: ${character.strength_id} for class group: ${classGroup}`,
+  );
 };
 
 const isFirstExceptionalStrength = (character: ICharacterTemplateRow, strengthId: string): Boolean =>
-  (character.last_exceptional_strength_id === null && abilitiesService.strength.isExceptionalStrengthId(strengthId));
+  character.last_exceptional_strength_id === null && abilitiesService.strength.isExceptionalStrengthId(strengthId);
 
 const isWarrior = (classGroup: ClassGroup) => classGroup === ClassGroup.WARRIOR;
 
-const armorClass = (armorType: IArmorTypeRow, dexterity: IAbilityDexterityRow) => armorType.armor_class + dexterity.defensive_adjustment;
+const armorClass = (armorType: IArmorTypeRow, dexterity: IAbilityDexterityRow) =>
+  armorType.armor_class + dexterity.defensive_adjustment;
 
 const rollHitDices = (characterClass: ICharacterClassRow, characterLevel: number): number[] => {
   const hitDices: number[] = [];
