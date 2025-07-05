@@ -2,6 +2,7 @@ import abilitiesStrengthRepo from "../../../db/ability-strength/ability-strength
 
 import calcService from "../../calculations/calc-service";
 
+import { StrengthIds, ExceptionalStrengthIds } from "./ability-strength-service-enums";
 import { ClassGroup } from "../../calculations/character/character-enums";
 import { Dice } from "../../calculations/rolls/rolls-enums";
 
@@ -51,9 +52,8 @@ const getByAbilityScore = async (
 const getByRolling = async (classGroup: ClassGroup): Promise<IAbilityStrengthRow> => {
   try {
     const abilityScore = calcService.rolls.rollAbility();
-    const exceptionalStrength =
-      abilityScore === 18 && classGroup === ClassGroup.WARRIOR ? calcService.rolls.rollDices(Dice._1D100) : null;
-    return getByAbilityScore(abilityScore, exceptionalStrength);
+    const exceptionalStrength = abilityScore === 18 && calcService.character.isWarrior(classGroup) ? calcService.rolls.rollDices(Dice._1D100) : null;
+    return await getByAbilityScore(abilityScore, exceptionalStrength);
   } catch (error) {
     const errorMessage = `Error in getByRolling at abilities strength service: ${error}`;
     console.error(errorMessage);
@@ -61,8 +61,25 @@ const getByRolling = async (classGroup: ClassGroup): Promise<IAbilityStrengthRow
   }
 };
 
-const hasExcepcionalStrength = (strength: IAbilityStrengthRow): boolean => {
-  return strength.exceptional_strength_min !== null && strength.exceptional_strength_max !== null;
+const getExceptionalStrenghByRolling = async (): Promise<IAbilityStrengthRow> => {
+  try {
+    const exceptionalStrength = calcService.rolls.rollDices(Dice._1D100);
+    return await getByAbilityScore(18, exceptionalStrength);
+  } catch (error) {
+    const errorMessage = `Error in getByRolling at abilities strength service: ${error}`;
+    console.error(errorMessage);
+    throw new Error(errorMessage);
+  }
+}
+
+const is18StrengthId = (strengthId: string): boolean => strengthId === StrengthIds.STR_18;
+
+const isExceptionalStrengthId = (strengthId: string): boolean => strengthId in ExceptionalStrengthIds;
+
+const isValidStrengthIdClass = (strengthId: string, classGroup: ClassGroup): boolean => {
+  if (!is18StrengthId(strengthId) && !isExceptionalStrengthId(strengthId)) return true;
+  if (calcService.character.isWarrior(classGroup)) return isExceptionalStrengthId(strengthId);
+  return is18StrengthId(strengthId);
 };
 
 const service = {
@@ -70,7 +87,10 @@ const service = {
   getById,
   getByAbilityScore,
   getByRolling,
-  hasExcepcionalStrength,
+  getExceptionalStrenghByRolling,
+  is18StrengthId,
+  isExceptionalStrengthId,
+  isValidStrengthIdClass,
 };
 
 export default service;
