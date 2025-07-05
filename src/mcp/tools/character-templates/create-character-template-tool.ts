@@ -11,7 +11,7 @@ import type { INewCharacterTemplateReq } from "../../../services/character-templ
 const toolName = "combat-system_character_templates_create";
 
 const description =
-  "Creates a new character template for AD&D 2nd edition combat system. The system automatically calculates all derived stats (AC, HP, THAC0, hit dice) based on the provided parameters. Use the List tools to explore available classes, armor types, and ability scores before creating your character.";
+  "Creates a new character template for AD&D 2nd edition combat system with all 6 abilities (Strength, Dexterity, Constitution, Intelligence, Wisdom, Charisma). The system automatically calculates all derived stats (AC, HP, THAC0, hit dice, spell bonuses, social modifiers) based on the provided parameters. IMPORTANT: Use the List tools to consult the ability tables (List Strength/Dexterity/Constitution/Intelligence/Wisdom/Charisma Abilities), armor table (List Armor Types), and class table (List Character Classes) before creating your character.";
 
 const paramsSchema = {
   character_name: z
@@ -20,7 +20,7 @@ const paramsSchema = {
   class_id: z
     .number()
     .describe(
-      "Character class ID. Use 'List Character Classes' to see available classes (warrior, priest, rogue, wizard groups)",
+      "Character class ID. Consult 'List Character Classes' table to see available classes (warrior, priest, rogue, wizard groups) with their hit dice and mechanics",
     ),
   character_level: z
     .number()
@@ -30,23 +30,41 @@ const paramsSchema = {
     .string()
     .optional()
     .describe(
-      "Strength attribute ID (optional). If not provided, will be rolled randomly. Use 'List Strength Abilities' to see available values and their combat modifiers",
+      "Strength attribute ID (optional). If not provided, will be rolled randomly. Consult 'List Strength Abilities' table to see all available values (3-25) and their combat modifiers (hit/damage bonuses, weight allowance, door opening, exceptional strength for warriors)",
     ),
   dexterity_id: z
     .number()
     .optional()
     .describe(
-      "Dexterity attribute ID (optional). If not provided, will be rolled randomly. Use 'List Dexterity Abilities' to see available values and their AC/missile bonuses",
+      "Dexterity attribute ID (optional). If not provided, will be rolled randomly. Consult 'List Dexterity Abilities' table to see all available values (3-25) and their bonuses (AC improvement, missile attack adjustment, reaction adjustment)",
     ),
   constitution_id: z
     .number()
     .optional()
     .describe(
-      "Constitution attribute ID (optional). If not provided, will be rolled randomly. Use 'List Constitution Abilities' to see available values and their HP modifiers",
+      "Constitution attribute ID (optional). If not provided, will be rolled randomly. Consult 'List Constitution Abilities' table to see all available values (3-25) and their bonuses (HP per level, system shock, resurrection survival, poison save, regeneration)",
+    ),
+  intelligence_id: z
+    .number()
+    .optional()
+    .describe(
+      "Intelligence attribute ID (optional). If not provided, will be rolled randomly. Consult 'List Intelligence Abilities' table to see all available values (3-25) and their bonuses (wizard spells per level, spell learning chance, maximum spells known, languages, illusion immunity at 19+)",
+    ),
+  wisdom_id: z
+    .number()
+    .optional()
+    .describe(
+      "Wisdom attribute ID (optional). If not provided, will be rolled randomly. Consult 'List Wisdom Abilities' table to see all available values (3-25) and their bonuses (priest bonus spells, magical defense adjustment, spell failure chance, spell immunity at 19+)",
+    ),
+  charisma_id: z
+    .number()
+    .optional()
+    .describe(
+      "Charisma attribute ID (optional). If not provided, will be rolled randomly. Consult 'List Charisma Abilities' table to see all available values (3-25) and their bonuses (reaction adjustment, maximum henchmen, loyalty base)",
     ),
   armor_type_id: z
     .number()
-    .describe("Armor type ID. Use 'List Armor Types' to see all available armor options with their armor class values"),
+    .describe("Armor type ID. Consult 'List Armor Types' table to see all available armor options (from None AC 10 to Full Plate AC 1) with their armor class values, costs, and weights"),
   character_type: z
     .nativeEnum(CharacterType)
     .default(CharacterType.COMMON)
@@ -58,7 +76,6 @@ const paramsSchema = {
     .optional()
     .describe("Optional description or lore about the character, combat notes, or tactical information"),
 };
-
 const cb: ToolCallback<typeof paramsSchema> = async ({
   character_name,
   class_id,
@@ -66,6 +83,9 @@ const cb: ToolCallback<typeof paramsSchema> = async ({
   strength_id,
   dexterity_id,
   constitution_id,
+  intelligence_id,
+  wisdom_id,
+  charisma_id,
   armor_type_id,
   character_type,
   character_description,
@@ -81,6 +101,9 @@ const cb: ToolCallback<typeof paramsSchema> = async ({
       strength_id,
       dexterity_id,
       constitution_id,
+      intelligence_id,
+      wisdom_id,
+      charisma_id,
       armor_type_id,
       character_type,
       character_description,
