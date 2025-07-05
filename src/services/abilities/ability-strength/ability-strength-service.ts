@@ -61,7 +61,7 @@ const getByRolling = async (classGroup: ClassGroup): Promise<IAbilityStrengthRow
   }
 };
 
-const getExceptionalStrenghByRolling = async (): Promise<IAbilityStrengthRow> => {
+const getExceptionalStrengthByRolling = async (): Promise<IAbilityStrengthRow> => {
   try {
     const exceptionalStrength = calcService.rolls.rollDices(Dice._1D100);
     return await getByAbilityScore(18, exceptionalStrength);
@@ -87,7 +87,7 @@ const service = {
   getById,
   getByAbilityScore,
   getByRolling,
-  getExceptionalStrenghByRolling,
+  getExceptionalStrengthByRolling,
   is18StrengthId,
   isExceptionalStrengthId,
   isValidStrengthIdClass,
