@@ -11,7 +11,7 @@ import type { IUpdateCharacterTemplateReq } from "../../../services/character-te
 const toolName = "combat-system_character_templates_update";
 
 const description =
-  "Updates an existing character template for AD&D 2nd edition combat system. The system automatically recalculates all derived stats (AC, HP, THAC0, hit dice) based on the updated parameters. Only provided fields will be updated, others remain unchanged.";
+  "Updates an existing character template for AD&D 2nd edition combat system. The system automatically recalculates all derived stats (AC, HP, THAC0, hit dice, spell bonuses, social modifiers) based on the updated parameters. Only provided fields will be updated, others remain unchanged.";
 
 const paramsSchema = {
   id: z.number().describe("Unique identifier of the character template to update"),
@@ -45,6 +45,24 @@ const paramsSchema = {
     .describe(
       "Constitution attribute ID. Use 'List Constitution Abilities' to see available values and their HP modifiers",
     ),
+  intelligence_id: z
+    .number()
+    .optional()
+    .describe(
+      "Intelligence attribute ID. Use 'List Intelligence Abilities' to see available values (3-25) and their bonuses (wizard spells per level, spell learning chance, maximum spells known, languages, illusion immunity at 19+)",
+    ),
+  wisdom_id: z
+    .number()
+    .optional()
+    .describe(
+      "Wisdom attribute ID. Use 'List Wisdom Abilities' to see available values (3-25) and their bonuses (priest bonus spells, magical defense adjustment, spell failure chance, spell immunity at 19+)",
+    ),
+  charisma_id: z
+    .number()
+    .optional()
+    .describe(
+      "Charisma attribute ID. Use 'List Charisma Abilities' to see available values (3-25) and their bonuses (reaction adjustment, maximum henchmen, loyalty base)",
+    ),
   armor_type_id: z
     .number()
     .optional()
@@ -70,6 +88,9 @@ const cb: ToolCallback<typeof paramsSchema> = async ({
   strength_id,
   dexterity_id,
   constitution_id,
+  intelligence_id,
+  wisdom_id,
+  charisma_id,
   armor_type_id,
   hit_dices,
   character_type,
@@ -87,6 +108,9 @@ const cb: ToolCallback<typeof paramsSchema> = async ({
       strength_id,
       dexterity_id,
       constitution_id,
+      intelligence_id,
+      wisdom_id,
+      charisma_id,
       armor_type_id,
       hit_dices,
       character_type,

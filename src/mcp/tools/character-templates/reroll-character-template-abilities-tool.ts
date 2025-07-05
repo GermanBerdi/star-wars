@@ -9,7 +9,7 @@ import type { IRerollAbilitiesReq } from "../../../services/character-templates/
 const toolName = "combat-system_character_templates_reroll_abilities";
 
 const description =
-  "Rerolls specific abilities (strength, dexterity, constitution) for an existing character template in AD&D 2nd edition combat system. You can choose which abilities to reroll while keeping others unchanged. The system automatically recalculates all derived stats (AC, HP, THAC0) after rerolling.";
+  "Rerolls specific abilities (strength, dexterity, constitution, intelligence, wisdom, charisma) for an existing character template in AD&D 2nd edition combat system. You can choose which abilities to reroll while keeping others unchanged. The system automatically recalculates all derived stats (AC, HP, THAC0) after rerolling.";
 
 const paramsSchema = {
   id: z
@@ -29,6 +29,18 @@ const paramsSchema = {
     .boolean()
     .optional()
     .describe("Whether to reroll constitution ability (true = reroll, false/undefined = keep current)"),
+  intelligence: z
+    .boolean()
+    .optional()
+    .describe("Whether to reroll intelligence ability (true = reroll, false/undefined = keep current)"),
+  wisdom: z
+    .boolean()
+    .optional()
+    .describe("Whether to reroll wisdom ability (true = reroll, false/undefined = keep current)"),
+  charisma: z
+    .boolean()
+    .optional()
+    .describe("Whether to reroll charisma ability (true = reroll, false/undefined = keep current)"),
 };
 
 const cb: ToolCallback<typeof paramsSchema> = async ({
@@ -36,18 +48,24 @@ const cb: ToolCallback<typeof paramsSchema> = async ({
   strength,
   dexterity,
   constitution,
+  intelligence,
+  wisdom,
+  charisma,
 }: IRerollAbilitiesReq) => {
   const response: CallToolResult = {
     content: [{ type: "text", text: "" }],
   };
   try {
-    const rerolAbilitiesReq: IRerollAbilitiesReq = {
+    const rerollAbilitiesReq: IRerollAbilitiesReq = {
       id,
       strength,
       dexterity,
       constitution,
+      intelligence,
+      wisdom,
+      charisma,
     };
-    const characterTemplate = await characterTemplatesService.rerollAbilities(rerolAbilitiesReq);
+    const characterTemplate = await characterTemplatesService.rerollAbilities(rerollAbilitiesReq);
     const contentData = {
       message: "Character template abilities rerolled",
       data: {
