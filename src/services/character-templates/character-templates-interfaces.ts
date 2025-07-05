@@ -24,7 +24,7 @@ export interface ICharacterTemplateRow {
   thac0: number;
   character_type: CharacterType;
   character_description: string | null;
-  last_exceptional_strength_id: string;
+  last_exceptional_strength_id: string | null;
   updated_at: Date;
   created_at: Date;
 }
