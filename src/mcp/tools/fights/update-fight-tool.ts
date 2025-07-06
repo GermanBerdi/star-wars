@@ -18,7 +18,7 @@ const paramsSchema = {
     .array(z.number().positive())
     .optional()
     .describe(
-      "Optional array of team IDs for team-based battles. Each number represents a team that participants can join (e.g., [1, 2] creates teams 1 and 2). If not provided, the fight will be a free-for-all.",
+      "Array of team IDs for team-based battles. Use [1, 2] for two teams, [1, 2, 3] for three teams, or [] for free-for-all (everyone fights individually).",
     ),
   turn: z.number().optional().describe("Current turn number in the fight"),
   pending_participants: z
@@ -41,16 +41,6 @@ const paramsSchema = {
     .describe("ID of the winning participant when fight is finished, null if fight is ongoing or ended in draw"),
 };
 
-interface cbParams {
-  id: number;
-  fight_name?: string;
-  available_teams?: number[];
-  turn?: number;
-  pending_participants?: number[];
-  fight_status?: FightStatus;
-  winner_id?: number;
-}
-
 const cb: ToolCallback<typeof paramsSchema> = async ({
   id,
   fight_name,
@@ -59,7 +49,7 @@ const cb: ToolCallback<typeof paramsSchema> = async ({
   pending_participants,
   fight_status,
   winner_id,
-}: cbParams) => {
+}: IUpdateFightReq) => {
   const response: CallToolResult = {
     content: [{ type: "text", text: "" }],
   };

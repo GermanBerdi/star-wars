@@ -33,7 +33,7 @@ const getAll = async (): Promise<IFightRow[]> => {
   return rows;
 };
 
-export const getById = async (id: number): Promise<IFightRow | null> => {
+const getById = async (id: number): Promise<IFightRow | null> => {
   const [rows] = await pool.query<IFightRowDataPacket[]>(`SELECT * FROM fights WHERE id = ?;`, [id]);
   return rows.length > 0 ? rows[0] : null;
 };

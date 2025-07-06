@@ -19,11 +19,7 @@ const paramsSchema = {
     ),
 };
 
-interface cbParams {
-  id: number;
-}
-
-const cb: ToolCallback<typeof paramsSchema> = async ({ id }: cbParams) => {
+const cb: ToolCallback<typeof paramsSchema> = async ({ id }: { id: number }) => {
   const response: CallToolResult = {
     content: [{ type: "text", text: "" }],
   };

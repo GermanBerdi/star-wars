@@ -3,21 +3,19 @@ import type { Request, Response } from "express";
 
 import fightsService from "../../../services/fights/fights-service";
 
+import { validateCreateFight } from "./middlewares/fights-validation";
+
 import type { INewFightReq, IUpdateFightReq } from "../../../services/fights/fights-interfaces";
 // import fightsParticipantsRouter from "./fights-participants-router";
 
 const router = Router();
 
-router.post("/", async (req: Request, res: Response): Promise<void> => {
+router.post("/", validateCreateFight, async (req: Request, res: Response): Promise<void> => {
   try {
     const { fight_name, available_teams } = req.body;
-    if (!fight_name) {
-      res.status(400).json({ message: "fight_name is required." });
-      return;
-    }
     const newFightReq: INewFightReq = {
       fight_name,
-      available_teams: available_teams ?? null,
+      available_teams: available_teams ?? [],
     };
     const fight = await fightsService.create(newFightReq);
     const response = {
@@ -52,7 +50,7 @@ router.post("/:id/set-participants-order", async (req, res) => {
 
 router.patch("/:id", async (req: Request, res: Response): Promise<void> => {
   try {
-    const { id } = req.params;
+    const id = Number(req.params.id);
     const { fight_name, available_teams, turn, pending_participants, fight_status, winner_id } = req.body;
     const updateFightReq: IUpdateFightReq = {
       id: Number(id),

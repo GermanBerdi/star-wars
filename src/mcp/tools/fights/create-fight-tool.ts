@@ -21,25 +21,19 @@ const paramsSchema = {
     ),
   available_teams: z
     .array(z.number().positive())
-    .optional()
     .describe(
-      "Optional array of team IDs for team-based battles. Each number represents a team that participants can join (e.g., [1, 2] creates teams 1 and 2, [1, 2, 3] creates teams 1, 2, and 3). When creating participants, their team_id must match one of these values. If not provided or null, the fight will be a free-for-all where all participants fight individually without team assignments.",
+      "Array of team IDs for the battle. Use empty array [] for free-for-all (all participants fight individually), or [1, 2] for team-based battles where participants can join team 1 or team 2. For three-way battles use [1, 2, 3], etc. When creating participants, their team_id must match one of these values (or be null for free-for-all).",
     ),
 };
 
-interface cbParams {
-  fight_name: string;
-  available_teams?: number[];
-}
-
-const cb: ToolCallback<typeof paramsSchema> = async ({ fight_name, available_teams }: cbParams) => {
+const cb: ToolCallback<typeof paramsSchema> = async ({ fight_name, available_teams }: INewFightReq) => {
   const response: CallToolResult = {
     content: [{ type: "text", text: "" }],
   };
   try {
     const newFight: INewFightReq = {
       fight_name,
-      available_teams: available_teams ?? null,
+      available_teams: available_teams,
     };
     const fightCreated = await fightsService.create(newFight);
     const contentData = {

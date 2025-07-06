@@ -3,7 +3,7 @@ import { FightStatus } from "./fights-enums";
 export interface IFightRow {
   id: number;
   fight_name: string;
-  available_teams: number[] | null;
+  available_teams: number[];
   turn: number;
   pending_participants: number[] | null;
   fight_status: FightStatus;
@@ -14,13 +14,13 @@ export interface IFightRow {
 
 export interface INewFightReq {
   fight_name: string;
-  available_teams: number[] | null;
+  available_teams: number[];
 }
 
 export interface IUpdateFightReq {
   id: number;
   fight_name?: string;
-  available_teams?: number[] | null;
+  available_teams?: number[];
   turn?: number;
   pending_participants?: number[] | null;
   fight_status?: FightStatus;

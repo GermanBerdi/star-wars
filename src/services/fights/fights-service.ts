@@ -6,16 +6,6 @@ import type { INewFightReq, IUpdateFightReq, IFightRow } from "./fights-interfac
 
 const create = async (newFight: INewFightReq): Promise<IFightRow> => {
   try {
-    if (!newFight.fight_name || newFight.fight_name.trim().length === 0) {
-      throw new Error(`fight_name cannot be empty`);
-    }
-    if (
-      newFight.available_teams !== null &&
-      (!Array.isArray(newFight.available_teams) ||
-        !newFight.available_teams.every((team) => typeof team === "number" && team > 0))
-    ) {
-      throw new Error(`available_teams must be null (for free-for-all) or an array of positive numbers`);
-    }
     const fight = await fightRepo.create(newFight);
     return fight;
   } catch (error) {
