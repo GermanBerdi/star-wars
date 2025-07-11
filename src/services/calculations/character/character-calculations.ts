@@ -13,6 +13,7 @@ import type {
   IAbilityConstitutionRow,
 } from "../../abilities/abilities-service-interfaces";
 import type { ICharacterClassRow } from "../../character-classes/character-classes-interfaces";
+import { CharacterType } from "../../character-templates/character-templates-enums";
 
 const restoreOrRollExceptionalStrength = async (character: ICharacterTemplateRow): Promise<IAbilityStrengthRow> => {
   if (character.last_exceptional_strength_id)
@@ -112,6 +113,8 @@ const calculateThac0 = (thac0Modifiers: IThac0Modifiers): number => {
   return thac0Modifiers.base - thac0Modifiers.strength_hit_probability;
 };
 
+const isCommon = (characterType: CharacterType) => characterType === CharacterType.COMMON;
+
 const service = {
   restoreOrRollExceptionalStrength,
   adjustStrength18ByClass,
@@ -125,6 +128,7 @@ const service = {
   calculateHp,
   calculateThac0Modifiers,
   calculateThac0,
+  isCommon,
 };
 
 export default service;
