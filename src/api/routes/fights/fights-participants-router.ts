@@ -30,7 +30,7 @@ router.post("/",validateCreateParticipant, async (req: Request, res: Response): 
     };
     res.status(201).json(response);
   } catch (error) {
-    const errorMessage = `Error creating Participant: ${error}`;
+    const errorMessage = `Error creating participant: ${error}`;
     if (errorMessage.includes("Participant with name")) {
       res.status(400).json({ errorMessage });
       return;

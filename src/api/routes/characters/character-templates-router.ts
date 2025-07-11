@@ -49,7 +49,7 @@ router.post("/", validateCreateCharacterTemplate, async (req: Request, res: Resp
 router.post("/:id/reroll-abilities", async (req: Request, res: Response): Promise<void> => {
   try {
     const id = Number(req.params.id);
-    const rerolAbilitiesReq: IRerollAbilitiesReq = {
+    const rerollAbilitiesReq: IRerollAbilitiesReq = {
       id,
       strength: req.body.strength,
       dexterity: req.body.dexterity,
@@ -58,7 +58,7 @@ router.post("/:id/reroll-abilities", async (req: Request, res: Response): Promis
       wisdom: req.body.wisdom,
       charisma: req.body.charisma,
     };
-    const characterTemplate = await characterTemplatesService.rerollAbilities(rerolAbilitiesReq);
+    const characterTemplate = await characterTemplatesService.rerollAbilities(rerollAbilitiesReq);
     const response = {
       message: "Character template abilities rerolled",
       data: {

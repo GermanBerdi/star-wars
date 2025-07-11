@@ -4,7 +4,7 @@ export const validateCreateFight = (req: Request, res: Response, next: NextFunct
   const { fight_name, available_teams } = req.body;
 
   if (!fight_name?.trim()) {
-    res.status(400).json({ message: "fight_name is required" });
+    res.status(400).json({ message: "fight_name is required." });
     return;
   }
 
@@ -14,7 +14,7 @@ export const validateCreateFight = (req: Request, res: Response, next: NextFunct
   ) {
     res.status(400).json({
       message:
-        "available_teams must be an array of positive numbers for team battles (e.g., [1,2]) or empty array [] for free-for-all",
+        "available_teams must be an array of positive numbers for team battles (e.g., [1,2]) or empty array [] for free-for-all.",
     });
     return;
   }

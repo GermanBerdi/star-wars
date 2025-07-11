@@ -25,7 +25,7 @@ router.post("/", validateCreateFight, async (req: Request, res: Response): Promi
     };
     res.status(201).json(response);
   } catch (error) {
-    const errorMessage = `Error creating Fight: ${error}`;
+    const errorMessage = `Error creating fight: ${error}`;
     res.status(500).json({ errorMessage });
   }
 });
@@ -52,7 +52,7 @@ router.patch("/:id", async (req: Request, res: Response): Promise<void> => {
     const id = Number(req.params.id);
     const { fight_name, available_teams, turn, pending_participants, fight_status, winner_id } = req.body;
     const updateFightReq: IUpdateFightReq = {
-      id: Number(id),
+      id,
       fight_name,
       available_teams,
       turn,

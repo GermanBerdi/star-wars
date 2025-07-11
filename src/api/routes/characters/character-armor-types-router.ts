@@ -7,11 +7,11 @@ const router = Router();
 
 router.get("/", async (req: Request, res: Response): Promise<void> => {
   try {
-    const characterTemplates = await armorTypesService.getAll();
+    const armorTypes = await armorTypesService.getAll();
     const response = {
       message: "Armor types list",
       data: {
-        characterTemplates,
+        armorTypes,
       },
     };
     res.status(200).json(response);
