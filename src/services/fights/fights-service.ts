@@ -1,6 +1,6 @@
 import fightRepo from "../../db/fights/fights-repo";
 
-import participantsService from "../character-participants/character-participants-service";
+import participantsService from "../participants/participants-service";
 
 import type { INewFightReq, IUpdateFightReq, IFightRow } from "./fights-interfaces";
 
