@@ -6,7 +6,7 @@ import rollsService from "../calculations/rolls/rolls-calculations";
 
 import { Dice } from "../calculations/rolls/rolls-enums";
 
-import type { INewParticipantReq, IParticipantRow } from "./character-participants-interfaces";
+import type { INewParticipantReq, IParticipantRow } from "./participants-interfaces";
 import type { CharacterType } from "../character-templates/character-templates-enums";
 
 // const create = async (newParticipant: INewParticipantReq): Promise<IParticipantRow> => {
@@ -39,6 +39,18 @@ const getAll = async (): Promise<IParticipantRow[]> => {
   }
 };
 
+const getById = async (id: number): Promise<IParticipantRow> => {
+  try {
+    const participant = await participantsRepo.getById(id);
+    if (!participant) throw new Error(`Participant with id ${id} not found.`);
+    return participant;
+  } catch (error) {
+    const errorMessage = `Error in getById at participants service: ${error}`;
+    console.error(errorMessage);
+    throw new Error(errorMessage);
+  }
+};
+
 const getByFightId = async (fightId: number): Promise<IParticipantRow[]> => {
   try {
     await fightsService.getById(fightId);
@@ -58,6 +70,7 @@ const rollInitiative = (participant: IParticipantRow): number => {
 const service = {
   // create,
   getAll,
+  getById,
   getByFightId,
   rollInitiative,
 };
