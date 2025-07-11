@@ -1,10 +1,7 @@
 import pool from "../connection";
 import type { ResultSetHeader } from "mysql2";
 
-import type {
-  INewParticipantReq,
-  IParticipantRow,
-} from "../../services/participants/participants-interfaces";
+import type { INewParticipantReq, IParticipantRow } from "../../services/participants/participants-interfaces";
 import type { ICharacterTemplateRow } from "../../services/character-templates/character-templates-interfaces";
 import type { IParticipantRowDataPacket } from "./participants-repo-interfaces";
 
@@ -66,10 +63,7 @@ const getAll = async (): Promise<IParticipantRow[]> => {
 };
 
 const getById = async (id: number): Promise<IParticipantRow | null> => {
-  const [rows] = await pool.query<IParticipantRowDataPacket[]>(
-    `SELECT * FROM participants WHERE id = ?;`,
-    [id],
-  );
+  const [rows] = await pool.query<IParticipantRowDataPacket[]>(`SELECT * FROM participants WHERE id = ?;`, [id]);
   return rows.length > 0 ? rows[0] : null;
 };
 

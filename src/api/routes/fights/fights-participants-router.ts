@@ -9,11 +9,10 @@ import type { INewParticipantReq } from "../../../services/participants/particip
 
 const router = Router({ mergeParams: true });
 
-router.post("/",validateCreateParticipant, async (req: Request, res: Response): Promise<void> => {
+router.post("/", validateCreateParticipant, async (req: Request, res: Response): Promise<void> => {
   try {
     const fightId = Number(req.params.fightId);
     const { character_template_id, participant_name, is_alive, team_id } = req.body;
-    
     const newParticipantReq: INewParticipantReq = {
       fightId,
       character_template_id,

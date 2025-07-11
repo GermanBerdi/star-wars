@@ -26,12 +26,12 @@ export const validateCreateParticipant = (req: Request, res: Response, next: Nex
   const { character_template_id, participant_name } = req.body;
 
   if (!character_template_id) {
-        res.status(400).json({ message: "character_template_id is required." });
-        return;
-      }
+    res.status(400).json({ message: "character_template_id is required." });
+    return;
+  }
   if (!participant_name) {
-        res.status(400).json({ message: "participant_name is required." });
-        return;
+    res.status(400).json({ message: "participant_name is required." });
+    return;
   }
 
   next();
