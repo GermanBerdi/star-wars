@@ -3,8 +3,8 @@ export interface IArmorTypeRow {
   armor_name: string;
   name_spanish: string;
   armor_class: number;
-  description: number;
-  historical_notes: number;
+  description: string;
+  historical_notes: string;
   cost_gp: number;
   weight_lbs: number;
   weight_kg: number;

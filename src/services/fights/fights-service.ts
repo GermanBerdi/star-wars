@@ -9,7 +9,7 @@ const create = async (newFight: INewFightReq): Promise<IFightRow> => {
     const fight = await fightRepo.create(newFight);
     return fight;
   } catch (error) {
-    const errorMessage = `Error in create at fight service: ${error}`;
+    const errorMessage = `Error in create at fights service: ${error}`;
     console.error(errorMessage);
     throw new Error(errorMessage);
   }
@@ -20,7 +20,7 @@ const update = async (updateFightReq: IUpdateFightReq): Promise<IFightRow> => {
     const fight = await fightRepo.update(updateFightReq);
     return fight;
   } catch (error) {
-    const errorMessage = `Error in update at fight service: ${error}`;
+    const errorMessage = `Error in update at fights service: ${error}`;
     console.error(errorMessage);
     throw new Error(errorMessage);
   }
@@ -31,7 +31,7 @@ const getAll = async (): Promise<IFightRow[]> => {
     const fights = await fightRepo.getAll();
     return fights;
   } catch (error) {
-    const errorMessage = `Error in getAll at fight service: ${error}`;
+    const errorMessage = `Error in getAll at fights service: ${error}`;
     console.error(errorMessage);
     throw new Error(errorMessage);
   }
@@ -43,7 +43,7 @@ const getById = async (id: number): Promise<IFightRow> => {
     if (!fight) throw new Error(`Fight with id ${id} not found.`);
     return fight;
   } catch (error) {
-    const errorMessage = `Error in getById at fight service: ${error}`;
+    const errorMessage = `Error in getById at fights service: ${error}`;
     console.error(errorMessage);
     throw new Error(errorMessage);
   }
@@ -53,7 +53,7 @@ const remove = async (id: number): Promise<void> => {
   try {
     await fightRepo.remove(id);
   } catch (error) {
-    const errorMessage = `Error in remove at fight service: ${error}`;
+    const errorMessage = `Error in remove at fights service: ${error}`;
     console.error(errorMessage);
     throw new Error(errorMessage);
   }
@@ -79,7 +79,7 @@ const setParticipantsOrder = async (id: number): Promise<IFightRow> => {
     const fight = await update(updateFightReq);
     return fight;
   } catch (error) {
-    const errorMessage = `Error in setParticipantsOrder at fight service: ${error}`;
+    const errorMessage = `Error in setParticipantsOrder at fights service: ${error}`;
     console.error(errorMessage);
     throw new Error(errorMessage);
   }

@@ -1,5 +1,5 @@
 import characterTemplatesRepo from "../../db/character-templates/character-templates-repo";
-import actions from "./character-templates-actions";
+import rerolls from "./character-templates-rerolls";
 import creator from "./character-templates-create";
 import updater from "./character-templates-update";
 
@@ -40,8 +40,8 @@ const remove = async (id: number): Promise<void> => {
 
 const service = {
   create: creator.create,
-  rerollAbilities: actions.rerollAbilities,
-  rerollHitDices: actions.rerollHitDices,
+  rerollAbilities: rerolls.rerollAbilities,
+  rerollHitDices: rerolls.rerollHitDices,
   update: updater.update,
   reassignAbilities: updater.reassignAbilities,
   getAll,

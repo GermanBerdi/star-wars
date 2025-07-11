@@ -102,11 +102,11 @@ const calculateThac0Modifiers = async (
   strength: IAbilityStrengthRow,
 ): Promise<IThac0Modifiers> => {
   const thac0 = await thac0sService.getByCharacterLevel(characterLevel);
-  const thac0Mmodifiers: IThac0Modifiers = {
+  const thac0Modifiers: IThac0Modifiers = {
     base: thac0[characterClass.class_group],
     strength_hit_probability: strength.hit_probability,
   };
-  return thac0Mmodifiers;
+  return thac0Modifiers;
 };
 
 const calculateThac0 = (thac0Modifiers: IThac0Modifiers): number => {

@@ -33,7 +33,7 @@ const getByAbilityScore = async (abilityScore: number): Promise<IAbilityWisdomRo
     if (!wisdomModifier) throw new Error(`Ability wisdom with abilityScore ${abilityScore} not found.`);
     return wisdomModifier;
   } catch (error) {
-    const errorMessage = `Error in getByAbilityScore at wisdom service: ${error}`;
+    const errorMessage = `Error in getByAbilityScore at abilities wisdom service: ${error}`;
     console.error(errorMessage);
     throw new Error(errorMessage);
   }

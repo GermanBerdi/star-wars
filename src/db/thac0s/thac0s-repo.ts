@@ -13,8 +13,8 @@ const getById = async (id: number): Promise<IThac0sRow | null> => {
   return rows.length > 0 ? rows[0] : null;
 };
 
-const getByCharacterLevel = async (id: number): Promise<IThac0sRow | null> => {
-  const [rows] = await pool.query<IThac0sRowDataPacket[]>(`SELECT * FROM thac0s WHERE character_level = ?;`, [id]);
+const getByCharacterLevel = async (characterLevel: number): Promise<IThac0sRow | null> => {
+  const [rows] = await pool.query<IThac0sRowDataPacket[]>(`SELECT * FROM thac0s WHERE character_level = ?;`, [characterLevel]);
   return rows.length > 0 ? rows[0] : null;
 };
 

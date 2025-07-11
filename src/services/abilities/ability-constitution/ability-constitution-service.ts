@@ -33,7 +33,7 @@ const getByAbilityScore = async (abilityScore: number): Promise<IAbilityConstitu
     if (!constitutionModifier) throw new Error(`Ability constitution with abilityScore ${abilityScore} not found.`);
     return constitutionModifier;
   } catch (error) {
-    const errorMessage = `Error in getByAbilityScore at constitution service: ${error}`;
+    const errorMessage = `Error in getByAbilityScore at abilities constitution service: ${error}`;
     console.error(errorMessage);
     throw new Error(errorMessage);
   }

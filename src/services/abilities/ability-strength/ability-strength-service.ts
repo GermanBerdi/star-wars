@@ -69,7 +69,7 @@ const getExceptionalStrengthByRolling = async (): Promise<IAbilityStrengthRow> =
     const exceptionalStrength = calcService.rolls.rollDices(Dice._1D100);
     return await getByAbilityScore(18, exceptionalStrength);
   } catch (error) {
-    const errorMessage = `Error in getByRolling at abilities strength service: ${error}`;
+    const errorMessage = `Error in getExceptionalStrengthByRolling at abilities strength service: ${error}`;
     console.error(errorMessage);
     throw new Error(errorMessage);
   }

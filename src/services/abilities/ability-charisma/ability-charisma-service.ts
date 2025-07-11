@@ -33,7 +33,7 @@ const getByAbilityScore = async (abilityScore: number): Promise<IAbilityCharisma
     if (!charismaModifier) throw new Error(`Ability charisma with abilityScore ${abilityScore} not found.`);
     return charismaModifier;
   } catch (error) {
-    const errorMessage = `Error in getByAbilityScore at charisma service: ${error}`;
+    const errorMessage = `Error in getByAbilityScore at abilities charisma service: ${error}`;
     console.error(errorMessage);
     throw new Error(errorMessage);
   }

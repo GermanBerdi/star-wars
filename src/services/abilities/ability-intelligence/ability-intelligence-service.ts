@@ -33,7 +33,7 @@ const getByAbilityScore = async (abilityScore: number): Promise<IAbilityIntellig
     if (!intelligenceModifier) throw new Error(`Ability intelligence with abilityScore ${abilityScore} not found.`);
     return intelligenceModifier;
   } catch (error) {
-    const errorMessage = `Error in getByAbilityScore at intelligence service: ${error}`;
+    const errorMessage = `Error in getByAbilityScore at abilities intelligence service: ${error}`;
     console.error(errorMessage);
     throw new Error(errorMessage);
   }
