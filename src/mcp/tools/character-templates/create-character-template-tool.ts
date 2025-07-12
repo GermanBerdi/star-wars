@@ -96,7 +96,7 @@ const cb: ToolCallback<typeof paramsSchema> = async ({
     content: [{ type: "text", text: "" }],
   };
   try {
-    const newCharacterTemplate: INewCharacterTemplateReq = {
+    const newCharacterTemplateReq: INewCharacterTemplateReq = {
       character_name,
       class_id,
       character_level,
@@ -110,7 +110,7 @@ const cb: ToolCallback<typeof paramsSchema> = async ({
       character_type,
       character_description,
     };
-    const characterTemplateCreated = await characterTemplatesService.create(newCharacterTemplate);
+    const characterTemplateCreated = await characterTemplatesService.create(newCharacterTemplateReq);
     const contentData = {
       message: "Character template created",
       data: {

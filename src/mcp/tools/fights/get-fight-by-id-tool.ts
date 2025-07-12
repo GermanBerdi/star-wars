@@ -4,7 +4,7 @@ import type { CallToolResult } from "@modelcontextprotocol/sdk/types.js";
 
 import fightsService from "../../../services/fights/fights-service";
 
-const toolName = "combat-system_fights_getById";
+const toolName = "combat-system_fights_get_by_id";
 
 const description =
   "Retrieves detailed information for a specific fight/battle by its unique ID. Returns comprehensive fight data including participant details, combat rounds, damage dealt, winner/loser, duration, and complete battle log. Use this to examine specific fight outcomes, analyze combat performance, or review detailed battle statistics for a particular encounter.";
