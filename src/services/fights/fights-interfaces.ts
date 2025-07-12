@@ -14,7 +14,7 @@ export interface IFightRow {
 
 export interface INewFightReq {
   fight_name: string;
-  available_teams: number[];
+  available_teams?: number[];
 }
 
 export interface IUpdateFightReq {

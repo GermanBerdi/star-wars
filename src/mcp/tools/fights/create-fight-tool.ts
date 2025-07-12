@@ -21,6 +21,7 @@ const paramsSchema = {
     ),
   available_teams: z
     .array(z.number().positive())
+    .optional()
     .describe(
       "Array of team IDs for the battle. Use empty array [] for free-for-all (all participants fight individually), or [1, 2] for team-based battles where participants can join team 1 or team 2. For three-way battles use [1, 2, 3], etc. When creating participants, their team_id must match one of these values (or be null for free-for-all).",
     ),
@@ -31,11 +32,11 @@ const cb: ToolCallback<typeof paramsSchema> = async ({ fight_name, available_tea
     content: [{ type: "text", text: "" }],
   };
   try {
-    const newFight: INewFightReq = {
+    const newFightReq: INewFightReq = {
       fight_name,
-      available_teams: available_teams,
+      available_teams,
     };
-    const fightCreated = await fightsService.create(newFight);
+    const fightCreated = await fightsService.create(newFightReq);
     const contentData = {
       message: "Fight created",
       data: {

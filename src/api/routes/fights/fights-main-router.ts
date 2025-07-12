@@ -14,7 +14,7 @@ router.post("/", validateCreateFight, async (req: Request, res: Response): Promi
     const { fight_name, available_teams } = req.body;
     const newFightReq: INewFightReq = {
       fight_name,
-      available_teams: available_teams ?? [],
+      available_teams,
     };
     const fight = await fightsService.create(newFightReq);
     const response = {

@@ -4,9 +4,10 @@ import participantsService from "../participants/participants-service";
 
 import type { INewFightReq, IUpdateFightReq, IFightRow } from "./fights-interfaces";
 
-const create = async (newFight: INewFightReq): Promise<IFightRow> => {
+const create = async (newFightreq: INewFightReq): Promise<IFightRow> => {
   try {
-    const fight = await fightRepo.create(newFight);
+    newFightreq.available_teams ? newFightreq.available_teams : [];
+    const fight = await fightRepo.create(newFightreq);
     return fight;
   } catch (error) {
     const errorMessage = `Error in create at fights service: ${error}`;
