@@ -121,8 +121,7 @@ const create = async (newCharacterTemplateReq: INewCharacterTemplateReq): Promis
     newCharacterTemplateCalculated.thac0 = calcService.character.calculateThac0(
       newCharacterTemplateCalculated.thac0_modifiers,
     );
-    newCharacterTemplateCalculated.initiative_modifiers =
-      calcService.character.calculateInitiativeModifiers(dexterity);
+    newCharacterTemplateCalculated.initiative_modifiers = calcService.character.calculateInitiativeModifiers(dexterity);
     newCharacterTemplateCalculated.initiative = calcService.character.calculateInitiative(
       newCharacterTemplateCalculated.initiative_modifiers,
     );

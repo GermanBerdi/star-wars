@@ -18,7 +18,7 @@ const create = async (newParticipant: INewParticipantReq): Promise<IParticipantR
     const usedNames = participants.map((participant) => participant.participant_name);
     if (usedNames.includes(newParticipant.participant_name))
       throw new Error(`Participant with name ${newParticipant.participant_name} already used.`);
-    const newParticipantCalculatedReq:INewParticipantCalculatedReq = {
+    const newParticipantCalculatedReq: INewParticipantCalculatedReq = {
       fightId: newParticipant.fightId,
       character_template_id: newParticipant.character_template_id,
       participant_name: newParticipant.participant_name,

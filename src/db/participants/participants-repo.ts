@@ -1,12 +1,13 @@
 import pool from "../connection";
 import type { ResultSetHeader } from "mysql2";
 
-import type { INewParticipantCalculatedReq, IParticipantRow } from "../../services/participants/participants-interfaces";
+import type {
+  INewParticipantCalculatedReq,
+  IParticipantRow,
+} from "../../services/participants/participants-interfaces";
 import type { IParticipantRowDataPacket } from "./participants-repo-interfaces";
 
-const create = async (
-  newParticipantCalculatedReq: INewParticipantCalculatedReq,
-): Promise<IParticipantRow> => {
+const create = async (newParticipantCalculatedReq: INewParticipantCalculatedReq): Promise<IParticipantRow> => {
   const keys = Object.keys(newParticipantCalculatedReq);
   const columns = keys.join(", ");
   const placeholders = keys.map(() => "?").join(", ");
