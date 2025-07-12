@@ -11,50 +11,14 @@ import type { ICharacterTemplateRowDataPacket } from "./character-templates-repo
 const create = async (
   newCharacterTemplateCalculated: INewCharacterTemplateCalculatedReq,
 ): Promise<ICharacterTemplateRow> => {
+  const keys = Object.keys(newCharacterTemplateCalculated);
+  const columns = keys.join(", ");
+  const placeholders = keys.map(() => "?").join(", ");
   const query = `
-    INSERT INTO character_templates (
-      character_name,
-      class_id,
-      character_level,
-      strength_id,
-      dexterity_id,
-      constitution_id,
-      intelligence_id,
-      wisdom_id,
-      charisma_id,
-      armor_type_id,
-      armor_class,
-      hit_dices,
-      hit_dices_modified,
-      hp,
-      thac0_modifiers,
-      thac0,
-      character_type,
-      character_description,
-      last_exceptional_strength_id
-    ) VALUES (?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?);
+    INSERT INTO character_templates (${columns}) 
+    VALUES (${placeholders});
   `;
-  const values = [
-    newCharacterTemplateCalculated.character_name,
-    newCharacterTemplateCalculated.class_id,
-    newCharacterTemplateCalculated.character_level,
-    newCharacterTemplateCalculated.strength_id,
-    newCharacterTemplateCalculated.dexterity_id,
-    newCharacterTemplateCalculated.constitution_id,
-    newCharacterTemplateCalculated.intelligence_id,
-    newCharacterTemplateCalculated.wisdom_id,
-    newCharacterTemplateCalculated.charisma_id,
-    newCharacterTemplateCalculated.armor_type_id,
-    newCharacterTemplateCalculated.armor_class,
-    newCharacterTemplateCalculated.hit_dices,
-    newCharacterTemplateCalculated.hit_dices_modified,
-    newCharacterTemplateCalculated.hp,
-    newCharacterTemplateCalculated.thac0_modifiers,
-    newCharacterTemplateCalculated.thac0,
-    newCharacterTemplateCalculated.character_type,
-    newCharacterTemplateCalculated.character_description,
-    newCharacterTemplateCalculated.last_exceptional_strength_id,
-  ];
+  const values = keys.map((key) => newCharacterTemplateCalculated[key as keyof typeof newCharacterTemplateCalculated]);
   const [result] = await pool.execute<ResultSetHeader>(query, values);
   if (result.affectedRows !== 1) throw new Error(JSON.stringify(result));
   const [row] = await pool.execute<ICharacterTemplateRowDataPacket[]>(
@@ -71,12 +35,13 @@ const update = async (
   const keys = Object.keys(fields).filter((key) => fields[key as keyof typeof fields] !== undefined);
   if (keys.length === 0) throw new Error("No fields to update");
   const setClause = keys.map((key) => `${key} = ?`).join(", ");
+  const query = `
+    UPDATE character_templates SET ${setClause}
+    WHERE id = ?;
+  `;
   const values = keys.map((key) => fields[key as keyof typeof fields]);
   values.push(id);
-  const [result] = await pool.execute<ResultSetHeader>(
-    `UPDATE character_templates SET ${setClause} WHERE id = ?;`,
-    values,
-  );
+  const [result] = await pool.execute<ResultSetHeader>(query, values);
   if (result.affectedRows !== 1) throw new Error(JSON.stringify(result));
   const [row] = await pool.execute<ICharacterTemplateRowDataPacket[]>(
     `SELECT * FROM character_templates WHERE id = ?;`,
@@ -86,12 +51,12 @@ const update = async (
 };
 
 const getAll = async (): Promise<ICharacterTemplateRow[]> => {
-  const [rows] = await pool.query<ICharacterTemplateRowDataPacket[]>("SELECT * FROM character_templates;");
+  const [rows] = await pool.execute<ICharacterTemplateRowDataPacket[]>("SELECT * FROM character_templates;");
   return rows;
 };
 
 const getById = async (id: number): Promise<ICharacterTemplateRow | null> => {
-  const [rows] = await pool.query<ICharacterTemplateRowDataPacket[]>(
+  const [rows] = await pool.execute<ICharacterTemplateRowDataPacket[]>(
     `SELECT * FROM character_templates WHERE id = ?;`,
     [id],
   );

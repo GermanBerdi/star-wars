@@ -5,11 +5,15 @@ import type { INewFightReq, IFightRow, IUpdateFightReq } from "../../services/fi
 import type { IFightRowDataPacket } from "./fights-repo-interfaces";
 
 const create = async (newFight: INewFightReq): Promise<IFightRow> => {
-  const { fight_name, available_teams } = newFight;
-  const [result] = await pool.execute<ResultSetHeader>(
-    `INSERT INTO fights (fight_name, available_teams) VALUES (?,?);`,
-    [fight_name, available_teams],
-  );
+  const keys = Object.keys(newFight);
+  const columns = keys.join(", ");
+  const placeholders = keys.map(() => "?").join(", ");
+  const query = `
+    INSERT INTO fights (${columns}) 
+    VALUES (${placeholders});
+  `;
+  const values = keys.map((key) => newFight[key as keyof typeof newFight]);
+  const [result] = await pool.execute<ResultSetHeader>(query, values);
   if (result.affectedRows !== 1) throw new Error(JSON.stringify(result));
   const [row] = await pool.execute<IFightRowDataPacket[]>(`SELECT * FROM fights WHERE id = ?`, [result.insertId]);
   return row[0];
@@ -20,21 +24,25 @@ const update = async (updateFightReq: IUpdateFightReq): Promise<IFightRow> => {
   const keys = Object.keys(fields).filter((key) => fields[key as keyof typeof fields] !== undefined);
   if (keys.length === 0) throw new Error("No fields to update");
   const setClause = keys.map((key) => `${key} = ?`).join(", ");
+  const query = `
+    UPDATE fights SET ${setClause}
+    WHERE id = ?;
+  `;
   const values = keys.map((key) => fields[key as keyof typeof fields]);
   values.push(id);
-  const [result] = await pool.execute<ResultSetHeader>(`UPDATE fights SET ${setClause} WHERE id = ?;`, values);
+  const [result] = await pool.execute<ResultSetHeader>(query, values);
   if (result.affectedRows !== 1) throw new Error(JSON.stringify(result));
   const [row] = await pool.execute<IFightRowDataPacket[]>(`SELECT * FROM fights WHERE id = ?;`, [id]);
   return row[0];
 };
 
 const getAll = async (): Promise<IFightRow[]> => {
-  const [rows] = await pool.query<IFightRowDataPacket[]>("SELECT * FROM fights;");
+  const [rows] = await pool.execute<IFightRowDataPacket[]>("SELECT * FROM fights;");
   return rows;
 };
 
 const getById = async (id: number): Promise<IFightRow | null> => {
-  const [rows] = await pool.query<IFightRowDataPacket[]>(`SELECT * FROM fights WHERE id = ?;`, [id]);
+  const [rows] = await pool.execute<IFightRowDataPacket[]>(`SELECT * FROM fights WHERE id = ?;`, [id]);
   return rows.length > 0 ? rows[0] : null;
 };
 
