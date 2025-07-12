@@ -3,11 +3,10 @@ import participantsRepo from "../../db/participants/participants-repo";
 import calcService from "../calculations/calc-service";
 import fightsService from "../fights/fights-service";
 import characterTemplatesService from "../character-templates/character-templates-service";
-import rollsService from "../calculations/rolls/rolls-calculations";
 
 import { Dice } from "../calculations/rolls/rolls-enums";
 
-import type { INewParticipantReq, IParticipantRow } from "./participants-interfaces";
+import type { INewParticipantReq, IParticipantRow, INewParticipantCalculatedReq } from "./participants-interfaces";
 
 const create = async (newParticipant: INewParticipantReq): Promise<IParticipantRow> => {
   try {
@@ -19,7 +18,27 @@ const create = async (newParticipant: INewParticipantReq): Promise<IParticipantR
     const usedNames = participants.map((participant) => participant.participant_name);
     if (usedNames.includes(newParticipant.participant_name))
       throw new Error(`Participant with name ${newParticipant.participant_name} already used.`);
-    const participant = await participantsRepo.create(newParticipant, characterTemplate);
+    const newParticipantCalculatedReq:INewParticipantCalculatedReq = {
+      fightId: newParticipant.fightId,
+      character_template_id: newParticipant.character_template_id,
+      participant_name: newParticipant.participant_name,
+      class_id: characterTemplate.class_id,
+      strength_id: characterTemplate.strength_id,
+      dexterity_id: characterTemplate.dexterity_id,
+      constitution_id: characterTemplate.constitution_id,
+      intelligence_id: characterTemplate.intelligence_id,
+      wisdom_id: characterTemplate.wisdom_id,
+      charisma_id: characterTemplate.charisma_id,
+      armor_type_id: characterTemplate.armor_type_id,
+      armor_class: characterTemplate.armor_class,
+      base_hp: characterTemplate.hp,
+      hp: characterTemplate.hp,
+      thac0: characterTemplate.thac0,
+      initiative: characterTemplate.initiative,
+      is_alive: newParticipant.is_alive,
+      team_id: newParticipant.team_id,
+    };
+    const participant = await participantsRepo.create(newParticipantCalculatedReq);
     return participant;
   } catch (error) {
     const errorMessage = `Error in create at participants service: ${error}`;
@@ -63,9 +82,8 @@ const getByFightId = async (fightId: number): Promise<IParticipantRow[]> => {
   }
 };
 
-const rollInitiative = (participant: IParticipantRow): number => {
-  return participant.speed + rollsService.rollDices(Dice._1D6);
-};
+const rollInitiative = (participant: IParticipantRow): number =>
+  participant.initiative + calcService.rolls.rollDices(Dice._1D10);
 
 const service = {
   create,
