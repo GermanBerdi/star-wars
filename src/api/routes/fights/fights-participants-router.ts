@@ -17,8 +17,8 @@ router.post("/", validateCreateParticipant, async (req: Request, res: Response):
       fightId,
       character_template_id,
       participant_name,
-      is_alive: is_alive ?? true,
-      team_id: team_id ?? null,
+      is_alive,
+      team_id,
     };
     const participant = await participantsService.create(newParticipantReq);
     const response = {

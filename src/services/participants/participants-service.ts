@@ -19,7 +19,7 @@ const create = async (newParticipant: INewParticipantReq): Promise<IParticipantR
     if (usedNames.includes(newParticipant.participant_name))
       throw new Error(`Participant with name ${newParticipant.participant_name} already used.`);
     const newParticipantCalculatedReq: INewParticipantCalculatedReq = {
-      fightId: newParticipant.fightId,
+      fight_id: newParticipant.fightId,
       character_template_id: newParticipant.character_template_id,
       participant_name: newParticipant.participant_name,
       class_id: characterTemplate.class_id,
@@ -35,8 +35,8 @@ const create = async (newParticipant: INewParticipantReq): Promise<IParticipantR
       hp: characterTemplate.hp,
       thac0: characterTemplate.thac0,
       initiative: characterTemplate.initiative,
-      is_alive: newParticipant.is_alive,
-      team_id: newParticipant.team_id,
+      is_alive: newParticipant.is_alive ?? true,
+      team_id: newParticipant.team_id ?? null,
     };
     const participant = await participantsRepo.create(newParticipantCalculatedReq);
     return participant;

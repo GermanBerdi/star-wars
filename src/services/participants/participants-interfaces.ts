@@ -26,12 +26,12 @@ export interface INewParticipantReq {
   fightId: number;
   character_template_id: number;
   participant_name: string;
-  is_alive: boolean;
-  team_id: number | null;
+  is_alive?: boolean;
+  team_id?: number;
 }
 
 export interface INewParticipantCalculatedReq {
-  fightId: number;
+  fight_id: number;
   character_template_id: number;
   participant_name: string;
   class_id: number;
