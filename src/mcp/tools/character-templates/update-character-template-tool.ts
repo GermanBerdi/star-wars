@@ -31,19 +31,19 @@ const paramsSchema = {
     .string()
     .optional()
     .describe(
-      "Strength attribute ID. Use 'List Strength Abilities' to see available values and their combat modifiers",
+      "Strength attribute ID. Use 'List Strength Abilities' to see available values (3-25) and their combat modifiers (hit/damage bonuses, weight allowance, door opening, exceptional strength for warriors)",
     ),
   dexterity_id: z
     .number()
     .optional()
     .describe(
-      "Dexterity attribute ID. Use 'List Dexterity Abilities' to see available values and their AC/missile bonuses",
+      "Dexterity attribute ID. Use 'List Dexterity Abilities' to see available values (3-25) and their bonuses (AC improvement, missile attack adjustment, reaction adjustment)",
     ),
   constitution_id: z
     .number()
     .optional()
     .describe(
-      "Constitution attribute ID. Use 'List Constitution Abilities' to see available values and their HP modifiers",
+      "Constitution attribute ID. Use 'List Constitution Abilities' to see available values (3-25) and their bonuses (HP per level, system shock, resurrection survival, poison save, regeneration)",
     ),
   intelligence_id: z
     .number()

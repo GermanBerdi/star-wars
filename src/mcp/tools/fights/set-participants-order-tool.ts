@@ -7,10 +7,7 @@ import fightsService from "../../../services/fights/fights-service";
 const toolName = "combat-system_fights_setParticipantsOrder";
 
 const description =
-  "Establishes the turn order for participants in a fight/battle based on their initiative rolls. " +
-  "This function calculates initiative for all alive participants using their speed stat plus a 1d6 roll (speed + 1d6), " +
-  "then populates the fight's pending_participants array with participant IDs ordered from highest to lowest initiative. " +
-  "Must be called before starting combat rounds to determine who acts first. Only affects fights with status NOT_STARTED (0) or IN_PROGRESS (1).";
+  "Establishes the turn order for participants in a fight/battle based on their initiative rolls. This function calculates initiative for all alive participants using a 1d10 roll plus the participant's initiative value (1d10 + participant initiative). In AD&D 2nd edition, lower initiative values act first - participants with negative initiative values gain an advantage by acting earlier. The pending_participants array is populated with participant IDs ordered from lowest to highest total initiative (fastest to slowest action order). Must be called before starting combat rounds to determine who acts first. Only affects fights with status NOT_STARTED (0) or IN_PROGRESS (1).";
 
 const paramsSchema = {
   id: z

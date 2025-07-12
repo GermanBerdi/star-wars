@@ -11,7 +11,7 @@ import type { INewCharacterTemplateReq } from "../../../services/character-templ
 const toolName = "combat-system_character_templates_create";
 
 const description =
-  "Creates a new character template for AD&D 2nd edition combat system with all 6 abilities (Strength, Dexterity, Constitution, Intelligence, Wisdom, Charisma). The system automatically calculates all derived stats (AC, HP, THAC0, hit dice, spell bonuses, social modifiers) based on the provided parameters. IMPORTANT: Use the List tools to consult the ability tables (List Strength/Dexterity/Constitution/Intelligence/Wisdom/Charisma Abilities), armor table (List Armor Types), and class table (List Character Classes) before creating your character.";
+  "Creates a new character template for AD&D 2nd edition combat system with all 6 abilities (Strength, Dexterity, Constitution, Intelligence, Wisdom, Charisma). The system automatically calculates all derived stats (AC, HP, THAC0, hit dice, spell bonuses, social modifiers, and initiative) based on the provided parameters. Initiative is calculated from dexterity defensive_adjustment - in AD&D, lower initiative values act first in combat, so high dexterity (negative defensive_adjustment) provides better initiative. IMPORTANT: Use the List tools to consult the ability tables (List Strength/Dexterity/Constitution/Intelligence/Wisdom/Charisma Abilities), armor table (List Armor Types), and class table (List Character Classes) before creating your character.";
 
 const paramsSchema = {
   character_name: z

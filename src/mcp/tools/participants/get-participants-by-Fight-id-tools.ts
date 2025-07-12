@@ -2,7 +2,7 @@ import { z } from "zod";
 import type { ToolCallback } from "@modelcontextprotocol/sdk/server/mcp.js";
 import type { CallToolResult } from "@modelcontextprotocol/sdk/types.js";
 
-import participantsService from "../../../services/character-participants/character-participants-service";
+import participantsService from "../../../services/participants/participants-service";
 
 const toolName = "combat-system_participants_getByFightId";
 
