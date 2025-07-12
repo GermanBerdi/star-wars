@@ -4,7 +4,7 @@ import type { CallToolResult } from "@modelcontextprotocol/sdk/types.js";
 
 import participantsService from "../../../services/participants/participants-service";
 
-const toolName = "combat-system_participants_getByFightId";
+const toolName = "combat-system_participants_get_by_fight_id";
 
 const description =
   "Retrieves all participants for a specific fight/battle by fight ID. Returns participant details including names, stats (HP, strength, defense, speed), team assignments, alive status, and character template references. Use this to view all combatants in a fight, analyze team compositions, check participant status, or prepare for battle actions.";
@@ -19,11 +19,7 @@ const paramsSchema = {
     ),
 };
 
-interface cbParams {
-  fightId: number;
-}
-
-const cb: ToolCallback<typeof paramsSchema> = async ({ fightId }: cbParams) => {
+const cb: ToolCallback<typeof paramsSchema> = async ({ fightId }: { fightId: number }) => {
   const response: CallToolResult = {
     content: [{ type: "text", text: "" }],
   };
