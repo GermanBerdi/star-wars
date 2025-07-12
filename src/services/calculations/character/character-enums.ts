@@ -12,3 +12,7 @@ export enum ArmorType {
 export enum Thac0 {
   NO_THAC0 = 20,
 }
+
+export enum Initiative {
+  BASE = 0,
+}

@@ -5,7 +5,7 @@ import abilitiesService from "../abilities/abilities-service";
 import characterClassesService from "../character-classes/character-classes-service";
 import armorTypesService from "../armor-types/armor-types-service";
 
-import { ClassGroup, ArmorType, Thac0 } from "../calculations/character/character-enums";
+import { ClassGroup, ArmorType, Thac0, Initiative } from "../calculations/character/character-enums";
 import { CharacterType } from "./character-templates-enums";
 
 import type {
@@ -90,9 +90,14 @@ const create = async (newCharacterTemplateReq: INewCharacterTemplateReq): Promis
       hp: 0,
       thac0_modifiers: {
         base: Thac0.NO_THAC0,
-        strength_hit_probability: 0,
+        strengthHitProbability: 0,
       },
       thac0: Thac0.NO_THAC0,
+      initiative_modifiers: {
+        base: Initiative.BASE,
+        dexterityBonus: 0,
+      },
+      initiative: Initiative.BASE,
       character_type: character_type ?? CharacterType.COMMON,
       character_description: character_description ?? null,
       last_exceptional_strength_id: abilitiesService.strength.isExceptionalStrengthId(strength.id) ? strength.id : null,
@@ -115,6 +120,11 @@ const create = async (newCharacterTemplateReq: INewCharacterTemplateReq): Promis
     );
     newCharacterTemplateCalculated.thac0 = calcService.character.calculateThac0(
       newCharacterTemplateCalculated.thac0_modifiers,
+    );
+    newCharacterTemplateCalculated.initiative_modifiers =
+      calcService.character.calculateInitiativeModifiers(dexterity);
+    newCharacterTemplateCalculated.initiative = calcService.character.calculateInitiative(
+      newCharacterTemplateCalculated.initiative_modifiers,
     );
     const characterTemplate = await characterTemplatesRepo.create(newCharacterTemplateCalculated);
     return characterTemplate;

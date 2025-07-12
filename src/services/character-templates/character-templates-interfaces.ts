@@ -2,7 +2,12 @@ import { CharacterType } from "./character-templates-enums";
 
 export interface IThac0Modifiers {
   base: number;
-  strength_hit_probability: number;
+  strengthHitProbability: number;
+}
+
+export interface IInitiativeModifiers {
+  base: number;
+  dexterityBonus: number;
 }
 
 export interface ICharacterTemplateRow {
@@ -22,6 +27,8 @@ export interface ICharacterTemplateRow {
   hp: number;
   thac0_modifiers: IThac0Modifiers;
   thac0: number;
+  initiative_modifiers: IInitiativeModifiers;
+  initiative: number;
   character_type: CharacterType;
   character_description: string | null;
   last_exceptional_strength_id: string | null;
@@ -61,6 +68,8 @@ export interface INewCharacterTemplateCalculatedReq {
   hp: number;
   thac0_modifiers: IThac0Modifiers;
   thac0: number;
+  initiative_modifiers: IInitiativeModifiers;
+  initiative: number;
   character_type: CharacterType;
   character_description: string | null;
   last_exceptional_strength_id: string | null;
@@ -111,6 +120,8 @@ export interface IUpdateCharacterTemplateCalculatedReq {
   hp?: number;
   thac0_modifiers?: IThac0Modifiers;
   thac0?: number;
+  initiative_modifiers?: IInitiativeModifiers;
+  initiative?: number;
   character_type?: CharacterType;
   character_description?: string | null;
   last_exceptional_strength_id?: string | null;

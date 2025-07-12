@@ -70,7 +70,7 @@ const setParticipantsOrder = async (id: number): Promise<IFightRow> => {
       };
     });
     const pending_participants = participantsWithInitiative
-      .sort((a, b) => b.initiative - a.initiative)
+      .sort((a, b) => a.initiative - b.initiative)
       .map((p) => p.id);
     const updateFightReq: IUpdateFightReq = {
       id,

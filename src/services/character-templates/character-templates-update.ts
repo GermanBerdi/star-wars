@@ -68,6 +68,13 @@ const update = async (
         updateCharacterTemplateReq.armor_type_id || currentCharacterTemplate.armor_type_id,
       );
       updateCharacterTemplateCalculated.armor_class = calcService.character.armorClass(armorType, dexterity);
+      if (updateCharacterTemplateReq.dexterity_id) {
+        updateCharacterTemplateCalculated.initiative_modifiers =
+          calcService.character.calculateInitiativeModifiers(dexterity);
+        updateCharacterTemplateCalculated.initiative = calcService.character.calculateInitiative(
+          updateCharacterTemplateCalculated.initiative_modifiers,
+        );
+      }
     }
     if (
       updateCharacterTemplateReq.class_id ||

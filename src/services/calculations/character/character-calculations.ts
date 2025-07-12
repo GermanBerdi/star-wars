@@ -2,10 +2,14 @@ import rollCalculation from "../rolls/rolls-calculations";
 import abilitiesService from "../../abilities/abilities-service";
 import thac0sService from "../../thac0s/thac0s-service";
 
-import { ClassGroup } from "./character-enums";
+import { ClassGroup, Initiative } from "./character-enums";
 import { StrengthIds } from "../../abilities/ability-strength/ability-strength-service-enums";
 
-import type { ICharacterTemplateRow, IThac0Modifiers } from "../../character-templates/character-templates-interfaces";
+import type {
+  ICharacterTemplateRow,
+  IThac0Modifiers,
+  IInitiativeModifiers,
+} from "../../character-templates/character-templates-interfaces";
 import type { IArmorTypeRow } from "../../armor-types/armor-types-interfaces";
 import type {
   IAbilityStrengthRow,
@@ -104,13 +108,29 @@ const calculateThac0Modifiers = async (
   const thac0 = await thac0sService.getByCharacterLevel(characterLevel);
   const thac0Modifiers: IThac0Modifiers = {
     base: thac0[characterClass.class_group],
-    strength_hit_probability: strength.hit_probability,
+    strengthHitProbability: strength.hit_probability,
   };
   return thac0Modifiers;
 };
 
 const calculateThac0 = (thac0Modifiers: IThac0Modifiers): number => {
-  return thac0Modifiers.base - thac0Modifiers.strength_hit_probability;
+  return thac0Modifiers.base - thac0Modifiers.strengthHitProbability;
+};
+
+// Custom rule. "base": reserved field for future implementation of race-related base modifier.
+// "dexterityBonus": bonus value derived from dexterity defensive_adjustment calculation.
+const calculateInitiativeModifiers = (dexterity: IAbilityDexterityRow): IInitiativeModifiers => {
+  const initiativeModifiers: IInitiativeModifiers = {
+    base: Initiative.BASE,
+    dexterityBonus: dexterity.defensive_adjustment,
+  };
+  return initiativeModifiers;
+};
+
+// Custom rule. Value resulting from applying modifiers to base value,
+// determines character's initiative roll bonus in combat
+const calculateInitiative = (initiativeModifiers: IInitiativeModifiers): number => {
+  return initiativeModifiers.base + initiativeModifiers.dexterityBonus;
 };
 
 const isCommon = (characterType: CharacterType) => characterType === CharacterType.COMMON;
@@ -128,6 +148,8 @@ const service = {
   calculateHp,
   calculateThac0Modifiers,
   calculateThac0,
+  calculateInitiativeModifiers,
+  calculateInitiative,
   isCommon,
 };
 
