@@ -4,14 +4,15 @@ import type { IAbilityDexterityRow } from "../../services/abilities/abilities-se
 import type { IAbilityDexterityRowDataPacket } from "./ability-dexterity-repo-interfaces";
 
 const getAll = async (): Promise<IAbilityDexterityRow[]> => {
-  const [rows] = await pool.query<IAbilityDexterityRowDataPacket[]>("SELECT * FROM ability_2_dexterity;");
+  const [rows] = await pool.execute<IAbilityDexterityRowDataPacket[]>("SELECT * FROM ability_2_dexterity;");
   return rows;
 };
 
 const getById = async (id: number): Promise<IAbilityDexterityRow | null> => {
-  const [rows] = await pool.query<IAbilityDexterityRowDataPacket[]>(`SELECT * FROM ability_2_dexterity WHERE id = ?;`, [
-    id,
-  ]);
+  const [rows] = await pool.execute<IAbilityDexterityRowDataPacket[]>(
+    `SELECT * FROM ability_2_dexterity WHERE id = ?;`,
+    [id],
+  );
   return rows.length > 0 ? rows[0] : null;
 };
 
@@ -24,7 +25,7 @@ const getByAbilityScore = async (abilityScore: number): Promise<IAbilityDexterit
       ability_score = ?;
   `;
   const values = [abilityScore];
-  const [rows] = await pool.query<IAbilityDexterityRowDataPacket[]>(query, values);
+  const [rows] = await pool.execute<IAbilityDexterityRowDataPacket[]>(query, values);
   return rows.length > 0 ? rows[0] : null;
 };
 

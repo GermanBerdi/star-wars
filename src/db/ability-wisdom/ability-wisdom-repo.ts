@@ -4,12 +4,14 @@ import type { IAbilityWisdomRow } from "../../services/abilities/abilities-servi
 import type { IAbilityWisdomRowDataPacket } from "./ability-wisdom-repo-interfaces";
 
 const getAll = async (): Promise<IAbilityWisdomRow[]> => {
-  const [rows] = await pool.query<IAbilityWisdomRowDataPacket[]>("SELECT * FROM ability_5_wisdom;");
+  const [rows] = await pool.execute<IAbilityWisdomRowDataPacket[]>("SELECT * FROM ability_5_wisdom;");
   return rows;
 };
 
 const getById = async (id: number): Promise<IAbilityWisdomRow | null> => {
-  const [rows] = await pool.query<IAbilityWisdomRowDataPacket[]>(`SELECT * FROM ability_5_wisdom WHERE id = ?;`, [id]);
+  const [rows] = await pool.execute<IAbilityWisdomRowDataPacket[]>(`SELECT * FROM ability_5_wisdom WHERE id = ?;`, [
+    id,
+  ]);
   return rows.length > 0 ? rows[0] : null;
 };
 
@@ -22,7 +24,7 @@ const getByAbilityScore = async (abilityScore: number): Promise<IAbilityWisdomRo
       ability_score = ?;
   `;
   const values = [abilityScore];
-  const [rows] = await pool.query<IAbilityWisdomRowDataPacket[]>(query, values);
+  const [rows] = await pool.execute<IAbilityWisdomRowDataPacket[]>(query, values);
   return rows.length > 0 ? rows[0] : null;
 };
 

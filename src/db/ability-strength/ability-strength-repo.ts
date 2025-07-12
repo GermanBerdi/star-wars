@@ -4,14 +4,14 @@ import type { IAbilityStrengthRow } from "../../services/abilities/abilities-ser
 import type { IAbilityStrengthRowDataPacket } from "./ability-strength-repo-interfaces";
 
 const getAll = async (): Promise<IAbilityStrengthRow[]> => {
-  const [rows] = await pool.query<IAbilityStrengthRowDataPacket[]>(
+  const [rows] = await pool.execute<IAbilityStrengthRowDataPacket[]>(
     "SELECT * FROM ability_1_strength ORDER BY ability_score, exceptional_strength_min;",
   );
   return rows;
 };
 
 const getById = async (id: string): Promise<IAbilityStrengthRow | null> => {
-  const [rows] = await pool.query<IAbilityStrengthRowDataPacket[]>(`SELECT * FROM ability_1_strength WHERE id = ?;`, [
+  const [rows] = await pool.execute<IAbilityStrengthRowDataPacket[]>(`SELECT * FROM ability_1_strength WHERE id = ?;`, [
     id,
   ]);
   return rows.length > 0 ? rows[0] : null;
@@ -30,7 +30,7 @@ const getByAbilityScore = async (
         AND exceptional_strength_max IS NULL;
     `;
     const values = [abilityScore];
-    const [rows] = await pool.query<IAbilityStrengthRowDataPacket[]>(query, values);
+    const [rows] = await pool.execute<IAbilityStrengthRowDataPacket[]>(query, values);
     return rows.length > 0 ? rows[0] : null;
   }
   const query = `
@@ -41,7 +41,7 @@ const getByAbilityScore = async (
       AND exceptional_strength_max >= ?;
   `;
   const values = [abilityScore, exceptionalStrength, exceptionalStrength];
-  const [rows] = await pool.query<IAbilityStrengthRowDataPacket[]>(query, values);
+  const [rows] = await pool.execute<IAbilityStrengthRowDataPacket[]>(query, values);
   return rows.length > 0 ? rows[0] : null;
 };
 

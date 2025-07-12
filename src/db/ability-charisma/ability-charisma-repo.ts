@@ -4,12 +4,12 @@ import type { IAbilityCharismaRow } from "../../services/abilities/abilities-ser
 import type { IAbilityCharismaRowDataPacket } from "./ability-charisma-repo-interfaces";
 
 const getAll = async (): Promise<IAbilityCharismaRow[]> => {
-  const [rows] = await pool.query<IAbilityCharismaRowDataPacket[]>("SELECT * FROM ability_6_charisma;");
+  const [rows] = await pool.execute<IAbilityCharismaRowDataPacket[]>("SELECT * FROM ability_6_charisma;");
   return rows;
 };
 
 const getById = async (id: number): Promise<IAbilityCharismaRow | null> => {
-  const [rows] = await pool.query<IAbilityCharismaRowDataPacket[]>(`SELECT * FROM ability_6_charisma WHERE id = ?;`, [
+  const [rows] = await pool.execute<IAbilityCharismaRowDataPacket[]>(`SELECT * FROM ability_6_charisma WHERE id = ?;`, [
     id,
   ]);
   return rows.length > 0 ? rows[0] : null;
@@ -24,7 +24,7 @@ const getByAbilityScore = async (abilityScore: number): Promise<IAbilityCharisma
       ability_score = ?;
   `;
   const values = [abilityScore];
-  const [rows] = await pool.query<IAbilityCharismaRowDataPacket[]>(query, values);
+  const [rows] = await pool.execute<IAbilityCharismaRowDataPacket[]>(query, values);
   return rows.length > 0 ? rows[0] : null;
 };
 
