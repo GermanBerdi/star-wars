@@ -6,7 +6,7 @@ import characterTemplatesService from "../character-templates/character-template
 
 import { Dice } from "../calculations/rolls/rolls-enums";
 
-import type { INewParticipantReq, IParticipantRow, INewParticipantCalculatedReq } from "./participants-interfaces";
+import type { INewParticipantReq, IParticipantRow, INewParticipantCalculatedReq, IUpdateParticipantReq } from "./participants-interfaces";
 
 const create = async (newParticipant: INewParticipantReq): Promise<IParticipantRow> => {
   try {
@@ -47,6 +47,17 @@ const create = async (newParticipant: INewParticipantReq): Promise<IParticipantR
   }
 };
 
+const update = async (updateParticipantReq: IUpdateParticipantReq): Promise<IParticipantRow> => {
+  try {
+    const participant = await participantsRepo.update(updateParticipantReq);
+    return participant;
+  } catch (error) {
+    const errorMessage = `Error in update at participants service: ${error}`;
+    console.error(errorMessage);
+    throw new Error(errorMessage);
+  }
+};
+
 const getAll = async (): Promise<IParticipantRow[]> => {
   try {
     const participants = await participantsRepo.getAll();
@@ -82,15 +93,45 @@ const getByFightId = async (fightId: number): Promise<IParticipantRow[]> => {
   }
 };
 
+const getByIdAndFightId = async (id: number, fightId: number): Promise<IParticipantRow> => {
+  try {
+    const participant = await participantsRepo.getByIdAndFightId(id,fightId);
+    if (!participant) throw new Error(`Participant with id ${id} not found in fight ${fightId}.`);
+    return participant;
+  } catch (error) {
+    const errorMessage = `Error in getById at participants service: ${error}`;
+    console.error(errorMessage);
+    throw new Error(errorMessage);
+  }
+};
+
 const rollInitiative = (participant: IParticipantRow): number =>
   participant.initiative + calcService.rolls.rollDices(Dice._1D10);
+
+const takeDamage = async (participant: IParticipantRow, damage: number): Promise<IParticipantRow> => {
+  try {
+    const updateParticipantReq: IUpdateParticipantReq = {
+      id: participant.id,
+      hp: participant.hp - damage
+    }
+    const participantUpdated = await update(updateParticipantReq);
+    return participantUpdated;
+  } catch (error) {
+    const errorMessage = `Error in takeDamage at participants service: ${error}`;
+    console.error(errorMessage);
+    throw new Error(errorMessage);
+  }
+}
+  
 
 const service = {
   create,
   getAll,
   getById,
   getByFightId,
+  getByIdAndFightId,
   rollInitiative,
+  takeDamage,
 };
 
 export default service;

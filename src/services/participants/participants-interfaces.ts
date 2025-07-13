@@ -50,3 +50,8 @@ export interface INewParticipantCalculatedReq {
   is_alive: boolean;
   team_id: number | null;
 }
+
+export interface IUpdateParticipantReq {
+  id: number;
+  hp?: number;
+}
