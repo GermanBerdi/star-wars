@@ -86,6 +86,28 @@ const setParticipantsOrder = async (id: number): Promise<IFightRow> => {
   }
 };
 
+const isParticipantTurn = (participantId: number, pendingParticipants: number[] | null): boolean => 
+  pendingParticipants !== null && pendingParticipants.length > 0 && pendingParticipants[0] === participantId;
+
+const shiftParticipant = async (fight: IFightRow): Promise<IFightRow> => {
+  try {
+    if (fight.pending_participants === null || fight.pending_participants.length === 0)
+      throw new Error(`Pending participants has not been set in fight ${fight.id}`);
+    const nextPendingParticipants = [...fight.pending_participants];
+    nextPendingParticipants.shift();
+    const updateFightReq: IUpdateFightReq = {
+      id: fight.id,
+      pending_participants: nextPendingParticipants,
+    }
+    const fightUpdated = await update(updateFightReq);
+    return fightUpdated;
+  } catch (error) {
+    const errorMessage = `Error in nextParticipant at fights service: ${error}`;
+    console.error(errorMessage);
+    throw new Error(errorMessage);
+  }
+}
+
 const service = {
   create,
   update,
@@ -93,6 +115,8 @@ const service = {
   getById,
   remove,
   setParticipantsOrder,
+  isParticipantTurn,
+  shiftParticipant,
 };
 
 export default service;
