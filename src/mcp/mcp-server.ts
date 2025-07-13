@@ -24,7 +24,7 @@ import { removeFightTool } from "./tools/fights/remove-fight-tool";
 import { settingParticipantsOrderTool } from "./tools/fights/set-participants-order-tool";
 import { createParticipantTool } from "./tools/participants/create-participant-tool";
 import { getParticipantsByFightIdTool } from "./tools/participants/get-participants-by-Fight-id-tools";
-// import { performActionTool } from "./tools/actions/perfom-action";
+import { performActionTool } from "./tools/actions/perfom-action";
 import { saludarTool } from "./tools/saludar/saludar-tool";
 import { listStarshipsTool } from "./tools/starships/list-starships-tool";
 
@@ -123,12 +123,12 @@ mcpServer.tool(
   getParticipantsByFightIdTool.paramsSchema,
   getParticipantsByFightIdTool.cb,
 );
-// mcpServer.tool(
-//   performActionTool.toolName,
-//   performActionTool.description,
-//   performActionTool.paramsSchema,
-//   performActionTool.cb,
-// );
+mcpServer.tool(
+  performActionTool.toolName,
+  performActionTool.description,
+  performActionTool.paramsSchema,
+  performActionTool.cb,
+);
 mcpServer.tool(saludarTool.toolName, saludarTool.description, saludarTool.paramsSchema, saludarTool.cb);
 mcpServer.tool(listStarshipsTool.toolName, listStarshipsTool.description, listStarshipsTool.cb);
 
