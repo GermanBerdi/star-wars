@@ -18,15 +18,19 @@ const paramsSchema = {
     ),
   actorParticipantId: z
     .number()
-    .describe(
-      "The unique identifier (ID) of actor which is the participant (character) performing the action.",
-    ),
+    .describe("The unique identifier (ID) of actor which is the participant (character) performing the action."),
   targetParticipantId: z
     .number()
-    .describe("The unique identifier (ID) of target which is the participant (character) that is the objective of the action."),
+    .describe(
+      "The unique identifier (ID) of target which is the participant (character) that is the objective of the action.",
+    ),
 };
 
-const cb: ToolCallback<typeof paramsSchema> = async ({ fightId, actorParticipantId, targetParticipantId }: IPerformActionReq) => {
+const cb: ToolCallback<typeof paramsSchema> = async ({
+  fightId,
+  actorParticipantId,
+  targetParticipantId,
+}: IPerformActionReq) => {
   const response: CallToolResult = {
     content: [{ type: "text", text: "" }],
   };
@@ -34,7 +38,7 @@ const cb: ToolCallback<typeof paramsSchema> = async ({ fightId, actorParticipant
     const performActionReq: IPerformActionReq = {
       fightId,
       actorParticipantId,
-      targetParticipantId
+      targetParticipantId,
     };
     const actionPerformed = await actionService.performAction(performActionReq);
     const contentData = {

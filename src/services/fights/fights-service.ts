@@ -64,8 +64,7 @@ const setParticipantsOrder = async (id: number): Promise<IFightRow> => {
   try {
     const participants = await participantsService.getByFightId(id);
     const aliveParticipants = participants.filter((participant) => participantsService.isAlive(participant));
-    if (aliveParticipants.length === 0)
-      throw new Error(`No alive participants found for fight ${id}`);
+    if (aliveParticipants.length === 0) throw new Error(`No alive participants found for fight ${id}`);
     const participantsWithInitiative = aliveParticipants.map((participant) => {
       const initiative = participantsService.rollInitiative(participant);
       return {
@@ -89,7 +88,7 @@ const setParticipantsOrder = async (id: number): Promise<IFightRow> => {
   }
 };
 
-const isParticipantTurn = (participantId: number, pendingParticipants: number[] | null): boolean => 
+const isParticipantTurn = (participantId: number, pendingParticipants: number[] | null): boolean =>
   pendingParticipants !== null && pendingParticipants.length > 0 && pendingParticipants[0] === participantId;
 
 const shiftParticipant = async (fight: IFightRow): Promise<IFightRow> => {
@@ -101,7 +100,7 @@ const shiftParticipant = async (fight: IFightRow): Promise<IFightRow> => {
     const updateFightReq: IUpdateFightReq = {
       id: fight.id,
       pending_participants: nextPendingParticipants,
-    }
+    };
     const fightUpdated = await update(updateFightReq);
     return fightUpdated;
   } catch (error) {
@@ -109,7 +108,7 @@ const shiftParticipant = async (fight: IFightRow): Promise<IFightRow> => {
     console.error(errorMessage);
     throw new Error(errorMessage);
   }
-}
+};
 
 const service = {
   create,

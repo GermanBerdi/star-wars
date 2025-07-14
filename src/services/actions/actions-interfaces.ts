@@ -18,11 +18,11 @@ export interface IPerformActionRes {
     actor: {
       id: number;
       name: string;
-    },
+    };
     target: {
       id: number;
       name: string;
-    }
+    };
   };
   actionInfo: {
     hitRoll: number;
@@ -35,6 +35,6 @@ export interface IPerformActionRes {
     target: {
       previousHp: number;
       currentHP: number;
-    }
+    };
   };
 }

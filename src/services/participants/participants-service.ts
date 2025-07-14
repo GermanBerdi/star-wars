@@ -7,7 +7,12 @@ import characterTemplatesService from "../character-templates/character-template
 import { ParticipantStatus } from "./character-templates-enums";
 import { Dice } from "../calculations/rolls/rolls-enums";
 
-import type { INewParticipantReq, IParticipantRow, INewParticipantCalculatedReq, IUpdateParticipantReq } from "./participants-interfaces";
+import type {
+  INewParticipantReq,
+  IParticipantRow,
+  INewParticipantCalculatedReq,
+  IUpdateParticipantReq,
+} from "./participants-interfaces";
 
 const create = async (newParticipant: INewParticipantReq): Promise<IParticipantRow> => {
   try {
@@ -96,7 +101,7 @@ const getByFightId = async (fightId: number): Promise<IParticipantRow[]> => {
 
 const getByIdAndFightId = async (id: number, fightId: number): Promise<IParticipantRow> => {
   try {
-    const participant = await participantsRepo.getByIdAndFightId(id,fightId);
+    const participant = await participantsRepo.getByIdAndFightId(id, fightId);
     if (!participant) throw new Error(`Participant with id ${id} not found in fight ${fightId}.`);
     return participant;
   } catch (error) {
@@ -111,22 +116,22 @@ const rollInitiative = (participant: IParticipantRow): number =>
 
 const isAlive = (participant: IParticipantRow): boolean => participant.status === ParticipantStatus.ALIVE;
 
-const calculateStatus = (hp: number):ParticipantStatus => {
+const calculateStatus = (hp: number): ParticipantStatus => {
   if (hp > 0) return ParticipantStatus.ALIVE;
   if (hp === 0) return ParticipantStatus.UNCONSCIOUS;
   if (hp > -10) return ParticipantStatus.INCAPACITATED;
   return ParticipantStatus.DEAD;
-}
+};
 
 const takeDamage = async (participant: IParticipantRow, damage: number): Promise<IParticipantRow> => {
   try {
-    const hpAfterDamage = participant.hp - damage
+    const hpAfterDamage = participant.hp - damage;
     const statusAfterDamage = calculateStatus(hpAfterDamage);
     const updateParticipantReq: IUpdateParticipantReq = {
       id: participant.id,
       hp: hpAfterDamage,
       status: statusAfterDamage,
-    }
+    };
     const participantUpdated = await update(updateParticipantReq);
     return participantUpdated;
   } catch (error) {
@@ -134,8 +139,7 @@ const takeDamage = async (participant: IParticipantRow, damage: number): Promise
     console.error(errorMessage);
     throw new Error(errorMessage);
   }
-}
-  
+};
 
 const service = {
   create,

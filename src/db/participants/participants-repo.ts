@@ -60,9 +60,10 @@ const getByFightId = async (fightId: number): Promise<IParticipantRow[]> => {
 };
 
 const getByIdAndFightId = async (id: number, fightId: number): Promise<IParticipantRow | null> => {
-  const [rows] = await pool.execute<IParticipantRowDataPacket[]>(`SELECT * FROM participants WHERE id = ? AND fight_id = ?;`, [
-    id,fightId,
-  ]);
+  const [rows] = await pool.execute<IParticipantRowDataPacket[]>(
+    `SELECT * FROM participants WHERE id = ? AND fight_id = ?;`,
+    [id, fightId],
+  );
   return rows.length > 0 ? rows[0] : null;
 };
 

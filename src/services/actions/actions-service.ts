@@ -7,13 +7,13 @@ import { Dice } from "../calculations/rolls/rolls-enums";
 
 import type { IPerformActionReq, IPerformActionRes } from "./actions-interfaces";
 
-const calculateDamage = (damageAdjustment:number): number => {
+const calculateDamage = (damageAdjustment: number): number => {
   return Math.floor(Math.random() * 6) + 1 + damageAdjustment;
 };
 
 const performAction = async (action: IPerformActionReq): Promise<IPerformActionRes> => {
   try {
-    const fight = await fightsService.getById(action.fightId);    
+    const fight = await fightsService.getById(action.fightId);
     const actorParticipant = await participantsService.getByIdAndFightId(action.actorParticipantId, action.fightId);
     if (!participantsService.isAlive(actorParticipant))
       throw new Error(`Participant ${actorParticipant.id} is not alive.`);
@@ -42,7 +42,7 @@ const performAction = async (action: IPerformActionReq): Promise<IPerformActionR
         target: {
           id: targetParticipantUpdated.id,
           name: targetParticipantUpdated.participant_name,
-        }
+        },
       },
       actionInfo: {
         hitRoll,
@@ -55,9 +55,9 @@ const performAction = async (action: IPerformActionReq): Promise<IPerformActionR
         target: {
           previousHp: targetParticipant.hp,
           currentHP: targetParticipantUpdated.hp,
-        }
+        },
       },
-    }
+    };
     return performActionRes;
   } catch (error) {
     const errorMessage = `Error in performAction at action service: ${error}`;
