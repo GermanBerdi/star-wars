@@ -33,12 +33,12 @@ const paramsSchema = {
     .describe(
       "Base name for this participant in the fight. For 'unique' character templates (heroes/villains), typically use the same name as the template (e.g., 'Aragorn', 'Conan'). For 'common' templates, create a personalized name (e.g., 'Thorek Martillo Ardiente', 'Sylvana Arquera Lunar') - the system will automatically append the template name in brackets.",
     ),
-  is_alive: z
-    .boolean()
+  status: z
+    .number()
     .optional()
-    .default(true)
+    .default(1)
     .describe(
-      "Whether the participant starts the fight alive. Defaults to true. Set to false only for special scenarios like reviving fallen warriors.",
+      "Initial status of the participant when joining the fight. Uses ParticipantStatus enum values: DEAD (-2), INCAPACITATED (-1), UNCONSCIOUS (0), ALIVE (1). Defaults to 1 (ALIVE). Most participants start alive, but you can set other values for special scenarios like reviving fallen warriors, starting unconscious, or creating already defeated combatants for narrative purposes.",
     ),
   team_id: z
     .number()
@@ -54,7 +54,7 @@ const cb: ToolCallback<typeof paramsSchema> = async ({
   fightId,
   character_template_id,
   participant_name,
-  is_alive,
+  status,
   team_id,
 }: INewParticipantReq) => {
   const response: CallToolResult = {
@@ -65,7 +65,7 @@ const cb: ToolCallback<typeof paramsSchema> = async ({
       fightId,
       character_template_id,
       participant_name,
-      is_alive,
+      status,
       team_id,
     };
     const participantCreated = await participantsService.create(newParticipantReq);

@@ -63,7 +63,10 @@ const remove = async (id: number): Promise<void> => {
 const setParticipantsOrder = async (id: number): Promise<IFightRow> => {
   try {
     const participants = await participantsService.getByFightId(id);
-    const participantsWithInitiative = participants.map((participant) => {
+    const aliveParticipants = participants.filter((participant) => participantsService.isAlive(participant));
+    if (aliveParticipants.length === 0)
+      throw new Error(`No alive participants found for fight ${id}`);
+    const participantsWithInitiative = aliveParticipants.map((participant) => {
       const initiative = participantsService.rollInitiative(participant);
       return {
         id: participant.id,

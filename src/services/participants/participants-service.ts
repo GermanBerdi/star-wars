@@ -4,6 +4,7 @@ import calcService from "../calculations/calc-service";
 import fightsService from "../fights/fights-service";
 import characterTemplatesService from "../character-templates/character-templates-service";
 
+import { ParticipantStatus } from "./character-templates-enums";
 import { Dice } from "../calculations/rolls/rolls-enums";
 
 import type { INewParticipantReq, IParticipantRow, INewParticipantCalculatedReq, IUpdateParticipantReq } from "./participants-interfaces";
@@ -35,7 +36,7 @@ const create = async (newParticipant: INewParticipantReq): Promise<IParticipantR
       hp: characterTemplate.hp,
       thac0: characterTemplate.thac0,
       initiative: characterTemplate.initiative,
-      is_alive: newParticipant.is_alive ?? true,
+      status: newParticipant.status ?? ParticipantStatus.ALIVE,
       team_id: newParticipant.team_id ?? null,
     };
     const participant = await participantsRepo.create(newParticipantCalculatedReq);
@@ -108,11 +109,23 @@ const getByIdAndFightId = async (id: number, fightId: number): Promise<IParticip
 const rollInitiative = (participant: IParticipantRow): number =>
   participant.initiative + calcService.rolls.rollDices(Dice._1D10);
 
+const isAlive = (participant: IParticipantRow): boolean => participant.status === ParticipantStatus.ALIVE;
+
+const calculateStatus = (hp: number):ParticipantStatus => {
+  if (hp > 0) return ParticipantStatus.ALIVE;
+  if (hp === 0) return ParticipantStatus.UNCONSCIOUS;
+  if (hp > -10) return ParticipantStatus.INCAPACITATED;
+  return ParticipantStatus.DEAD;
+}
+
 const takeDamage = async (participant: IParticipantRow, damage: number): Promise<IParticipantRow> => {
   try {
+    const hpAfterDamage = participant.hp - damage
+    const statusAfterDamage = calculateStatus(hpAfterDamage);
     const updateParticipantReq: IUpdateParticipantReq = {
       id: participant.id,
-      hp: participant.hp - damage
+      hp: hpAfterDamage,
+      status: statusAfterDamage,
     }
     const participantUpdated = await update(updateParticipantReq);
     return participantUpdated;
@@ -131,6 +144,8 @@ const service = {
   getByFightId,
   getByIdAndFightId,
   rollInitiative,
+  isAlive,
+  calculateStatus,
   takeDamage,
 };
 

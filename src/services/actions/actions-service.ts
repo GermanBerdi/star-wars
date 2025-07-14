@@ -15,6 +15,8 @@ const performAction = async (action: IPerformActionReq): Promise<IPerformActionR
   try {
     const fight = await fightsService.getById(action.fightId);    
     const actorParticipant = await participantsService.getByIdAndFightId(action.actorParticipantId, action.fightId);
+    if (!participantsService.isAlive(actorParticipant))
+      throw new Error(`Participant ${actorParticipant.id} is not alive.`);
     if (!fightsService.isParticipantTurn(actorParticipant.id, fight.pending_participants))
       throw new Error(`It's not participant ${actorParticipant.id}'s turn.`);
     const actorStrength = await abilitiesService.strength.getById(actorParticipant.strength_id);
