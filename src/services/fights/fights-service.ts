@@ -18,14 +18,43 @@ const create = async (newFightreq: INewFightReq): Promise<IFightRow> => {
   }
 };
 
+const initializeFight = async (id: number): Promise<IFightRow> => {
+  try {
+    const fight = await getById(id);
+    if (fight.fight_status !== FightStatus.NOT_STARTED)
+      throw new Error(`Fight ${fight.id} cannot be started - current status: ${fight.fight_status}`);
+    if (fight.pending_participants !== null)
+      throw new Error(
+        `Pending participants cannot be initialized - current pending participants: ${fight.pending_participants}`,
+      );
+    if (fight.turn !== 0) throw new Error(`Fight ${fight.id} cannot be started - current turn: ${fight.turn}`);
+    const fightInitialized = { ...fight };
+    fightInitialized.fight_status = FightStatus.IN_PROGRESS;
+    fightInitialized.turn = 1;
+    fightInitialized.pending_participants = await participantsOrder.calculateParticipantsOrder(fight.id);
+    const updateFightReq: IUpdateFightReq = {
+      id: fightInitialized.id,
+      fight_status: fightInitialized.fight_status,
+      turn: fightInitialized.turn,
+      pending_participants: fightInitialized.pending_participants,
+    };
+    const fightUpdated = await update(updateFightReq);
+    return fightUpdated;
+  } catch (error) {
+    const errorMessage = `Error in initializeFight at fights service: ${error}`;
+    console.error(errorMessage);
+    throw new Error(errorMessage);
+  }
+};
+
 const nextTurn = async (id: number): Promise<IFightRow> => {
   try {
     const fight = await getById(id);
-    if (fight.fight_status !== FightStatus.IN_PROGRESS) throw new Error(`Fight ${fight.id} isn´t in progress`);
-    if (fight.pending_participants === null)
-      throw new Error(`Pending participants has not been set in fight ${fight.id}`);
+    if (fight.fight_status !== FightStatus.IN_PROGRESS)
+      throw new Error(`Fight ${fight.id} is not in progress - current status: ${fight.fight_status}`);
+    if (fight.pending_participants === null) throw new Error(`Fight ${fight.id} has no pending participants set`);
     if (fight.pending_participants.length !== 0)
-      throw new Error(`There are 1 or more participants with pending actions in fight ${fight.id}`);
+      throw new Error(`Fight ${fight.id} has ${fight.pending_participants.length} participants with pending actions`);
     const fightNextTurn = { ...fight };
     fightNextTurn.turn++;
     fightNextTurn.pending_participants = await participantsOrder.calculateParticipantsOrder(fight.id);
@@ -91,6 +120,7 @@ const service = {
   create,
   setParticipantsOrder: participantsOrder.setParticipantsOrder,
   shiftParticipant: participantsOrder.shiftParticipant,
+  initializeFight,
   nextTurn,
   update,
   getAll,
