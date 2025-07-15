@@ -2,6 +2,8 @@ import fightRepo from "../../db/fights/fights-repo";
 
 import participantsOrder from "./fights-participants-order";
 
+import participantsService from "../participants/participants-service";
+
 import { FightStatus } from "./fights-enums";
 
 import type { INewFightReq, IUpdateFightReq, IFightRow } from "./fights-interfaces";
@@ -28,6 +30,8 @@ const initializeFight = async (id: number): Promise<IFightRow> => {
         `Pending participants cannot be initialized - current pending participants: ${fight.pending_participants}`,
       );
     if (fight.turn !== 0) throw new Error(`Fight ${fight.id} cannot be started - current turn: ${fight.turn}`);
+    const participants = await participantsService.getByFightId(fight.id);
+    if (participants.length === 0) throw new Error(`Fight ${fight.id} cannot be started - fight has no participants`);
     const fightInitialized = { ...fight };
     fightInitialized.fight_status = FightStatus.IN_PROGRESS;
     fightInitialized.turn = 1;

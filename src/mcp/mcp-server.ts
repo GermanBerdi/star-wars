@@ -17,6 +17,7 @@ import { rerollCharacterTemplateAbilitiesTool } from "./tools/character-template
 import { rerollCharacterTemplateHitDicesTool } from "./tools/character-templates/reroll-character-template-hit-dices-tool";
 import { updateCharacterTemplateTool } from "./tools/character-templates/update-character-template-tool";
 import { createFightTool } from "./tools/fights/create-fight-tool";
+import { initializeFightTool } from "./tools/fights/initialize-fight-tool";
 import { nextTurnTool } from "./tools/fights/next-turn-tool";
 // import { settingParticipantsOrderTool } from "./tools/fights/set-participants-order-tool";
 import { updateFightTool } from "./tools/fights/update-fight-tool";
@@ -97,6 +98,12 @@ mcpServer.tool(
   updateCharacterTemplateTool.cb,
 );
 mcpServer.tool(createFightTool.toolName, createFightTool.description, createFightTool.paramsSchema, createFightTool.cb);
+mcpServer.tool(
+  initializeFightTool.toolName,
+  initializeFightTool.description,
+  initializeFightTool.paramsSchema,
+  initializeFightTool.cb,
+);
 mcpServer.tool(nextTurnTool.toolName, nextTurnTool.description, nextTurnTool.paramsSchema, nextTurnTool.cb);
 mcpServer.tool(updateFightTool.toolName, updateFightTool.description, updateFightTool.paramsSchema, updateFightTool.cb);
 mcpServer.tool(listFightsTool.toolName, listFightsTool.description, listFightsTool.cb);

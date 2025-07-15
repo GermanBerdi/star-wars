@@ -47,6 +47,23 @@ router.post("/:id/participants-order", async (req: Request, res: Response): Prom
   }
 });
 
+router.post("/:id/initialize", async (req: Request, res: Response): Promise<void> => {
+  try {
+    const id = Number(req.params.id);
+    const fight = await fightsService.initializeFight(id);
+    const response = {
+      message: "Fight initialized successfully",
+      data: {
+        fight,
+      },
+    };
+    res.status(200).json(response);
+  } catch (error) {
+    const errorMessage = `Error initializing fight: ${error}`;
+    res.status(500).json({ errorMessage });
+  }
+});
+
 router.post("/:id/next-turn", async (req: Request, res: Response): Promise<void> => {
   try {
     const id = Number(req.params.id);
