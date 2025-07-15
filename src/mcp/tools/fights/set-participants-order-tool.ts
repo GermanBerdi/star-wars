@@ -14,8 +14,7 @@ const paramsSchema = {
     .number()
     .positive()
     .describe(
-      "Unique numeric identifier of the fight/battle to set participant order for (e.g., 8 for 'Torneo de los Campeones'). " +
-        "The fight must exist in the system and contain at least one alive participant.",
+      "Unique numeric identifier of the fight/battle to set participant order for (e.g., 8 for 'Torneo de los Campeones'). The fight must exist in the system and contain at least one alive participant.",
     ),
 };
 
@@ -30,14 +29,14 @@ const cb: ToolCallback<typeof paramsSchema> = async ({ id }: cbParams) => {
   try {
     const fight = await fightsService.setParticipantsOrder(id);
     const contentData = {
-      message: "Participants turn order successfully established based on initiative rolls",
+      message: "Participants turn order successfully set based on initiative rolls",
       data: {
         fight,
       },
     };
     response.content[0].text = JSON.stringify(contentData);
   } catch (error) {
-    const errorMessage = `Error establishing participants order: ${error}`;
+    const errorMessage = `Error setting participants order: ${error}`;
     const errorData = {
       error: true,
       message: errorMessage,

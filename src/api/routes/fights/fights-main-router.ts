@@ -30,19 +30,36 @@ router.post("/", validateCreateFight, async (req: Request, res: Response): Promi
   }
 });
 
-router.post("/:id/set-participants-order", async (req: Request, res: Response): Promise<void> => {
+router.post("/:id/participants-order", async (req: Request, res: Response): Promise<void> => {
   try {
     const id = Number(req.params.id);
     const fight = await fightsService.setParticipantsOrder(id);
     const response = {
-      message: "Fight updated",
+      message: "Participants turn order successfully set based on initiative rolls",
       data: {
         fight,
       },
     };
     res.status(200).json(response);
   } catch (error) {
-    const errorMessage = `Error setting participants-order: ${error}`;
+    const errorMessage = `Error setting participants order: ${error}`;
+    res.status(500).json({ errorMessage });
+  }
+});
+
+router.post("/:id/next-turn", async (req: Request, res: Response): Promise<void> => {
+  try {
+    const id = Number(req.params.id);
+    const fight = await fightsService.nextTurn(id);
+    const response = {
+      message: "Fight advanced to the next turn",
+      data: {
+        fight,
+      },
+    };
+    res.status(200).json(response);
+  } catch (error) {
+    const errorMessage = `Error advancing fight to the next turn: ${error}`;
     res.status(500).json({ errorMessage });
   }
 });

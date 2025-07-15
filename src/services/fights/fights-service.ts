@@ -1,16 +1,43 @@
 import fightRepo from "../../db/fights/fights-repo";
 
-import participantsService from "../participants/participants-service";
+import participantsOrder from "./fights-participants-order";
+
+import { FightStatus } from "./fights-enums";
 
 import type { INewFightReq, IUpdateFightReq, IFightRow } from "./fights-interfaces";
 
 const create = async (newFightreq: INewFightReq): Promise<IFightRow> => {
   try {
-    newFightreq.available_teams ? newFightreq.available_teams : [];
+    if (!newFightreq.available_teams) newFightreq.available_teams = [];
     const fight = await fightRepo.create(newFightreq);
     return fight;
   } catch (error) {
     const errorMessage = `Error in create at fights service: ${error}`;
+    console.error(errorMessage);
+    throw new Error(errorMessage);
+  }
+};
+
+const nextTurn = async (id: number): Promise<IFightRow> => {
+  try {
+    const fight = await getById(id);
+    if (fight.fight_status !== FightStatus.IN_PROGRESS) throw new Error(`Fight ${fight.id} isn´t in progress`);
+    if (fight.pending_participants === null)
+      throw new Error(`Pending participants has not been set in fight ${fight.id}`);
+    if (fight.pending_participants.length !== 0)
+      throw new Error(`There are 1 or more participants with pending actions in fight ${fight.id}`);
+    const fightNextTurn = { ...fight };
+    fightNextTurn.turn++;
+    fightNextTurn.pending_participants = await participantsOrder.calculateParticipantsOrder(fight.id);
+    const updateFightReq: IUpdateFightReq = {
+      id: fightNextTurn.id,
+      turn: fightNextTurn.turn,
+      pending_participants: fightNextTurn.pending_participants,
+    };
+    const fightUpdated = await update(updateFightReq);
+    return fightUpdated;
+  } catch (error) {
+    const errorMessage = `Error in nextTurn at fights service: ${error}`;
     console.error(errorMessage);
     throw new Error(errorMessage);
   }
@@ -60,65 +87,18 @@ const remove = async (id: number): Promise<void> => {
   }
 };
 
-const setParticipantsOrder = async (id: number): Promise<IFightRow> => {
-  try {
-    const participants = await participantsService.getByFightId(id);
-    const aliveParticipants = participants.filter((participant) => participantsService.isAlive(participant));
-    if (aliveParticipants.length === 0) throw new Error(`No alive participants found for fight ${id}`);
-    const participantsWithInitiative = aliveParticipants.map((participant) => {
-      const initiative = participantsService.rollInitiative(participant);
-      return {
-        id: participant.id,
-        initiative,
-      };
-    });
-    const pending_participants = participantsWithInitiative
-      .sort((a, b) => a.initiative - b.initiative)
-      .map((p) => p.id);
-    const updateFightReq: IUpdateFightReq = {
-      id,
-      pending_participants,
-    };
-    const fight = await update(updateFightReq);
-    return fight;
-  } catch (error) {
-    const errorMessage = `Error in setParticipantsOrder at fights service: ${error}`;
-    console.error(errorMessage);
-    throw new Error(errorMessage);
-  }
-};
-
-const isParticipantTurn = (participantId: number, pendingParticipants: number[] | null): boolean =>
-  pendingParticipants !== null && pendingParticipants.length > 0 && pendingParticipants[0] === participantId;
-
-const shiftParticipant = async (fight: IFightRow): Promise<IFightRow> => {
-  try {
-    if (fight.pending_participants === null || fight.pending_participants.length === 0)
-      throw new Error(`Pending participants has not been set in fight ${fight.id}`);
-    const nextPendingParticipants = [...fight.pending_participants];
-    nextPendingParticipants.shift();
-    const updateFightReq: IUpdateFightReq = {
-      id: fight.id,
-      pending_participants: nextPendingParticipants,
-    };
-    const fightUpdated = await update(updateFightReq);
-    return fightUpdated;
-  } catch (error) {
-    const errorMessage = `Error in nextParticipant at fights service: ${error}`;
-    console.error(errorMessage);
-    throw new Error(errorMessage);
-  }
-};
-
 const service = {
   create,
+  setParticipantsOrder: participantsOrder.setParticipantsOrder,
+  shiftParticipant: participantsOrder.shiftParticipant,
+  nextTurn,
   update,
   getAll,
   getById,
+  isParticipantTurn: participantsOrder.isParticipantTurn,
   remove,
-  setParticipantsOrder,
-  isParticipantTurn,
-  shiftParticipant,
+  calculateParticipantsOrder: participantsOrder.calculateParticipantsOrder,
 };
 
+export { update };
 export default service;
