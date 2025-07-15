@@ -12,12 +12,12 @@ const router = Router({ mergeParams: true });
 router.post("/", validateCreateParticipant, async (req: Request, res: Response): Promise<void> => {
   try {
     const fightId = Number(req.params.fightId);
-    const { character_template_id, participant_name, status, team_id } = req.body;
+    const { character_template_id, participant_name, participant_status, team_id } = req.body;
     const newParticipantReq: INewParticipantReq = {
       fightId,
       character_template_id,
       participant_name,
-      status,
+      participant_status,
       team_id,
     };
     const participant = await participantsService.create(newParticipantReq);

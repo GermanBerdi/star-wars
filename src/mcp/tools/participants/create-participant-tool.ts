@@ -33,7 +33,7 @@ const paramsSchema = {
     .describe(
       "Base name for this participant in the fight. For 'unique' character templates (heroes/villains), typically use the same name as the template (e.g., 'Aragorn', 'Conan'). For 'common' templates, create a personalized name (e.g., 'Thorek Martillo Ardiente', 'Sylvana Arquera Lunar') - the system will automatically append the template name in brackets.",
     ),
-  status: z
+  participant_status: z
     .number()
     .optional()
     .default(1)
@@ -54,7 +54,7 @@ const cb: ToolCallback<typeof paramsSchema> = async ({
   fightId,
   character_template_id,
   participant_name,
-  status,
+  participant_status,
   team_id,
 }: INewParticipantReq) => {
   const response: CallToolResult = {
@@ -65,7 +65,7 @@ const cb: ToolCallback<typeof paramsSchema> = async ({
       fightId,
       character_template_id,
       participant_name,
-      status,
+      participant_status,
       team_id,
     };
     const participantCreated = await participantsService.create(newParticipantReq);

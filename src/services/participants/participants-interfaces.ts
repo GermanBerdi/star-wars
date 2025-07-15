@@ -18,7 +18,7 @@ export interface IParticipantRow {
   hp: number;
   thac0: number;
   initiative: number;
-  status: ParticipantStatus;
+  participant_status: ParticipantStatus;
   team_id: number | null;
   updated_at: Date;
   created_at: Date;
@@ -28,7 +28,7 @@ export interface INewParticipantReq {
   fightId: number;
   character_template_id: number;
   participant_name: string;
-  status?: ParticipantStatus;
+  participant_status?: ParticipantStatus;
   team_id?: number;
 }
 
@@ -49,12 +49,12 @@ export interface INewParticipantCalculatedReq {
   hp: number;
   thac0: number;
   initiative: number;
-  status: ParticipantStatus;
+  participant_status: ParticipantStatus;
   team_id: number | null;
 }
 
 export interface IUpdateParticipantReq {
   id: number;
   hp?: number;
-  status?: ParticipantStatus;
+  participant_status?: ParticipantStatus;
 }

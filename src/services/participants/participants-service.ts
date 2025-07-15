@@ -41,7 +41,7 @@ const create = async (newParticipant: INewParticipantReq): Promise<IParticipantR
       hp: characterTemplate.hp,
       thac0: characterTemplate.thac0,
       initiative: characterTemplate.initiative,
-      status: newParticipant.status ?? ParticipantStatus.ALIVE,
+      participant_status: newParticipant.participant_status ?? ParticipantStatus.ALIVE,
       team_id: newParticipant.team_id ?? null,
     };
     const participant = await participantsRepo.create(newParticipantCalculatedReq);
@@ -114,7 +114,7 @@ const getByIdAndFightId = async (id: number, fightId: number): Promise<IParticip
 const rollInitiative = (participant: IParticipantRow): number =>
   participant.initiative + calcService.rolls.rollDices(Dice._1D10);
 
-const isAlive = (participant: IParticipantRow): boolean => participant.status === ParticipantStatus.ALIVE;
+const isAlive = (participant: IParticipantRow): boolean => participant.participant_status === ParticipantStatus.ALIVE;
 
 const calculateStatus = (hp: number): ParticipantStatus => {
   if (hp > 0) return ParticipantStatus.ALIVE;
@@ -130,7 +130,7 @@ const takeDamage = async (participant: IParticipantRow, damage: number): Promise
     const updateParticipantReq: IUpdateParticipantReq = {
       id: participant.id,
       hp: hpAfterDamage,
-      status: statusAfterDamage,
+      participant_status: statusAfterDamage,
     };
     const participantUpdated = await update(updateParticipantReq);
     return participantUpdated;
