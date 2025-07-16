@@ -53,6 +53,24 @@ const create = async (newParticipant: INewParticipantReq): Promise<IParticipantR
   }
 };
 
+const takeDamage = async (participant: IParticipantRow, damage: number): Promise<IParticipantRow> => {
+  try {
+    const hpAfterDamage = participant.hp - damage;
+    const statusAfterDamage = calculateStatus(hpAfterDamage);
+    const updateParticipantReq: IUpdateParticipantReq = {
+      id: participant.id,
+      hp: hpAfterDamage,
+      participant_status: statusAfterDamage,
+    };
+    const participantUpdated = await update(updateParticipantReq);
+    return participantUpdated;
+  } catch (error) {
+    const errorMessage = `Error in takeDamage at participants service: ${error}`;
+    console.error(errorMessage);
+    throw new Error(errorMessage);
+  }
+};
+
 const update = async (updateParticipantReq: IUpdateParticipantReq): Promise<IParticipantRow> => {
   try {
     const participant = await participantsRepo.update(updateParticipantReq);
@@ -105,7 +123,7 @@ const getByIdAndFightId = async (id: number, fightId: number): Promise<IParticip
     if (!participant) throw new Error(`Participant with id ${id} not found in fight ${fightId}.`);
     return participant;
   } catch (error) {
-    const errorMessage = `Error in getById at participants service: ${error}`;
+    const errorMessage = `Error in getByIdAndFightId at participants service: ${error}`;
     console.error(errorMessage);
     throw new Error(errorMessage);
   }
@@ -123,26 +141,10 @@ const calculateStatus = (hp: number): ParticipantStatus => {
   return ParticipantStatus.DEAD;
 };
 
-const takeDamage = async (participant: IParticipantRow, damage: number): Promise<IParticipantRow> => {
-  try {
-    const hpAfterDamage = participant.hp - damage;
-    const statusAfterDamage = calculateStatus(hpAfterDamage);
-    const updateParticipantReq: IUpdateParticipantReq = {
-      id: participant.id,
-      hp: hpAfterDamage,
-      participant_status: statusAfterDamage,
-    };
-    const participantUpdated = await update(updateParticipantReq);
-    return participantUpdated;
-  } catch (error) {
-    const errorMessage = `Error in takeDamage at participants service: ${error}`;
-    console.error(errorMessage);
-    throw new Error(errorMessage);
-  }
-};
-
 const service = {
   create,
+  takeDamage,
+  update,
   getAll,
   getById,
   getByFightId,
@@ -150,7 +152,6 @@ const service = {
   rollInitiative,
   isAlive,
   calculateStatus,
-  takeDamage,
 };
 
 export default service;

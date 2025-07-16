@@ -4,8 +4,10 @@ import participantsService from "../participants/participants-service";
 import abilitiesService from "../abilities/abilities-service";
 
 import { Dice } from "../calculations/rolls/rolls-enums";
+import { FightStatus } from "../fights/fights-enums";
 
 import type { IPerformActionReq, IPerformActionRes } from "./actions-interfaces";
+import type { IUpdateFightReq } from "../fights/fights-interfaces";
 
 const calculateDamage = (damageAdjustment: number): number => {
   return calcService.rolls.rollDices(Dice._1D6) + damageAdjustment;
@@ -26,9 +28,21 @@ const performAction = async (action: IPerformActionReq): Promise<IPerformActionR
     const damage = hit ? calculateDamage(actorStrength.damage_adjustment) : 0;
     const targetParticipantUpdated = await participantsService.takeDamage(targetParticipant, damage);
     const participantsToRemove = [actorParticipant.id];
-    if (!participantsService.isAlive(targetParticipantUpdated))
-      participantsToRemove.push(targetParticipant.id);
-    const fightUpdated = await fightsService.reviewPendingParticipants(fight,participantsToRemove);
+    if (!participantsService.isAlive(targetParticipantUpdated)) participantsToRemove.push(targetParticipant.id);
+    const reviewedPendingParticipants = await fightsService.reviewPendingParticipants(
+      fight.id,
+      fight.pending_participants,
+      participantsToRemove,
+    );
+    const updateFightReq: IUpdateFightReq = {
+      id: fight.id,
+      pending_participants: reviewedPendingParticipants,
+    };
+    const fightWinner = await fightsService.checkFightWinner(fight.id, fight.fight_status);
+    if (fightWinner) {
+      (updateFightReq.winner_id = fightWinner), (updateFightReq.fight_status = FightStatus.FINISHED);
+    }
+    const fightUpdated = await fightsService.update(updateFightReq);
     const performActionRes: IPerformActionRes = {
       fight: {
         id: fightUpdated.id,

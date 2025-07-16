@@ -1,10 +1,10 @@
 import fightRepo from "../../db/fights/fights-repo";
 
-import participantsOrder from "./fights-participants-order";
+import pendingParticipants from "./fights-pending-participants";
 
 import participantsService from "../participants/participants-service";
 
-import { FightStatus } from "./fights-enums";
+import { FightStatus, WinnerId } from "./fights-enums";
 
 import type { INewFightReq, IUpdateFightReq, IFightRow } from "./fights-interfaces";
 
@@ -35,7 +35,7 @@ const initializeFight = async (id: number): Promise<IFightRow> => {
     const fightInitialized = { ...fight };
     fightInitialized.fight_status = FightStatus.IN_PROGRESS;
     fightInitialized.turn = 1;
-    fightInitialized.pending_participants = await participantsOrder.calculateParticipantsOrder(fight.id);
+    fightInitialized.pending_participants = await pendingParticipants.rollInitiatives(fight.id);
     const updateFightReq: IUpdateFightReq = {
       id: fightInitialized.id,
       fight_status: fightInitialized.fight_status,
@@ -61,7 +61,7 @@ const nextTurn = async (id: number): Promise<IFightRow> => {
       throw new Error(`Fight ${fight.id} has ${fight.pending_participants.length} participants with pending actions`);
     const fightNextTurn = { ...fight };
     fightNextTurn.turn++;
-    fightNextTurn.pending_participants = await participantsOrder.calculateParticipantsOrder(fight.id);
+    fightNextTurn.pending_participants = await pendingParticipants.rollInitiatives(fight.id);
     const updateFightReq: IUpdateFightReq = {
       id: fightNextTurn.id,
       turn: fightNextTurn.turn,
@@ -120,19 +120,34 @@ const remove = async (id: number): Promise<void> => {
   }
 };
 
+const checkFightWinner = async (id: number, fightStatus: FightStatus): Promise<number | null> => {
+  try {
+    if (fightStatus !== FightStatus.IN_PROGRESS)
+      throw new Error(`Fight ${id} is not in progress - current status: ${fightStatus}`);
+    const participants = await participantsService.getByFightId(id);
+    const aliveParticipants = participants.filter((participant) => participantsService.isAlive(participant));
+    if (aliveParticipants.length === 0) return WinnerId.NO_SURVIVORS;
+    if (aliveParticipants.length === 1) return aliveParticipants[0].team_id ?? aliveParticipants[0].id;
+    if (new Set(aliveParticipants.map((p) => p.team_id)).size === 1) return aliveParticipants[0].team_id;
+    return null;
+  } catch (error) {
+    const errorMessage = `Error in checkFightWinner at fights service: ${error}`;
+    console.error(errorMessage);
+    throw new Error(errorMessage);
+  }
+};
+
 const service = {
   create,
-  setParticipantsOrder: participantsOrder.setParticipantsOrder,
-  reviewPendingParticipants: participantsOrder.reviewPendingParticipants,
   initializeFight,
   nextTurn,
   update,
   getAll,
   getById,
-  isParticipantTurn: participantsOrder.isParticipantTurn,
   remove,
-  calculateParticipantsOrder: participantsOrder.calculateParticipantsOrder,
+  isParticipantTurn: pendingParticipants.isParticipantTurn,
+  reviewPendingParticipants: pendingParticipants.reviewPendingParticipants,
+  checkFightWinner,
 };
 
-export { update };
 export default service;
