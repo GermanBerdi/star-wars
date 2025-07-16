@@ -8,7 +8,7 @@ import { Dice } from "../calculations/rolls/rolls-enums";
 import type { IPerformActionReq, IPerformActionRes } from "./actions-interfaces";
 
 const calculateDamage = (damageAdjustment: number): number => {
-  return Math.floor(Math.random() * 6) + 1 + damageAdjustment;
+  return calcService.rolls.rollDices(Dice._1D6) + damageAdjustment;
 };
 
 const performAction = async (action: IPerformActionReq): Promise<IPerformActionRes> => {
@@ -25,7 +25,10 @@ const performAction = async (action: IPerformActionReq): Promise<IPerformActionR
     const hit = hitRoll >= actorParticipant.thac0 - targetParticipant.armor_class;
     const damage = hit ? calculateDamage(actorStrength.damage_adjustment) : 0;
     const targetParticipantUpdated = await participantsService.takeDamage(targetParticipant, damage);
-    const fightUpdated = await fightsService.shiftParticipant(fight);
+    const participantsToRemove = [actorParticipant.id];
+    if (!participantsService.isAlive(targetParticipantUpdated))
+      participantsToRemove.push(targetParticipant.id);
+    const fightUpdated = await fightsService.reviewPendingParticipants(fight,participantsToRemove);
     const performActionRes: IPerformActionRes = {
       fight: {
         id: fightUpdated.id,

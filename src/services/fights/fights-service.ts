@@ -123,7 +123,7 @@ const remove = async (id: number): Promise<void> => {
 const service = {
   create,
   setParticipantsOrder: participantsOrder.setParticipantsOrder,
-  shiftParticipant: participantsOrder.shiftParticipant,
+  reviewPendingParticipants: participantsOrder.reviewPendingParticipants,
   initializeFight,
   nextTurn,
   update,
