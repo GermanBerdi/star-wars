@@ -19,7 +19,6 @@ import { updateCharacterTemplateTool } from "./tools/character-templates/update-
 import { createFightTool } from "./tools/fights/create-fight-tool";
 import { initializeFightTool } from "./tools/fights/initialize-fight-tool";
 import { nextTurnTool } from "./tools/fights/next-turn-tool";
-// import { settingParticipantsOrderTool } from "./tools/fights/set-participants-order-tool";
 import { updateFightTool } from "./tools/fights/update-fight-tool";
 import { listFightsTool } from "./tools/fights/list-fights-tool";
 import { getFightByIdTool } from "./tools/fights/get-fight-by-id-tool";

@@ -30,23 +30,6 @@ router.post("/", validateCreateFight, async (req: Request, res: Response): Promi
   }
 });
 
-router.post("/:id/participants-order", async (req: Request, res: Response): Promise<void> => {
-  try {
-    const id = Number(req.params.id);
-    const fight = await fightsService.setParticipantsOrder(id);
-    const response = {
-      message: "Participants turn order successfully set based on initiative rolls",
-      data: {
-        fight,
-      },
-    };
-    res.status(200).json(response);
-  } catch (error) {
-    const errorMessage = `Error setting participants order: ${error}`;
-    res.status(500).json({ errorMessage });
-  }
-});
-
 router.post("/:id/initialize", async (req: Request, res: Response): Promise<void> => {
   try {
     const id = Number(req.params.id);
